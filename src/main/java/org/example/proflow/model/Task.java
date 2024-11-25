@@ -7,7 +7,7 @@ public class Task extends SubProject{
     //TODO skal Task have et projectID også?
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    String uniqueVariabel;
+    private String uniqueVariabel;
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
     public Task(int id, String name, String description, LocalDate startDate, LocalDate endDate, Status status, int projectId, String assignedTo, String uniqueVariabel) {
