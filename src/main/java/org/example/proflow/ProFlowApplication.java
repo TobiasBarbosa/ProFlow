@@ -8,6 +8,7 @@ public class ProFlowApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ProFlowApplication.class, args);
+        System.out.println("Welcome to ProFlow!");
     }
 
 }
