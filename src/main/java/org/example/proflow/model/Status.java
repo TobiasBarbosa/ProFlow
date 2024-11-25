@@ -16,5 +16,10 @@ public enum Status {
         this.displayStatus = displayStatus;
     }
 
+    //***GETTER METHODS***----------------------------------------------------------------------------------------------
+    public String getDisplayStatus() {
+        return displayStatus;
+    }
+
     //***END***---------------------------------------------------------------------------------------------------------
 }
