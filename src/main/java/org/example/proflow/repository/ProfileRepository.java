@@ -6,36 +6,36 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+//TODO: add exceptions
 @Repository
 public class ProfileRepository {
 
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-//    private String db_url = System.getenv("DB_URL");
-//    private String db_username = System.getenv("DB_USER");
-//    private String db_password = System.getenv("DB_PASSWORD");
 
-    public class DatabaseConnection {
-        private static String db_url = System.getenv("DB_URL");
-        private static String db_username = System.getenv("DB_USER");
-        private static String db_password = System.getenv("DB_PASSWORD");
 
-        public static Connection getConnection() throws SQLException {
-            return DriverManager.getConnection(db_url, db_username, db_password);
-        }
-    }
+//    public class DatabaseConnection {
+//        private static String db_url = System.getenv("DB_URL");
+//        private static String db_username = System.getenv("DB_USER");
+//        private static String db_password = System.getenv("DB_PASSWORD");
+//
+//        public static Connection getConnection() throws SQLException {
+//            return DriverManager.getConnection(db_url, db_username, db_password);
+//        }
+//    }
+
+    private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE PROFILE***---------------------------------------------------------------------------------------------C
-    //chat version (extracted connection)
     public void addProfile(Profile profile)  {
         String insertProfileQuery = """
         INSERT INTO Profile (name, lastName, email, password) 
         VALUES (?, ?, ?, ?)
     """;
 
-        try (Connection con = DatabaseConnection.getConnection()) {
+        try (Connection con = dataBaseConnection.getConnection()) {
+            //TODO:
             // Check for duplicate email
 //            for (Profile p : getAllProfiles()) {
 //                if (profile.getEmail().equalsIgnoreCase(p.getEmail())) {
@@ -57,12 +57,11 @@ public class ProfileRepository {
     }
 
     //***READ PROFILE(S)***--------------------------------------------------------------------------------------------R
-    //chat version
     public List<Profile> getAllProfiles() {
         List<Profile> profiles = new ArrayList<>();
         String query = "SELECT * FROM Profile";
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -82,13 +81,12 @@ public class ProfileRepository {
     }
 
     //***UPDATE***-----------------------------------------------------------------------------------------------------U
-    //chat version
     public void updateProfile(Profile profile)  {
         String updateProfileQuery = """
         UPDATE Profile SET name = ?, lastName = ?, email = ?, password = ? WHERE id = ?
     """;
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateProfileQuery)) {
 
             ps.setString(1, profile.getFirstName());
@@ -103,11 +101,10 @@ public class ProfileRepository {
     }
 
     //***DELETE PROFILE***---------------------------------------------------------------------------------------------D
-    //chat version
     public void deleteProfile(int id)  {
         String deleteProfileQuery = "DELETE FROM Profile WHERE id = ?";
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(deleteProfileQuery)) {
 
             ps.setInt(1, id);

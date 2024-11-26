@@ -11,19 +11,19 @@ import java.util.List;
 @Repository
 public class SubProjectRepository {
 
-    public class DatabaseConnection {
-        private static String db_url = System.getenv("DB_URL");
-        private static String db_username = System.getenv("DB_USER");
-        private static String db_password = System.getenv("DB_PASSWORD");
-
-        public static Connection getConnection() throws SQLException {
-            return DriverManager.getConnection(db_url, db_username, db_password);
-        }
-    }
+//    public class DatabaseConnection {
+//        private static String db_url = System.getenv("DB_URL");
+//        private static String db_username = System.getenv("DB_USER");
+//        private static String db_password = System.getenv("DB_PASSWORD");
+//
+//        public static Connection getConnection() throws SQLException {
+//            return DriverManager.getConnection(db_url, db_username, db_password);
+//        }
+//    }
+private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE SUBPROJECT***------------------------------------------------------------------------------------------C
-    //ADD SUBPROJECT
     public void addSubProject(SubProject subProject) throws SQLException {
         String insertSubProjectQuery = """
         INSERT INTO SubProject (name, description, start_date, end_date, status, project_id)
@@ -31,7 +31,7 @@ public class SubProjectRepository {
     """;
 
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(insertSubProjectQuery)) {
 
             ps.setString(1, subProject.getName());
@@ -46,12 +46,11 @@ public class SubProjectRepository {
 
 
     //***READ SUBPROJECT(S)***-----------------------------------------------------------------------------------------R
-    //GET ALL SUB PROJECTS
     public List<SubProject> getAllSubProjects() {
         List<SubProject> subProjects = new ArrayList<>();
         String query = "SELECT * FROM SubProject";
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -77,7 +76,7 @@ public class SubProjectRepository {
         String query = "SELECT * FROM SubProject WHERE id = ?";
         SubProject subProject = null;
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setInt(1, id);
@@ -98,7 +97,6 @@ public class SubProjectRepository {
     }
 
     //***UPDATE SUBPROJECT***------------------------------------------------------------------------------------------U
-    //UPDATE SUB PROJECT
     public void updateSubProject(SubProject subProject) throws SQLException {
         String updateSubProjectQuery = """
         UPDATE SubProject
@@ -106,13 +104,13 @@ public class SubProjectRepository {
         WHERE id = ?
     """;
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateSubProjectQuery)) {
 
             ps.setString(1, subProject.getName());
             ps.setString(2, subProject.getDescription());
-            ps.setDate(3, Date.valueOf(subProject.getStartDate())); // assuming startDate is LocalDate
-            ps.setDate(4, Date.valueOf(subProject.getEndDate()));   // assuming endDate is LocalDate
+            ps.setDate(3, Date.valueOf(subProject.getStartDate()));
+            ps.setDate(4, Date.valueOf(subProject.getEndDate()));
             ps.setString(5, String.valueOf(subProject.getStatus()));
             ps.setInt(6, subProject.getProjectId());
             ps.setInt(7, subProject.getId());
@@ -124,7 +122,7 @@ public class SubProjectRepository {
     public void deleteSubProject(int id) throws SQLException {
         String deleteSubProjectQuery = "DELETE FROM SubProject WHERE id = ?";
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(deleteSubProjectQuery)) {
 
             ps.setInt(1, id);
