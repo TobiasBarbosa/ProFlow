@@ -27,6 +27,8 @@ public class ProfileService {
         return profileRepository.getAllProfiles();
     }
 
+    //TODO getProfileById
+
     //***UPDATE PROFILE***---------------------------------------------------------------------------------------------U
     public void updateProfile(Profile profile){
         profileRepository.updateProfile(profile);
