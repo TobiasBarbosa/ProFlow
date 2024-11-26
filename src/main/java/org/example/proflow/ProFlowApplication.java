@@ -30,10 +30,15 @@ public class ProFlowApplication {
         List<Profile> allProfiles = new ArrayList<Profile>();
         ArrayList<Project> allProjects = new ArrayList<Project>();
         List<SubProject> allSubProjects = new ArrayList<SubProject>();
-        ArrayList<Task> allTasks = new ArrayList<Task>();
+        List<Task> allTasks = new ArrayList<Task>();
 
-        allProfiles = profiles.getAllProfiles();
-
+        int taskIdToDelete = 5; // ID of the task to delete
+        try {
+            tasks.deleteTask(taskIdToDelete);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Task with ID " + taskIdToDelete + " has been deleted");
 
 
     }
@@ -192,3 +197,67 @@ public class ProFlowApplication {
 //
 //                System.out.println("Welcome to ProFlow!");
 //        System.out.println(allProfiles);
+
+
+// Test getalltasks
+//allTasks = tasks.getAllTasks();
+//        for (Task t : allTasks) {
+//        System.out.println("Task ID: " + t.getId());
+//        System.out.println("Name: " + t.getName());
+//        System.out.println("Description: " + t.getDescription());
+//        System.out.println("Start Date: " + t.getStartDate());
+//        System.out.println("End Date: " + t.getEndDate());
+//        System.out.println("Status: " + t.getStatus());
+//        System.out.println("Assigned To: " + t.getAssignedTo());
+//        System.out.println("SubProject ID: " + t.getSubProjectId());
+//        System.out.println("-------------------------");
+//        }
+
+
+
+
+//TEST GET TASK BY ID
+//Task task = null; // Retrieve the task with ID 1
+//        try {
+//task = tasks.getTaskById(1);
+//        } catch (SQLException e) {
+//        throw new RuntimeException(e);
+//        }
+//                if (task != null) {
+//        System.out.println("Task ID: " + task.getId());
+//        System.out.println("Name: " + task.getName());
+//        System.out.println("Description: " + task.getDescription());
+//        System.out.println("Start Date: " + task.getStartDate());
+//        System.out.println("End Date: " + task.getEndDate());
+//        System.out.println("Status: " + task.getStatus());
+//        System.out.println("Assigned To: " + task.getAssignedTo());
+//        System.out.println("SubProject ID: " + task.getSubProjectId());
+//        } else {
+//        System.out.println("Task not found");
+//        }
+
+
+//TEST UPDATE TASK
+//    Task taskToUpdate = null; // Retrieve the task with ID 1
+//        try {
+//            taskToUpdate = tasks.getTaskById(1);
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        if (taskToUpdate != null) {
+//            taskToUpdate.setName("Update Logo");
+//            taskToUpdate.setDescription("Refine the logo design");
+//            taskToUpdate.setStartDate(LocalDate.of(2024, 1, 2));
+//            taskToUpdate.setEndDate(LocalDate.of(2024, 1, 6));
+//            taskToUpdate.setStatus(Status.DONE);
+//            taskToUpdate.setAssignedTo("Updated John Doe");
+//
+//            try {
+//                tasks.updateTask(taskToUpdate);
+//            } catch (SQLException e) {
+//                throw new RuntimeException(e);
+//            }
+//            System.out.println("Task updated successfully");
+//        } else {
+//            System.out.println("Task not found for update");
+//        }
