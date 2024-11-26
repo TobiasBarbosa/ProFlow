@@ -2,11 +2,13 @@ package org.example.proflow.repository;
 
 import org.example.proflow.model.Status;
 import org.example.proflow.model.Task;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class TaskRepository {
 
     public class DatabaseConnection {
@@ -19,10 +21,8 @@ public class TaskRepository {
         }
     }
 
-
-
-    //ADD TASK
-
+    //***METHODS***-----------------------------------------------------------------------------------------------------
+    //***CREATE TASK***------------------------------------------------------------------------------------------------C
     public void addTask(Task task) throws SQLException {
         String insertTaskQuery = """
         INSERT INTO Tasks (name, description, start_date, end_date, status, assigned_to, subproject_id)
@@ -34,19 +34,16 @@ public class TaskRepository {
 
             ps.setString(1, task.getName());
             ps.setString(2, task.getDescription());
-            ps.setDate(3, Date.valueOf(task.getStartDate()));  // assuming startDate is LocalDate
-            ps.setDate(4, Date.valueOf(task.getEndDate()));    // assuming endDate is LocalDate
+            ps.setDate(3, Date.valueOf(task.getStartDate()));
+            ps.setDate(4, Date.valueOf(task.getEndDate()));
             ps.setString(5, String.valueOf(task.getStatus()));
             ps.setString(6, task.getAssignedTo());
-            ps.setInt(7, task.getSubProjectId());  // Assuming you have a subProjectId field in Tasks
+            ps.setInt(7, task.getSubProjectId());
             ps.executeUpdate();
         }
     }
 
-
-
-
-    //GET ALL TASKS
+    //***READ TASK(S)***-----------------------------------------------------------------------------------------------R
     public List<Task> getAllTasks() {
         List<Task> tasks = new ArrayList<>();
         String query = "SELECT * FROM Tasks";
@@ -72,9 +69,6 @@ public class TaskRepository {
         }
         return tasks;
     }
-
-
-
 
     //GET TASKS BY ID
     public Task getTaskById(int id) throws SQLException {
@@ -102,8 +96,7 @@ public class TaskRepository {
         return task;
     }
 
-
-
+    //***UPDATE TASK***------------------------------------------------------------------------------------------------U
     //UPDATE TASK
     public void updateTask(Task task) throws SQLException {
         String updateTaskQuery = """
@@ -117,8 +110,8 @@ public class TaskRepository {
 
             ps.setString(1, task.getName());
             ps.setString(2, task.getDescription());
-            ps.setDate(3, Date.valueOf(task.getStartDate()));  // assuming startDate is LocalDate
-            ps.setDate(4, Date.valueOf(task.getEndDate()));    // assuming endDate is LocalDate
+            ps.setDate(3, Date.valueOf(task.getStartDate()));
+            ps.setDate(4, Date.valueOf(task.getEndDate()));
             ps.setString(5, String.valueOf(task.getStatus()));
             ps.setString(6, task.getAssignedTo());
             ps.setInt(7, task.getSubProjectId());
@@ -127,9 +120,7 @@ public class TaskRepository {
         }
     }
 
-
-
-
+    //***DELETE TASK***------------------------------------------------------------------------------------------------D
     //DELETE TASK
     public void deleteTask(int id) throws SQLException {
         String deleteTaskQuery = "DELETE FROM Tasks WHERE id = ?";
@@ -142,5 +133,6 @@ public class TaskRepository {
         }
     }
 
+    //***END***---------------------------------------------------------------------------------------------------------
 }
 

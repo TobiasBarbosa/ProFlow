@@ -2,13 +2,14 @@ package org.example.proflow.repository;
 
 import org.example.proflow.model.Status;
 import org.example.proflow.model.SubProject;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class SubProjectRepository {
-
 
     public class DatabaseConnection {
         private static String db_url = System.getenv("DB_URL");
@@ -22,7 +23,6 @@ public class SubProjectRepository {
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE SUBPROJECT***------------------------------------------------------------------------------------------C
-    //ADD SUBPROJECT
     public void addSubProject(SubProject subProject) throws SQLException {
         String insertSubProjectQuery = """
         INSERT INTO SubProject (name, description, start_date, end_date, status, project_id)
@@ -45,7 +45,6 @@ public class SubProjectRepository {
 
 
     //***READ SUBPROJECT(S)***-----------------------------------------------------------------------------------------R
-    //GET ALL SUB PROJECTS
     public List<SubProject> getAllSubProjects() {
         List<SubProject> subProjects = new ArrayList<>();
         String query = "SELECT * FROM SubProject";
@@ -97,7 +96,6 @@ public class SubProjectRepository {
     }
 
     //***UPDATE SUBPROJECT***------------------------------------------------------------------------------------------U
-    //UPDATE SUB PROJECT
     public void updateSubProject(SubProject subProject) throws SQLException {
         String updateSubProjectQuery = """
         UPDATE SubProject
@@ -110,8 +108,8 @@ public class SubProjectRepository {
 
             ps.setString(1, subProject.getName());
             ps.setString(2, subProject.getDescription());
-            ps.setDate(3, Date.valueOf(subProject.getStartDate())); // assuming startDate is LocalDate
-            ps.setDate(4, Date.valueOf(subProject.getEndDate()));   // assuming endDate is LocalDate
+            ps.setDate(3, Date.valueOf(subProject.getStartDate()));
+            ps.setDate(4, Date.valueOf(subProject.getEndDate()));
             ps.setString(5, String.valueOf(subProject.getStatus()));
             ps.setInt(6, subProject.getProjectId());
             ps.setInt(7, subProject.getId());

@@ -12,7 +12,7 @@ import java.util.List;
 public class ProjectService {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    ProjectRepository projectRepository;
+    private final ProjectRepository projectRepository;
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
     public ProjectService(ProjectRepository projectRepository){

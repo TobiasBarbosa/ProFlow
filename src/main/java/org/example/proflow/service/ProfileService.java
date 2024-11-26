@@ -10,7 +10,7 @@ import java.util.List;
 public class ProfileService {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    ProfileRepository profileRepository;
+    private final ProfileRepository profileRepository;
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
     public ProfileService(ProfileRepository profileRepository){
