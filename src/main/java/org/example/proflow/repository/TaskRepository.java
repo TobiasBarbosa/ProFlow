@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public class TaskRepository {
 
-
+    //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
@@ -90,7 +90,6 @@ public class TaskRepository {
     }
 
     //***UPDATE TASK***------------------------------------------------------------------------------------------------U
-    //UPDATE TASK
     public void updateTask(Task task) throws SQLException {
         String updateTaskQuery = """
         UPDATE Tasks
@@ -114,7 +113,6 @@ public class TaskRepository {
     }
 
     //***DELETE TASK***------------------------------------------------------------------------------------------------D
-    //DELETE TASK
     public void deleteTask(int id) throws SQLException {
         String deleteTaskQuery = "DELETE FROM Tasks WHERE id = ?";
 

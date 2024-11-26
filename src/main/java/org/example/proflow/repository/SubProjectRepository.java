@@ -11,7 +11,8 @@ import java.util.List;
 @Repository
 public class SubProjectRepository {
 
-private DataBaseConnection dataBaseConnection = new DataBaseConnection();
+    //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
+    private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE SUBPROJECT***------------------------------------------------------------------------------------------C
@@ -20,7 +21,6 @@ private DataBaseConnection dataBaseConnection = new DataBaseConnection();
         INSERT INTO SubProject (name, description, start_date, end_date, status, project_id)
         VALUES (?, ?, ?, ?, ?, ?)
     """;
-
 
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(insertSubProjectQuery)) {
@@ -34,7 +34,6 @@ private DataBaseConnection dataBaseConnection = new DataBaseConnection();
             ps.executeUpdate();
         }
     }
-
 
     //***READ SUBPROJECT(S)***-----------------------------------------------------------------------------------------R
     public List<SubProject> getAllSubProjects() {
