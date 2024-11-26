@@ -161,5 +161,6 @@ public class SubProject {
                 "\nAssigned to: "         + (assignedTo != null ? assignedTo : "Not assigned");
     }
 
+
     //***END***---------------------------------------------------------------------------------------------------------
 }
