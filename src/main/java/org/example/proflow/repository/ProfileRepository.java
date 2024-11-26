@@ -14,16 +14,6 @@ public class ProfileRepository {
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
 
 
-//    public class DatabaseConnection {
-//        private static String db_url = System.getenv("DB_URL");
-//        private static String db_username = System.getenv("DB_USER");
-//        private static String db_password = System.getenv("DB_PASSWORD");
-//
-//        public static Connection getConnection() throws SQLException {
-//            return DriverManager.getConnection(db_url, db_username, db_password);
-//        }
-//    }
-
     private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
@@ -51,7 +41,6 @@ public class ProfileRepository {
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
-           // throw new ProfileException("Error while adding profile: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
