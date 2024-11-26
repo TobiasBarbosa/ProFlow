@@ -150,8 +150,8 @@ public class SubProject {
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return  "\nProject ID: "          + id                        +
-                "\nProject name: "        + name                      +
+        return  "\nSubProject ID: "       + id                        +
+                "\nSubProject name: "     + name                      +
                 "\nDescription: "         + description               +
                 "\nStart date: "          + startDate                 +
                 "\nEnd date="             + endDate                   +
