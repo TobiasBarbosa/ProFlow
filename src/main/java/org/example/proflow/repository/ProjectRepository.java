@@ -12,7 +12,7 @@ public class ProjectRepository {
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
-    //***CREATE PROJECT***----------------------------------------------------------------------------------------------
+    //***CREATE PROJECT***---------------------------------------------------------------------------------------------C
     public void addProject(Project project) throws SQLException {
         String insertProjectQuery = """
         INSERT INTO Project (name, description, start_date, end_date, status, profile_id)
@@ -32,7 +32,7 @@ public class ProjectRepository {
         }
     }
 
-    //***READ PROJECT***----------------------------------------------------------------------------------------------R
+    //***READ PROJECT***-----------------------------------------------------------------------------------------------R
     public Project getProjectById(int id) throws SQLException {
         String query = "SELECT * FROM Project WHERE id = ?";
         Project project = null;
@@ -57,7 +57,7 @@ public class ProjectRepository {
         return project;
     }
 
-    //***UPDATE PROJECT***--------------------------------------------------------------------------------------------U
+    //***UPDATE PROJECT***---------------------------------------------------------------------------------------------U
     public void updateProject(Project project) throws SQLException {
         String updateProjectQuery = """
         UPDATE Project SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, profile_id = ?
