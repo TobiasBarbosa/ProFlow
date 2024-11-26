@@ -14,15 +14,17 @@ public class ProfileRepository {
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
 
 
-    public class DatabaseConnection {
-        private static String db_url = System.getenv("DB_URL");
-        private static String db_username = System.getenv("DB_USER");
-        private static String db_password = System.getenv("DB_PASSWORD");
+//    public class DatabaseConnection {
+//        private static String db_url = System.getenv("DB_URL");
+//        private static String db_username = System.getenv("DB_USER");
+//        private static String db_password = System.getenv("DB_PASSWORD");
+//
+//        public static Connection getConnection() throws SQLException {
+//            return DriverManager.getConnection(db_url, db_username, db_password);
+//        }
+//    }
 
-        public static Connection getConnection() throws SQLException {
-            return DriverManager.getConnection(db_url, db_username, db_password);
-        }
-    }
+    private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE PROFILE***---------------------------------------------------------------------------------------------C
@@ -32,7 +34,7 @@ public class ProfileRepository {
         VALUES (?, ?, ?, ?)
     """;
 
-        try (Connection con = DatabaseConnection.getConnection()) {
+        try (Connection con = dataBaseConnection.getConnection()) {
             //TODO:
             // Check for duplicate email
 //            for (Profile p : getAllProfiles()) {
@@ -59,7 +61,7 @@ public class ProfileRepository {
         List<Profile> profiles = new ArrayList<>();
         String query = "SELECT * FROM Profile";
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -84,7 +86,7 @@ public class ProfileRepository {
         UPDATE Profile SET name = ?, lastName = ?, email = ?, password = ? WHERE id = ?
     """;
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateProfileQuery)) {
 
             ps.setString(1, profile.getFirstName());
@@ -102,7 +104,7 @@ public class ProfileRepository {
     public void deleteProfile(int id)  {
         String deleteProfileQuery = "DELETE FROM Profile WHERE id = ?";
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(deleteProfileQuery)) {
 
             ps.setInt(1, id);

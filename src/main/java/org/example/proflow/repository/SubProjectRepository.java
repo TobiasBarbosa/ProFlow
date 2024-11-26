@@ -11,15 +11,16 @@ import java.util.List;
 @Repository
 public class SubProjectRepository {
 
-    public class DatabaseConnection {
-        private static String db_url = System.getenv("DB_URL");
-        private static String db_username = System.getenv("DB_USER");
-        private static String db_password = System.getenv("DB_PASSWORD");
-
-        public static Connection getConnection() throws SQLException {
-            return DriverManager.getConnection(db_url, db_username, db_password);
-        }
-    }
+//    public class DatabaseConnection {
+//        private static String db_url = System.getenv("DB_URL");
+//        private static String db_username = System.getenv("DB_USER");
+//        private static String db_password = System.getenv("DB_PASSWORD");
+//
+//        public static Connection getConnection() throws SQLException {
+//            return DriverManager.getConnection(db_url, db_username, db_password);
+//        }
+//    }
+private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE SUBPROJECT***------------------------------------------------------------------------------------------C
@@ -30,7 +31,7 @@ public class SubProjectRepository {
     """;
 
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(insertSubProjectQuery)) {
 
             ps.setString(1, subProject.getName());
@@ -49,7 +50,7 @@ public class SubProjectRepository {
         List<SubProject> subProjects = new ArrayList<>();
         String query = "SELECT * FROM SubProject";
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -75,7 +76,7 @@ public class SubProjectRepository {
         String query = "SELECT * FROM SubProject WHERE id = ?";
         SubProject subProject = null;
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setInt(1, id);
@@ -103,7 +104,7 @@ public class SubProjectRepository {
         WHERE id = ?
     """;
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateSubProjectQuery)) {
 
             ps.setString(1, subProject.getName());
@@ -121,7 +122,7 @@ public class SubProjectRepository {
     public void deleteSubProject(int id) throws SQLException {
         String deleteSubProjectQuery = "DELETE FROM SubProject WHERE id = ?";
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(deleteSubProjectQuery)) {
 
             ps.setInt(1, id);

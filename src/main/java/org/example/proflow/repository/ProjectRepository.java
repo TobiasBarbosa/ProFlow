@@ -9,15 +9,17 @@ import java.sql.*;
 @Repository
 public class ProjectRepository {
 
-    public class DatabaseConnection {
-        private static String db_url = System.getenv("DB_URL");
-        private static String db_username = System.getenv("DB_USER");
-        private static String db_password = System.getenv("DB_PASSWORD");
+//    public class DatabaseConnection {
+//        private static String db_url = System.getenv("DB_URL");
+//        private static String db_username = System.getenv("DB_USER");
+//        private static String db_password = System.getenv("DB_PASSWORD");
+//
+//        public static Connection getConnection() throws SQLException {
+//            return DriverManager.getConnection(db_url, db_username, db_password);
+//        }
+//    }
+    private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
-        public static Connection getConnection() throws SQLException {
-            return DriverManager.getConnection(db_url, db_username, db_password);
-        }
-    }
 
     public void addProject(Project project) throws SQLException {
         String insertProjectQuery = """
@@ -25,7 +27,8 @@ public class ProjectRepository {
         VALUES (?, ?, ?, ?, ?, ?)
     """;
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
+//        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(insertProjectQuery)) {
 
             ps.setString(1, project.getName());
@@ -43,7 +46,7 @@ public class ProjectRepository {
         String query = "SELECT * FROM Project WHERE id = ?";
         Project project = null;
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setInt(1, id);
@@ -70,7 +73,7 @@ public class ProjectRepository {
         WHERE id = ?
     """;
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateProjectQuery)) {
 
             ps.setString(1, project.getName());
@@ -88,7 +91,7 @@ public class ProjectRepository {
     public void deleteProject(int id) throws SQLException {
         String deleteProjectQuery = "DELETE FROM Project WHERE id = ?";
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(deleteProjectQuery)) {
 
             ps.setInt(1, id);

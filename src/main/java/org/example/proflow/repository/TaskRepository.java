@@ -11,15 +11,17 @@ import java.util.List;
 @Repository
 public class TaskRepository {
 
-    public class DatabaseConnection {
-        private static String db_url = System.getenv("DB_URL");
-        private static String db_username = System.getenv("DB_USER");
-        private static String db_password = System.getenv("DB_PASSWORD");
+//    public class DatabaseConnection {
+//        private static String db_url = System.getenv("DB_URL");
+//        private static String db_username = System.getenv("DB_USER");
+//        private static String db_password = System.getenv("DB_PASSWORD");
+//
+//        public static Connection getConnection() throws SQLException {
+//            return DriverManager.getConnection(db_url, db_username, db_password);
+//        }
+//    }
 
-        public static Connection getConnection() throws SQLException {
-            return DriverManager.getConnection(db_url, db_username, db_password);
-        }
-    }
+    private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE TASK***------------------------------------------------------------------------------------------------C
@@ -29,7 +31,7 @@ public class TaskRepository {
         VALUES (?, ?, ?, ?, ?, ?, ?)
     """;
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(insertTaskQuery)) {
 
             ps.setString(1, task.getName());
@@ -48,7 +50,7 @@ public class TaskRepository {
         List<Task> tasks = new ArrayList<>();
         String query = "SELECT * FROM Tasks";
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -75,7 +77,7 @@ public class TaskRepository {
         String query = "SELECT * FROM Tasks WHERE id = ?";
         Task task = null;
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setInt(1, id);
@@ -105,7 +107,7 @@ public class TaskRepository {
         WHERE id = ?
     """;
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateTaskQuery)) {
 
             ps.setString(1, task.getName());
@@ -125,7 +127,7 @@ public class TaskRepository {
     public void deleteTask(int id) throws SQLException {
         String deleteTaskQuery = "DELETE FROM Tasks WHERE id = ?";
 
-        try (Connection con = DatabaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(deleteTaskQuery)) {
 
             ps.setInt(1, id);
