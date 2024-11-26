@@ -14,8 +14,8 @@ public class ProFlowApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ProFlowApplication.class, args);
-        ProfileRepository profileRepository = new ProfileRepository();
-        System.out.println(profileRepository.getAllProfiles());
+//        ProfileRepository profileRepository = new ProfileRepository();
+//        System.out.println(profileRepository.getAllProfiles());
 
     }
 

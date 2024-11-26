@@ -9,10 +9,10 @@ import java.sql.*;
 @Repository
 public class ProjectRepository {
 
-
+    //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
-
+    //***CREATE PROJECT***----------------------------------------------------------------------------------------------
     public void addProject(Project project) throws SQLException {
         String insertProjectQuery = """
         INSERT INTO Project (name, description, start_date, end_date, status, profile_id)

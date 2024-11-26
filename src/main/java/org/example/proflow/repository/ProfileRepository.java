@@ -10,10 +10,7 @@ import java.util.List;
 @Repository
 public class ProfileRepository {
 
-
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-
-
     private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
