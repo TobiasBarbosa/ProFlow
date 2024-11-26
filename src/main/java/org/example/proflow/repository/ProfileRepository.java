@@ -69,6 +69,8 @@ public class ProfileRepository {
         return profiles;
     }
 
+    //TODO getProfileById
+
     //***UPDATE***-----------------------------------------------------------------------------------------------------U
     public void updateProfile(Profile profile)  {
         String updateProfileQuery = """

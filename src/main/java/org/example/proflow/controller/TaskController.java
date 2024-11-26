@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,17 +28,18 @@ public class TaskController {
     }
 
     //***CREATE TASK METHODS***-----------------------------------------------------------------------------------------
-    @GetMapping("/addTask")
-    public String addTask(Model model){
-        Task task = new Task();
-        model.addAttribute("task", task);
+    @GetMapping("/{subProjectId}/addTask")
+    public String addTask(@PathVariable("subProjectId") int subProjectId, Model model){
+        model.addAttribute("subProjectId", subProjectId);
+        model.addAttribute("task", new Task());
         return "addTask";
     }
 
-    @PostMapping("/saveTask")
-    public String saveTask(@ModelAttribute Task task) throws Exception{ //TODO lav TaskException ændre til den
+    @PostMapping("/{subProjectId}/saveTask")
+    public String saveTask(@PathVariable("subProjectId") int subProjectId, @ModelAttribute("task") Task task) throws SQLException { //TODO ændre exception
+        task.setSubProjectId(subProjectId);
         taskService.addTask(task);
-        return "redirect:/homepage/userProfile";
+        return "redirect:";
     }
 
     //***READ TASK METHODS***-------------------------------------------------------------------------------------------
@@ -49,17 +51,16 @@ public class TaskController {
     }
 
     @GetMapping("/task/{id}")
-    public String getTaskById(@PathVariable("id") int taskId, Model model) throws Exception{
+    public String getTaskById(@PathVariable("id") int taskId, Model model) throws SQLException{ //TODO  ændre exception
         Task task = taskService.getTaskById(taskId);
         model.addAttribute("task", task);
         model.addAttribute("name", task.getName());
         return "task";
     }
 
-
     //***UPDATE TASK METHODS***-----------------------------------------------------------------------------------------
     @GetMapping("/task/edit/{id}")
-    public String editTask(@PathVariable("id") int taskId, Model model) throws Exception{ //TODO taskException sættes ind
+    public String editTask(@PathVariable("id") int taskId, Model model) throws SQLException{ //TODO  ændre exception
         Task task = taskService.getTaskById(taskId);
         model.addAttribute("task", task);
         model.addAttribute("id", task.getId());
@@ -77,7 +78,7 @@ public class TaskController {
 
 
     @PostMapping("/task/update/{id}")
-    public String updateTask(@ModelAttribute Task task) throws Exception{
+    public String updateTask(@ModelAttribute Task task) throws SQLException{ //TODO  ændre exception
         int id = task.getId();
         taskService.updateTask(task);
         return "redirect:/homepage/task";
@@ -85,7 +86,7 @@ public class TaskController {
 
     //***DELETE TASK METHODS***-----------------------------------------------------------------------------------------
     @PostMapping("/task/delete/{id}")
-    public String deleteTask(@PathVariable("id") int id) throws Exception{
+    public String deleteTask(@PathVariable("id") int id) throws SQLException{ //TODO  ændre exception
         Task task = taskService.getTaskById(id);
         taskService.deleteTask(id);
         return "redirect:/homepage/userProfile";

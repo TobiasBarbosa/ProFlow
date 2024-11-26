@@ -49,16 +49,16 @@ public class ProfileController {
     }
 
     //***UPDATE PROFILE***---------------------------------------------------------------------------------------------U
-    @GetMapping("/edit/{id}")
-    public String editProfile(@PathVariable("id") int profileId, Model model) throws ProfileException {
-        Profile profile = profileService.getProfileById(profileId);
-        model.addAttribute("profile", profile);
-        model.addAttribute("profileName", profile.getFirstName());
-        model.addAttribute("profileLastName", profile.getLastName());
-        model.addAttribute("profileEmail", profile.getEmail());
-        model.addAttribute("profilePassword",profile.getPassword());
-        return "editProfile"; //TODO tilføj nav på html page
-    }
+//    @GetMapping("/edit/{id}")
+//    public String editProfile(@PathVariable("id") int profileId, Model model) throws ProfileException {
+//        Profile profile = profileService.getProfileById(profileId);
+//        model.addAttribute("profile", profile);
+//        model.addAttribute("profileName", profile.getFirstName());
+//        model.addAttribute("profileLastName", profile.getLastName());
+//        model.addAttribute("profileEmail", profile.getEmail());
+//        model.addAttribute("profilePassword",profile.getPassword());
+//        return "editProfile"; //TODO tilføj nav på html page
+//    }
 
     @PostMapping("/update/{id}")
     public String updateProfile(@PathVariable("id") int profileId, @ModelAttribute Profile profile) throws ProfileException {
@@ -69,12 +69,12 @@ public class ProfileController {
     }
 
     //***DELETE PROFILE***---------------------------------------------------------------------------------------------D
-    @PostMapping("/{name}/remove")
-    public String deleteProfile(@PathVariable int profileId) throws ProfileException {
-        Profile profile = profileService.getProfileById(profileId);
-        profileService.deleteProfile(profile);
-        return "redirect:/profile"; // TODO: Change to the correct HTML page if necessary
-    }
+//    @PostMapping("/{name}/remove")
+//    public String deleteProfile(@PathVariable int profileId) throws ProfileException {
+//        Profile profile = profileService.getProfileById(profileId);
+//        profileService.deleteProfile(profile.getId());
+//        return "redirect:/profile"; // TODO: Change to the correct HTML page if necessary
+//    }
 
     //***EXCEPTION HANDLING***------------------------------------------------------------------------------------------
     @ExceptionHandler(ProfileException.class)

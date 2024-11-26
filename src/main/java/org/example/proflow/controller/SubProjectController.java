@@ -2,6 +2,7 @@ package org.example.proflow.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.example.proflow.model.SubProject;
+import org.example.proflow.model.Task;
 import org.example.proflow.service.SubProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,22 +29,21 @@ public class SubProjectController {
     }
 
     //***CREATE SUBPROJECT METHODS***-----------------------------------------------------------------------------------
-   @GetMapping("/addsubproject")
-    public String addSubProject(Model model) {
-       SubProject subProject = new SubProject();
-
-        //TODO addSubProject i controller
-
+   @GetMapping("/{projectId}/addSubProject")
+    public String addSubProject(@PathVariable("projectId") int projectId, Model model) {
+       model.addAttribute("projectId", projectId);
+       model.addAttribute("subProject", new SubProject());
        return "homepage";
    }
 
-   @PostMapping("/savesubproject")
-    public String saveSubProject(@ModelAttribute SubProject subProject, HttpSession session, Model model){
-
-        //TODO saveSubProject i controller
-
-       return "subprojects";
+    @PostMapping("/{projectId}/saveSubProject")
+    public String saveSubProject(@PathVariable("projectId") int projectId,
+                                 @ModelAttribute("subProject") SubProject subProject, Model model) throws SQLException { //TODO ændre exception
+        subProject.setProjectId(projectId);
+        subProjectService.addSubProject(subProject);
+        return "subprojects";
    }
+
 
     //***READ SUBPROJECT METHODS***-------------------------------------------------------------------------------------
     @GetMapping("/subprojects")
@@ -74,15 +74,15 @@ public class SubProjectController {
         return "editSubProject";
     }
 
-    @PostMapping("/subproject/update")
-    public String updateSubProject(@ModelAttribute SubProject subProject) throws SQLException { //TODO rette exception
-        int subProjectId = subProjectService.getSubProjectById(subProjectId);
-        subProjectService.updateSubProject(subProject);
-
-        //TODO updateSubProject i controller
-
-        return "redirect:/homepage/subproject/"+ subProjectId;
-    }
+//    @PostMapping("/subproject/update")
+//    public String updateSubProject(@ModelAttribute SubProject subProject) throws SQLException { //TODO rette exception
+//        int subProjectId = subProjectService.getSubProjectById();
+//        subProjectService.updateSubProject(subProject);
+//
+//        //TODO updateSubProject i controller
+//
+//        return "redirect:/homepage/subproject/"+ subProjectId;
+//    }
 
 
     //***DELETE SUBPROJECT METHODS***-----------------------------------------------------------------------------------
