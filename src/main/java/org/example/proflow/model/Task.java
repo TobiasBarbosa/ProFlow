@@ -8,9 +8,10 @@ public class Task extends SubProject{
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private String uniqueVariabel;
+    private int subProjectId;
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
-    public Task(int id, String name, String description, LocalDate startDate, LocalDate endDate, Status status, int projectId, String assignedTo, String uniqueVariabel) {
+    public Task(int id, String name, String description, LocalDate startDate, LocalDate endDate, Status status, int projectId, String assignedTo, String uniqueVariabel, int subProjectId) {
         super                (id,
                               name,
                               description,
@@ -20,6 +21,7 @@ public class Task extends SubProject{
                               projectId,
                               assignedTo);
         this.uniqueVariabel = uniqueVariabel;
+        this.subProjectId = subProjectId;
     }
 
     public Task(String name, String description, LocalDate startDate, LocalDate endDate, Status status, int projectId, String assignedTo, String uniqueVariabel) {
@@ -41,9 +43,18 @@ public class Task extends SubProject{
         return uniqueVariabel;
     }
 
+    public int getSubProjectId() {
+        return subProjectId;
+    }
+
     //***SETTER METHODS***----------------------------------------------------------------------------------------------
     public void setUniqueVariabel(String uniqueVariabel) {
         this.uniqueVariabel = uniqueVariabel;
+    }
+
+
+    public void setSubProjectId(int subProjectId) {
+        this.subProjectId = subProjectId;
     }
 
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
@@ -52,6 +63,7 @@ public class Task extends SubProject{
         return super.toString() + // Call the `toString` method from the parent `SubProject` class
                "\nUnique variabel: " + uniqueVariabel;
     }
+
 
     //***END***---------------------------------------------------------------------------------------------------------
 }

@@ -6,7 +6,8 @@ public class SubProject extends Project{
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private String assignedTo;
-    // private int projectId; projectId er unikt here men vi behøver ikke at oprette en variabel da vi bare tager den fra superklassen
+     private int projectId;
+     //projectId er unikt here men vi behøver ikke at oprette en variabel da vi bare tager den fra superklassen
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
     public SubProject(int id, String name, String description, LocalDate startDate, LocalDate endDate, Status status, int projectId, String assignedTo) {
@@ -17,6 +18,7 @@ public class SubProject extends Project{
                           endDate,
                           status,
                           projectId);
+        this.projectId = super.getId();
         this.assignedTo = assignedTo;
     }
 
@@ -40,9 +42,17 @@ public class SubProject extends Project{
         return assignedTo;
     }
 
+    public int getProjectId() {
+        return projectId;
+    }
+
     //***SETTER METHODS***----------------------------------------------------------------------------------------------
     public void setAssignedTo(String assignedTo) {
         this.assignedTo = assignedTo;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
     }
 
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
@@ -52,6 +62,10 @@ public class SubProject extends Project{
                 "\nAssigned to: " + (assignedTo != null ? assignedTo : "Not assigned");
         //TODO hvordan håndterer vi navngivning på parentID?
     }
+
+
+
+
 
 
     //***END***---------------------------------------------------------------------------------------------------------
