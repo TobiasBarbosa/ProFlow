@@ -50,7 +50,7 @@ public class SubProject extends Project{
     public String toString() {
         return  super.toString() + // Call the `toString` method from the parent `Project` class
                 "\nAssigned to: " + (assignedTo != null ? assignedTo : "Not assigned");
-        //TODO hvordan håndterer vi navngivet på parentID?
+        //TODO hvordan håndterer vi navngivning på parentID?
     }
 
 
