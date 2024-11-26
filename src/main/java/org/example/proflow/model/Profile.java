@@ -1,7 +1,5 @@
 package org.example.proflow.model;
 
-import java.time.LocalDate;
-
 public class Profile {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
@@ -23,6 +21,11 @@ public class Profile {
     public Profile(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
+    public Profile(String email, String password){
         this.email = email;
         this.password = password;
     }

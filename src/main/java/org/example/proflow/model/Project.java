@@ -20,8 +20,8 @@ public class Project {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        setStartDate(startDate);
+        setEndDate(endDate);
         daysUntilDone = calculateDaysUntilDone(startDate,endDate);
         this.status = status;
         this.profileId = profileId;
@@ -30,8 +30,8 @@ public class Project {
     public Project(String name, String description, LocalDate startDate, LocalDate endDate, Status status, int profileId) {
         this.name = name;
         this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        setStartDate(startDate);
+        setEndDate(endDate);
         daysUntilDone = calculateDaysUntilDone(startDate,endDate);
         this.status = status;
         this.profileId = profileId;
@@ -40,8 +40,8 @@ public class Project {
     public Project(String name, String description, LocalDate startDate, LocalDate endDate, Status status) {
         this.name = name;
         this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        setStartDate(startDate);
+        setEndDate(endDate);
         daysUntilDone = calculateDaysUntilDone(startDate,endDate);
         this.status = status;
     }
@@ -145,7 +145,7 @@ public class Project {
                 "\nEnd date="             + endDate                   +
                 "\nDays until finished: " + daysUntilDone             +
                 "\nStatus: "              + status.getDisplayStatus() +
-                "\nProfile ID: "          + profileId                 ;
+                "\nParent ID: "           + profileId                 ;
     }
 
     //***END***---------------------------------------------------------------------------------------------------------

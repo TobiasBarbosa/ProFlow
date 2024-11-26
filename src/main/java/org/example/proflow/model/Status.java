@@ -8,6 +8,8 @@ public enum Status {
     DOING("Doing"),
     NOT_STARTED("Not started yet");
 
+    //TODO PO spørgsmål - hvad vil PO have a dropdown valgmuligheder?
+
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     final String displayStatus;
 
