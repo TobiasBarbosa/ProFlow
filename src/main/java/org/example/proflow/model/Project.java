@@ -1,8 +1,11 @@
 package org.example.proflow.model;
 
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+@Component
 public class Project {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
@@ -20,7 +23,7 @@ public class Project {
         this.id = id;
         this.name = name;
         this.description = description;
-        setStartDate(startDate);
+        this.startDate = startDate;
         setEndDate(endDate);
         daysUntilDone = calculateDaysUntilDone(startDate,endDate);
         this.status = status;
@@ -30,7 +33,7 @@ public class Project {
     public Project(String name, String description, LocalDate startDate, LocalDate endDate, Status status, int profileId) {
         this.name = name;
         this.description = description;
-        setStartDate(startDate);
+        this.startDate = startDate;
         setEndDate(endDate);
         daysUntilDone = calculateDaysUntilDone(startDate,endDate);
         this.status = status;
@@ -40,7 +43,7 @@ public class Project {
     public Project(String name, String description, LocalDate startDate, LocalDate endDate, Status status) {
         this.name = name;
         this.description = description;
-        setStartDate(startDate);
+        this.startDate=startDate;
         setEndDate(endDate);
         daysUntilDone = calculateDaysUntilDone(startDate,endDate);
         this.status = status;
@@ -100,9 +103,7 @@ public class Project {
     }
 
     public void setEndDate(LocalDate endDate) {
-        if(endDate == null){
-            throw new IllegalArgumentException("End date cannot be null.");
-        } else if(endDate.isBefore(startDate)){
+        if(endDate.isBefore(startDate)){
             throw new IllegalArgumentException("End date cannot be before start date.");
         } else {
             this.endDate = endDate;
@@ -123,9 +124,7 @@ public class Project {
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     private int calculateDaysUntilDone(LocalDate startDate, LocalDate endDate){
-        if (startDate == null || endDate == null) {
-            throw new IllegalArgumentException("Start date and end date cannot be null.");
-        }
+        // TODO kan datoer være null?
         if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("End date cannot be before start date.");
         }
@@ -139,13 +138,13 @@ public class Project {
     @Override
     public String toString() {
         return  "\nProject ID: "          + id                        +
-                "\nProject name: "        + name +
+                "\nProject name: "        + name                      +
                 "\nDescription: "         + description               +
                 "\nStart date: "          + startDate                 +
                 "\nEnd date="             + endDate                   +
                 "\nDays until finished: " + daysUntilDone             +
                 "\nStatus: "              + status.getDisplayStatus() +
-                "\nParent ID: "           + profileId                 ;
+                "\nProfile ID: "          + profileId                 ;
     }
 
     //***END***---------------------------------------------------------------------------------------------------------
