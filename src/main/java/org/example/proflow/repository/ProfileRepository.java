@@ -16,8 +16,6 @@ public class ProfileRepository {
 //    private String db_username = System.getenv("DB_USER");
 //    private String db_password = System.getenv("DB_PASSWORD");
 
-    //***METHODS***-----------------------------------------------------------------------------------------------------
-
     public class DatabaseConnection {
         private static String db_url = System.getenv("DB_URL");
         private static String db_username = System.getenv("DB_USER");
@@ -28,8 +26,8 @@ public class ProfileRepository {
         }
     }
 
+    //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE PROFILE***---------------------------------------------------------------------------------------------C
-
     //chat version (extracted connection)
     public void addProfile(Profile profile)  {
         String insertProfileQuery = """
@@ -58,10 +56,7 @@ public class ProfileRepository {
         }
     }
 
-
-
     //***READ PROFILE(S)***--------------------------------------------------------------------------------------------R
-
     //chat version
     public List<Profile> getAllProfiles() {
         List<Profile> profiles = new ArrayList<>();
@@ -86,9 +81,7 @@ public class ProfileRepository {
         return profiles;
     }
 
-
     //***UPDATE***-----------------------------------------------------------------------------------------------------U
-
     //chat version
     public void updateProfile(Profile profile)  {
         String updateProfileQuery = """
@@ -109,10 +102,8 @@ public class ProfileRepository {
         }
     }
 
-
     //***DELETE PROFILE***---------------------------------------------------------------------------------------------D
-
-//chat version
+    //chat version
     public void deleteProfile(int id)  {
         String deleteProfileQuery = "DELETE FROM Profile WHERE id = ?";
 
@@ -126,6 +117,7 @@ public class ProfileRepository {
         }
     }
 
+    //***END***---------------------------------------------------------------------------------------------------------
 }
 
 

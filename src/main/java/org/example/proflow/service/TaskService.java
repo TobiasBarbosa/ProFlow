@@ -12,7 +12,7 @@ import java.util.List;
 public class TaskService {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
     public TaskService(TaskRepository taskRepository){
@@ -28,6 +28,10 @@ public class TaskService {
     //***READ TASK(S)***-----------------------------------------------------------------------------------------------R
     public List<Task> getAllTasks(){
         return taskRepository.getAllTasks();
+    }
+
+    public Task getTaskById(int id) throws SQLException{
+        return taskRepository.getTaskById(id);
     }
 
     //***UPDATE PROFILE***---------------------------------------------------------------------------------------------U
