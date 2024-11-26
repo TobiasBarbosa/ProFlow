@@ -162,14 +162,14 @@ public class Task {
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return  "\nProject ID: "          + id                        +
-                "\nProject name: "        + name                      +
+        return  "\nTask ID: "             + id                        +
+                "\nTask name: "           + name                      +
                 "\nDescription: "         + description               +
                 "\nStart date: "          + startDate                 +
                 "\nEnd date="             + endDate                   +
                 "\nDays until finished: " + daysUntilDone             +
                 "\nStatus: "              + status.getDisplayStatus() +
-                "\nProject ID: "          + subProjectId              +
+                "\nSubproject ID: "       + subProjectId              +
                 "\nAssigned to: "         + (assignedTo != null ? assignedTo : "Not assigned") +
                 "\nUnique variabel: "     + uniqueVariable            ;
     }
