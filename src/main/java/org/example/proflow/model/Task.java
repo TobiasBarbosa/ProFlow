@@ -156,20 +156,20 @@ public class Task {
 
         // Calculate the difference in days
         long days = ChronoUnit.DAYS.between(startDate, endDate);
-        return (int) days; // Cast to int and return
+        return (int) days; // Cast to int and returnn
     }
 
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return  "\nProject ID: "          + id                        +
-                "\nProject name: "        + name                      +
+        return  "\nTask ID: "             + id                        +
+                "\nTask name: "           + name                      +
                 "\nDescription: "         + description               +
                 "\nStart date: "          + startDate                 +
                 "\nEnd date="             + endDate                   +
                 "\nDays until finished: " + daysUntilDone             +
                 "\nStatus: "              + status.getDisplayStatus() +
-                "\nProject ID: "          + subProjectId              +
+                "\nSubproject ID: "       + subProjectId              +
                 "\nAssigned to: "         + (assignedTo != null ? assignedTo : "Not assigned") +
                 "\nUnique variabel: "     + uniqueVariable            ;
     }
