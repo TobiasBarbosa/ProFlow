@@ -2,9 +2,11 @@ package org.example.proflow.repository;
 
 import org.example.proflow.model.Project;
 import org.example.proflow.model.Status;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 
+@Repository
 public class ProjectRepository {
 
     public class DatabaseConnection {
