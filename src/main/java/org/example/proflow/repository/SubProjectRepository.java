@@ -20,7 +20,8 @@ public class SubProjectRepository {
         }
     }
 
-
+    //***METHODS***-----------------------------------------------------------------------------------------------------
+    //***CREATE SUBPROJECT***------------------------------------------------------------------------------------------C
     //ADD SUBPROJECT
     public void addSubProject(SubProject subProject) throws SQLException {
         String insertSubProjectQuery = """
@@ -43,7 +44,7 @@ public class SubProjectRepository {
     }
 
 
-
+    //***READ SUBPROJECT(S)***-----------------------------------------------------------------------------------------R
     //GET ALL SUB PROJECTS
     public List<SubProject> getAllSubProjects() {
         List<SubProject> subProjects = new ArrayList<>();
@@ -70,8 +71,6 @@ public class SubProjectRepository {
         return subProjects;
     }
 
-
-
     //GET SUB PROJECT BY ID
     public SubProject getSubProjectById(int id) throws SQLException {
         String query = "SELECT * FROM SubProject WHERE id = ?";
@@ -97,8 +96,7 @@ public class SubProjectRepository {
         return subProject;
     }
 
-
-
+    //***UPDATE SUBPROJECT***------------------------------------------------------------------------------------------U
     //UPDATE SUB PROJECT
     public void updateSubProject(SubProject subProject) throws SQLException {
         String updateSubProjectQuery = """
@@ -121,9 +119,7 @@ public class SubProjectRepository {
         }
     }
 
-
-
-    // DELETE SUBPROJECT
+    //***DELETE SUBPROJECT***------------------------------------------------------------------------------------------D
     public void deleteSubProject(int id) throws SQLException {
         String deleteSubProjectQuery = "DELETE FROM SubProject WHERE id = ?";
 
@@ -135,7 +131,7 @@ public class SubProjectRepository {
         }
     }
 
-
+    //***END***---------------------------------------------------------------------------------------------------------
 }
 
 

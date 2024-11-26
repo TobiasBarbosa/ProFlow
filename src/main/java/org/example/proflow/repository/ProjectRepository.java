@@ -17,11 +17,7 @@ public class ProjectRepository {
         }
     }
 
-
-
-
     //***CREATE PROJECT***--------------------------------------------------------------------------------------------C
-
     //    public void addProject(Project project) throws SQLException {
 //        String insertProjectQuery = """
 //        INSERT INTO Project (name, description, start_date, end_date, status, profile_id)
@@ -58,8 +54,6 @@ public class ProjectRepository {
             ps.executeUpdate();
         }
     }
-
-
 
     //***READ PROJECT***----------------------------------------------------------------------------------------------R
 
@@ -110,8 +104,6 @@ public class ProjectRepository {
         return project;
     }
 
-
-
     //***UPDATE PROJECT***--------------------------------------------------------------------------------------------U
 //    public void updateProject(Project project) throws SQLException {
 //        String updateProjectQuery = """
@@ -153,9 +145,7 @@ public class ProjectRepository {
         }
     }
 
-
-
-    //***DELETE PROJECT***--------------------------------------------------------------------------------------------D
+    //***DELETE PROJECT***---------------------------------------------------------------------------------------------D
 //    public void deleteProject(int id) throws SQLException {
 //        String deleteProjectQuery = "DELETE FROM Project WHERE id = ?";
 //
@@ -178,4 +168,5 @@ public class ProjectRepository {
         }
     }
 
+    //***END***---------------------------------------------------------------------------------------------------------
 }
