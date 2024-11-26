@@ -134,6 +134,7 @@ public class Project {
         return (int) days; // Cast to int and return
     }
 
+    //TODO vi skal kalkulere timer
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
     @Override
     public String toString() {
