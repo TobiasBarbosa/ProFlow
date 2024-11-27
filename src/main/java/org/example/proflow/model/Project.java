@@ -15,38 +15,50 @@ public class Project {
     private LocalDate startDate;
     private LocalDate endDate;
     private int daysUntilDone;
+    private double totalSubProjectDurationHourly;
     private Status status;
+    private double budget;
+    private double actualPrice;
     private int profileId;
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
-    public Project(int id, String name, String description, LocalDate startDate, LocalDate endDate, Status status, int profileId) {
+    public Project(int id, String name, String description, LocalDate startDate, LocalDate endDate, double totalSubProjectDurationHourly, Status status, double budget, double actualPrice, int profileId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         setEndDate(endDate);
         daysUntilDone = calculateDaysUntilDone(startDate,endDate);
+        this.totalSubProjectDurationHourly = totalSubProjectDurationHourly;
         this.status = status;
+        this.budget = budget;
+        this.actualPrice = actualPrice;
         this.profileId = profileId;
     }
 
-    public Project(String name, String description, LocalDate startDate, LocalDate endDate, Status status, int profileId) {
+    public Project(String name, String description, LocalDate startDate, LocalDate endDate, double totalSubProjectDurationHourly, Status status, double budget, double actualPrice, int profileId) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         setEndDate(endDate);
         daysUntilDone = calculateDaysUntilDone(startDate,endDate);
+        this.totalSubProjectDurationHourly = totalSubProjectDurationHourly;
         this.status = status;
+        this.budget = budget;
+        this.actualPrice = actualPrice;
         this.profileId = profileId;
     }
 
-    public Project(String name, String description, LocalDate startDate, LocalDate endDate, Status status) {
+    public Project(String name, String description, LocalDate startDate, LocalDate endDate, double totalSubProjectDurationHourly, Status status, double budget, double actualPrice) {
         this.name = name;
         this.description = description;
         this.startDate=startDate;
         setEndDate(endDate);
         daysUntilDone = calculateDaysUntilDone(startDate,endDate);
+        this.totalSubProjectDurationHourly = totalSubProjectDurationHourly;
         this.status = status;
+        this.budget = budget;
+        this.actualPrice = actualPrice;
     }
 
     public Project() {
@@ -77,8 +89,20 @@ public class Project {
         return daysUntilDone;
     }
 
+    public double getTotalSubProjectDurationHourly() {
+        return totalSubProjectDurationHourly;
+    }
+
     public Status getStatus() {
         return status;
+    }
+
+    public double getBudget() {
+        return budget;
+    }
+
+    public double getActualPrice() {
+        return actualPrice;
     }
 
     public int getProfileId() {
@@ -112,10 +136,22 @@ public class Project {
 
     public void setDaysUntilDone(int daysUntilDone) {
         this.daysUntilDone = daysUntilDone;
-    } // skal den her bruges eller er calculateDaysUntilDone en set metode?
+    }
+
+    public void setTotalSubProjectDurationHourly(double totalSubProjectDurationHourly) {
+        this.totalSubProjectDurationHourly = totalSubProjectDurationHourly;
+    }
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public void setBudget(double budget) {
+        this.budget = budget;
+    }
+
+    public void setActualPrice(double actualPrice) {
+        this.actualPrice = actualPrice;
     }
 
     public void setProfileId(int profileId) {
@@ -134,18 +170,20 @@ public class Project {
         return (int) days; // Cast to int and return
     }
 
-    //TODO vi skal kalkulere timer
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return  "\nProject ID: "          + id                        +
-                "\nProject name: "        + name                      +
-                "\nDescription: "         + description               +
-                "\nStart date: "          + startDate                 +
-                "\nEnd date="             + endDate                   +
-                "\nDays until finished: " + daysUntilDone             +
-                "\nStatus: "              + status.getDisplayStatus() +
-                "\nProfile ID: "          + profileId                 ;
+        return  "\nProject ID: "                       + id                            +
+                "\nProject name: "                     + name                          +
+                "\nDescription: "                      + description                   +
+                "\nStart date: "                       + startDate                     +
+                "\nEnd date="                          + endDate                       +
+                "\nDays until finished: "              + daysUntilDone                 +
+                "\nTotal SubProject Duration (hour): " + totalSubProjectDurationHourly +
+                "\nStatus: "                           + status.getDisplayStatus()     +
+                "\nBudget: "                           + budget                        +
+                "\nActual Price: "                     + actualPrice                   +
+                "\nProfile ID: "                       + profileId                     ;
     }
 
     //***END***---------------------------------------------------------------------------------------------------------
