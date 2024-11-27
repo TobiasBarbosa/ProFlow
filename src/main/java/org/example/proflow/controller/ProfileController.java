@@ -13,6 +13,7 @@ import java.awt.color.ProfileDataException;
 
 //TODO ProfileController: Rette HTML sider
 //TODO ProfileController: Rette navne/stier på endpoints
+//TODO ProfileController: Rette exceptions til ProfileException
 
 @Controller
 @RequestMapping("profile")
@@ -30,22 +31,21 @@ public class ProfileController {
     public String addProfile(Model model) {
         Profile profile = new Profile();
         model.addAttribute("profile", profile);
-        return "signup";  // TODO tilføj navn på html page
+        return "signup";
     }
 
     @PostMapping("/saveprofile") //PostMapping tilføjer data til database
     public String saveProfile(@ModelAttribute Profile profile) throws ProfileDataException {
         profileService.addProfile(profile);
-        return "redirect:/"; // TODO tilføj navn på html page
+        return "redirect:/";
     }
 
     //***READ PROFILE***-----------------------------------------------------------------------------------------------R
-    //TODO Ved ikke om vi skal bruge den her?
     @GetMapping("")
     public String getAllProfiles(Model model) throws ProfileException {
         List<Profile> profiles = profileService.getAllProfiles();
         model.addAttribute("profiles", profiles);
-        return "allProfiles"; // TODO tilføj navn på html page
+        return "allProfiles";
     }
 
     //***UPDATE PROFILE***---------------------------------------------------------------------------------------------U
@@ -57,7 +57,7 @@ public class ProfileController {
 //        model.addAttribute("profileLastName", profile.getLastName());
 //        model.addAttribute("profileEmail", profile.getEmail());
 //        model.addAttribute("profilePassword",profile.getPassword());
-//        return "editProfile"; //TODO tilføj nav på html page
+//        return "editProfile";
 //    }
 
     @PostMapping("/update/{id}")
@@ -65,15 +65,16 @@ public class ProfileController {
 //        model.addAttribute("profile", profile);
         profile.setId(profileId);
         profileService.updateProfile(profile);
-        return "redirect:/profile"; // TODO tilføj navn på html page
+        return "redirect:/profile";
     }
 
     //***DELETE PROFILE***---------------------------------------------------------------------------------------------D
+//    TODO mangler getProfileById i ProfileController
 //    @PostMapping("/{name}/remove")
 //    public String deleteProfile(@PathVariable int profileId) throws ProfileException {
 //        Profile profile = profileService.getProfileById(profileId);
 //        profileService.deleteProfile(profile.getId());
-//        return "redirect:/profile"; // TODO: Change to the correct HTML page if necessary
+//        return "redirect:/profile";
 //    }
 
     //***EXCEPTION HANDLING***------------------------------------------------------------------------------------------
