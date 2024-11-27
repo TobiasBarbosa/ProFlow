@@ -14,49 +14,60 @@ public class Task {
     private int id;
     private String name;
     private String description;
+    private String location;
     private LocalDate startDate;
     private LocalDate endDate;
     private int daysUntilDone;
+    private double hourlyDuration;
     private Status status;
     private int subProjectId;
     private String assignedTo;
-    private String uniqueVariable;
+    private double taskPrice;
+
+    //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
+    private SubProject subProject; // access to class
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
-    public Task(int id, String name, String description, LocalDate startDate, LocalDate endDate, Status status, int subProjectId, String assignedTo, String uniqueVariable) {
+    public Task(int id, String name, String description, String location, LocalDate startDate, LocalDate endDate, double hourlyDuration, Status status, int subProjectId, String assignedTo, double taskPrice) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.location = location;
         this.startDate = startDate;
-        setEndDate(endDate);
+        setEndDate(endDate,subProjectId);
         daysUntilDone = calculateDaysUntilDone(startDate,endDate);
+        setHourlyDuration(hourlyDuration);
         this.status = status;
         this.subProjectId = subProjectId;
         this.assignedTo = assignedTo;
-        this.uniqueVariable = uniqueVariable;
+        setTaskPrice(taskPrice);
     }
 
-    public Task(String name, String description, LocalDate startDate, LocalDate endDate, Status status, int subProjectId, String assignedTo, String uniqueVariable) {
+    public Task(String name, String description, String location, LocalDate startDate, LocalDate endDate, double hourlyDuration, Status status, int subProjectId, String assignedTo, double taskPrice) {
         this.name = name;
         this.description = description;
+        this.location = location;
         this.startDate = startDate;
-        setEndDate(endDate);
+        setEndDate(endDate, subProjectId);
         daysUntilDone = calculateDaysUntilDone(startDate,endDate);
+        setHourlyDuration(hourlyDuration);
         this.status = status;
         this.subProjectId = subProjectId;
         this.assignedTo = assignedTo;
-        this.uniqueVariable = uniqueVariable;
+        setTaskPrice(taskPrice);
     }
 
-    public Task(String name, String description, LocalDate startDate, LocalDate endDate, Status status, String assignedTo, String uniqueVariable) {
+    public Task(String name, String description, String location, LocalDate startDate, LocalDate endDate, double hourlyDuration, Status status, String assignedTo, double taskPrice) {
         this.name = name;
         this.description = description;
+        this.location = location;
         this.startDate = startDate;
-        setEndDate(endDate);
+        setEndDate(endDate,subProjectId);
         daysUntilDone = calculateDaysUntilDone(startDate,endDate);
+        setHourlyDuration(hourlyDuration);
         this.status = status;
         this.assignedTo = assignedTo;
-        this.uniqueVariable = uniqueVariable;
+        setTaskPrice(taskPrice);
     }
 
     public Task() {
@@ -75,12 +86,20 @@ public class Task {
         return description;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
     public LocalDate getStartDate() {
         return startDate;
     }
 
     public LocalDate getEndDate() {
         return endDate;
+    }
+
+    public double getHourlyDuration() {
+        return hourlyDuration;
     }
 
     public int getDaysUntilDone() {
@@ -99,8 +118,8 @@ public class Task {
         return assignedTo;
     }
 
-    public String getUniqueVariable() {
-        return uniqueVariable;
+    public double getTaskPrice() {
+        return taskPrice;
     }
 
     //***SETTER METHODS***----------------------------------------------------------------------------------------------
@@ -116,15 +135,29 @@ public class Task {
         this.description = description;
     }
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(LocalDate endDate, int subProjectId) {
         if(endDate.isBefore(startDate)){
             throw new IllegalArgumentException("End date cannot be before start date.");
+        } if(endDate.isAfter(subProject.findSubProjectById(subProjectId).getEndDate())){
+            throw new IllegalArgumentException("End date cannot be after SubProject end date");
         } else {
             this.endDate = endDate;
+        }
+    }
+
+    public void setHourlyDuration(double hourlyDuration) {
+        if (hourlyDuration < 0){
+            throw new IllegalArgumentException("Hourly duration cannot be less than 0");
+        } else {
+            this.hourlyDuration = hourlyDuration;
         }
     }
 
@@ -144,8 +177,12 @@ public class Task {
         this.assignedTo = assignedTo;
     }
 
-    public void setUniqueVariable(String uniqueVariable) {
-        this.uniqueVariable = uniqueVariable;
+    public void setTaskPrice(double taskPrice) {
+        if(taskPrice < 0){
+            throw new IllegalArgumentException("Task price cannot be less than 0");
+        } else {
+            this.taskPrice = taskPrice;
+        }
     }
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
@@ -165,13 +202,15 @@ public class Task {
         return  "\nTask ID: "             + id                        +
                 "\nTask name: "           + name                      +
                 "\nDescription: "         + description               +
+                "\nLocation: "            + location                  +
                 "\nStart date: "          + startDate                 +
                 "\nEnd date="             + endDate                   +
                 "\nDays until finished: " + daysUntilDone             +
+                "\nDuration in hours: "   + hourlyDuration            +
                 "\nStatus: "              + status.getDisplayStatus() +
                 "\nSubproject ID: "       + subProjectId              +
                 "\nAssigned to: "         + (assignedTo != null ? assignedTo : "Not assigned") +
-                "\nUnique variabel: "     + uniqueVariable            ;
+                "\nTask price: "          + taskPrice                 ;
     }
 
     //***END***---------------------------------------------------------------------------------------------------------
