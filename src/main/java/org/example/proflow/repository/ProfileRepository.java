@@ -67,6 +67,29 @@ public class ProfileRepository {
     }
 
     //TODO getProfileById
+    public Profile getProfileById(int id) throws SQLException {
+        String query = "SELECT * FROM Profile WHERE id = ?";
+        Profile profile = null;
+
+        try (Connection con = dataBaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setInt(1, id); // Bind the id parameter
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) { // If a result is found
+                    profile = new Profile();
+                    profile.setId(rs.getInt("id"));
+                    profile.setFirstName(rs.getString("name"));
+                    profile.setLastName(rs.getString("lastName"));
+                    profile.setEmail(rs.getString("email"));
+                    profile.setPassword(rs.getString("password"));
+                }
+            }
+        }
+        return profile; // Return the Profile object or null if not found
+    }
+
 
     //***UPDATE***-----------------------------------------------------------------------------------------------------U
     public void updateProfile(Profile profile)  {

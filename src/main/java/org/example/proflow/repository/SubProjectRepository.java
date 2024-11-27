@@ -16,10 +16,15 @@ public class SubProjectRepository {
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE SUBPROJECT***------------------------------------------------------------------------------------------C
-    public void addSubProject(SubProject subProject) throws SQLException {
+//    public void addSubProject(SubProject subProject) throws SQLException {
+//        String insertSubProjectQuery = """
+//        INSERT INTO SubProject (name, description, start_date, end_date, status, project_id)
+//        VALUES (?, ?, ?, ?, ?, ?)
+//    """;
+        public void addSubProject(SubProject subProject) throws SQLException {
         String insertSubProjectQuery = """
-        INSERT INTO SubProject (name, description, start_date, end_date, status, project_id)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO SubProject (name, description, start_date, end_date, status, assigned_to, project_id, price, budget, duration)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """;
 
         try (Connection con = dataBaseConnection.getConnection();
@@ -29,11 +34,16 @@ public class SubProjectRepository {
             ps.setString(2, subProject.getDescription());
             ps.setDate(3, Date.valueOf(subProject.getStartDate()));
             ps.setDate(4, Date.valueOf(subProject.getEndDate()));
-            ps.setString(5, String.valueOf(subProject.getStatus()));
-            ps.setInt(6, subProject.getProjectId());
+            ps.setString(5, subProject.getStatus().name());
+            ps.setString(6, subProject.getAssignedTo());
+            ps.setInt(7, subProject.getProjectId());
+            ps.setObject(8, subProject.getBudget());//TODO change it to price
+            ps.setDouble(9, subProject.getBudget());
+            ps.setInt(10, subProject.getDaysUntilDone());
             ps.executeUpdate();
         }
     }
+
 
     //***READ SUBPROJECT(S)***-----------------------------------------------------------------------------------------R
     public List<SubProject> getAllSubProjects() {
@@ -52,7 +62,11 @@ public class SubProjectRepository {
                 subProject.setStartDate(rs.getDate("start_date").toLocalDate());
                 subProject.setEndDate(rs.getDate("end_date").toLocalDate());
                 subProject.setStatus(Status.valueOf(rs.getString("status")));
+                subProject.setAssignedTo(rs.getString("assigned_to"));
                 subProject.setProjectId(rs.getInt("project_id"));
+                subProject.setBudget(rs.getObject("price", Double.class)); //TODO change it to price
+                subProject.setBudget(rs.getDouble("budget"));
+                subProject.setDaysUntilDone(rs.getInt("duration"));
                 subProjects.add(subProject);
             }
         } catch (SQLException e) {
@@ -62,7 +76,7 @@ public class SubProjectRepository {
     }
 
     //GET SUB PROJECT BY ID
-    public SubProject getSubProjectById(int id) throws SQLException {
+        public SubProject getSubProjectById(int id) throws SQLException {
         String query = "SELECT * FROM SubProject WHERE id = ?";
         SubProject subProject = null;
 
@@ -79,7 +93,12 @@ public class SubProjectRepository {
                     subProject.setStartDate(rs.getDate("start_date").toLocalDate());
                     subProject.setEndDate(rs.getDate("end_date").toLocalDate());
                     subProject.setStatus(Status.valueOf(rs.getString("status")));
+                    subProject.setAssignedTo(rs.getString("assigned_to"));
                     subProject.setProjectId(rs.getInt("project_id"));
+                    //todo change it to price
+                    subProject.setBudget(rs.getObject("price") != null ? rs.getDouble("price") : null); // Handle nullable column
+                    subProject.setBudget(rs.getDouble("budget"));
+                    subProject.setDaysUntilDone(rs.getInt("duration"));
                 }
             }
         }
@@ -89,24 +108,30 @@ public class SubProjectRepository {
     //***UPDATE SUBPROJECT***------------------------------------------------------------------------------------------U
     public void updateSubProject(SubProject subProject) throws SQLException {
         String updateSubProjectQuery = """
-        UPDATE SubProject
-        SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, project_id = ?
-        WHERE id = ?
-    """;
+            UPDATE SubProject 
+            SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, assigned_to = ?, project_id = ?, price = ?, budget = ?, duration = ? 
+            WHERE id = ?
+        """;
 
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateSubProjectQuery)) {
 
-            ps.setString(1, subProject.getName());
-            ps.setString(2, subProject.getDescription());
-            ps.setDate(3, Date.valueOf(subProject.getStartDate()));
-            ps.setDate(4, Date.valueOf(subProject.getEndDate()));
-            ps.setString(5, String.valueOf(subProject.getStatus()));
-            ps.setInt(6, subProject.getProjectId());
-            ps.setInt(7, subProject.getId());
-            ps.executeUpdate();
+                    ps.setString(1, subProject.getName());
+                    ps.setString(2, subProject.getDescription());
+                    ps.setDate(3, Date.valueOf(subProject.getStartDate()));
+                    ps.setDate(4, Date.valueOf(subProject.getEndDate()));
+                    ps.setString(5, subProject.getStatus().name());
+                    ps.setString(6, subProject.getAssignedTo());
+                    ps.setInt(7, subProject.getProjectId());
+                    ps.setObject(8, subProject.getBudget());//TODO change to price
+                    ps.setDouble(9, subProject.getBudget());
+                    ps.setInt(10, subProject.getDaysUntilDone());
+                    ps.setInt(11, subProject.getId());
+                    ps.executeUpdate();
         }
     }
+
+
 
     //***DELETE SUBPROJECT***------------------------------------------------------------------------------------------D
     public void deleteSubProject(int id) throws SQLException {
