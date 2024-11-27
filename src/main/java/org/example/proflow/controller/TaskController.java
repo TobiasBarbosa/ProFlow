@@ -14,6 +14,7 @@ import java.util.List;
 
 //TODO TaskController: Rette HTML sider
 //TODO TaskController: Rette navne/stier på endpoints
+//TODO TaskController: Rette exceptions til taskException
 
 @Controller
 @RequestMapping("homepage")
@@ -28,15 +29,16 @@ public class TaskController {
     }
 
     //***CREATE TASK METHODS***-----------------------------------------------------------------------------------------
-    @GetMapping("/{subProjectId}/addTask")
+    @GetMapping("/{subProjectId}/addtask")
     public String addTask(@PathVariable("subProjectId") int subProjectId, Model model){
         model.addAttribute("subProjectId", subProjectId);
         model.addAttribute("task", new Task());
         return "addTask";
     }
 
-    @PostMapping("/{subProjectId}/saveTask")
-    public String saveTask(@PathVariable("subProjectId") int subProjectId, @ModelAttribute("task") Task task) throws SQLException { //TODO ændre exception
+    @PostMapping("/{subProjectId}/savetask")
+    public String saveTask(@PathVariable("subProjectId") int subProjectId,
+                           @ModelAttribute("task") Task task) throws SQLException {
         task.setSubProjectId(subProjectId);
         taskService.addTask(task);
         return "redirect:";
@@ -50,8 +52,8 @@ public class TaskController {
         return "homepage";
     }
 
-    @GetMapping("/task/{id}")
-    public String getTaskById(@PathVariable("id") int taskId, Model model) throws SQLException{ //TODO  ændre exception
+    @GetMapping("/task/{taskId}")
+    public String getTaskById(@PathVariable("taskId") int taskId, Model model) throws SQLException{
         Task task = taskService.getTaskById(taskId);
         model.addAttribute("task", task);
         model.addAttribute("name", task.getName());
@@ -59,11 +61,11 @@ public class TaskController {
     }
 
     //***UPDATE TASK METHODS***-----------------------------------------------------------------------------------------
-    @GetMapping("/task/edit/{id}")
-    public String editTask(@PathVariable("id") int taskId, Model model) throws SQLException{ //TODO  ændre exception
+    @GetMapping("/task/edit/{taskId}")
+    public String editTask(@PathVariable("taskId") int taskId, Model model) throws SQLException{
         Task task = taskService.getTaskById(taskId);
         model.addAttribute("task", task);
-        model.addAttribute("id", task.getId());
+        model.addAttribute("taskId", task.getId());
         model.addAttribute("name", task.getName());
         model.addAttribute("description", task.getDescription());
         model.addAttribute("startDate", task.getStartDate());
@@ -77,18 +79,18 @@ public class TaskController {
     }
 
 
-    @PostMapping("/task/update/{id}")
-    public String updateTask(@ModelAttribute Task task) throws SQLException{ //TODO  ændre exception
-        int id = task.getId();
+    @PostMapping("/task/update")
+    public String updateTask(@ModelAttribute Task task) throws SQLException{
+        int taskId = task.getId();
         taskService.updateTask(task);
-        return "redirect:/homepage/task";
+        return "redirect:/homepage/task/edit"+taskId;
     }
 
     //***DELETE TASK METHODS***-----------------------------------------------------------------------------------------
-    @PostMapping("/task/delete/{id}")
-    public String deleteTask(@PathVariable("id") int id) throws SQLException{ //TODO  ændre exception
-        Task task = taskService.getTaskById(id);
-        taskService.deleteTask(id);
+    @PostMapping("/task/delete/{taskId}")
+    public String deleteTask(@PathVariable("taskId") int taskId) throws SQLException{
+        Task task = taskService.getTaskById(taskId);
+        taskService.deleteTask(taskId);
         return "redirect:/homepage/userProfile";
     }
 
