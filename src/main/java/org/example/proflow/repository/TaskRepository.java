@@ -18,7 +18,7 @@ public class TaskRepository {
     //***CREATE TASK***------------------------------------------------------------------------------------------------C
     public void addTask(Task task) throws SQLException {
         String insertTaskQuery = """
-        INSERT INTO Tasks (name, description, start_date, end_date, status, assigned_to, subproject_id)
+        INSERT INTO Tasks (name, description, start_date, end_date, status, assigned_to, sub_project_id)
         VALUES (?, ?, ?, ?, ?, ?, ?)
     """;
 
@@ -54,7 +54,7 @@ public class TaskRepository {
                 task.setEndDate(rs.getDate("end_date").toLocalDate());
                 task.setStatus(Status.valueOf(rs.getString("status")));
                 task.setAssignedTo(rs.getString("assigned_to"));
-                task.setSubProjectId(rs.getInt("subproject_id"));
+                task.setSubProjectId(rs.getInt("sub_project_id"));
                 tasks.add(task);
             }
         } catch (SQLException e) {
@@ -82,7 +82,7 @@ public class TaskRepository {
                     task.setEndDate(rs.getDate("end_date").toLocalDate());
                     task.setStatus(Status.valueOf(rs.getString("status")));
                     task.setAssignedTo(rs.getString("assigned_to"));
-                    task.setSubProjectId(rs.getInt("subproject_id"));
+                    task.setSubProjectId(rs.getInt("sub_project_id"));
                 }
             }
         }
@@ -93,7 +93,7 @@ public class TaskRepository {
     public void updateTask(Task task) throws SQLException {
         String updateTaskQuery = """
         UPDATE Tasks
-        SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, assigned_to = ?, subproject_id = ?
+        SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, assigned_to = ?, sub_project_id = ?
         WHERE id = ?
     """;
 
