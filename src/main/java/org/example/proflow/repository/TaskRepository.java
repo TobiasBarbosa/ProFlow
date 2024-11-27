@@ -18,7 +18,7 @@ public class TaskRepository {
     //***CREATE TASK***------------------------------------------------------------------------------------------------C
     public void addTask(Task task) throws SQLException {
         String insertTaskQuery = """
-        INSERT INTO Tasks (name, description, start_date, end_date, status, assigned_to, sub_project_id)
+        INSERT INTO Task (name, description, start_date, end_date, status, assigned_to, sub_project_id)
         VALUES (?, ?, ?, ?, ?, ?, ?)
     """;
 
@@ -39,7 +39,7 @@ public class TaskRepository {
     //***READ TASK(S)***-----------------------------------------------------------------------------------------------R
     public List<Task> getAllTasks() {
         List<Task> tasks = new ArrayList<>();
-        String query = "SELECT * FROM Tasks";
+        String query = "SELECT * FROM Task";
 
         try (Connection con = dataBaseConnection.getConnection();
              Statement stmt = con.createStatement();
@@ -65,7 +65,7 @@ public class TaskRepository {
 
     //GET TASKS BY ID
     public Task getTaskById(int id) throws SQLException {
-        String query = "SELECT * FROM Tasks WHERE id = ?";
+        String query = "SELECT * FROM Task WHERE id = ?";
         Task task = null;
 
         try (Connection con = dataBaseConnection.getConnection();
@@ -92,7 +92,7 @@ public class TaskRepository {
     //***UPDATE TASK***------------------------------------------------------------------------------------------------U
     public void updateTask(Task task) throws SQLException {
         String updateTaskQuery = """
-        UPDATE Tasks
+        UPDATE Task
         SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, assigned_to = ?, sub_project_id = ?
         WHERE id = ?
     """;
@@ -114,7 +114,7 @@ public class TaskRepository {
 
     //***DELETE TASK***------------------------------------------------------------------------------------------------D
     public void deleteTask(int id) throws SQLException {
-        String deleteTaskQuery = "DELETE FROM Tasks WHERE id = ?";
+        String deleteTaskQuery = "DELETE FROM Task WHERE id = ?";
 
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(deleteTaskQuery)) {
