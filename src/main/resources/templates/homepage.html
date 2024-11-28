@@ -6,8 +6,10 @@
     <link rel="stylesheet" th:href="@{/main.css}">
 </head>
 <body>
-<h1 th:text="${project.getName()}">Project Name</h1>
-
+<h1>Project List</h1>
+<ul>
+    <li th:each="project : ${projects}" th:text="${project.getName()}"></li>
+</ul>
 
 </body>
 </html>
