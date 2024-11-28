@@ -28,7 +28,7 @@ public class Project {
         this.description = description;
         this.startDate = startDate;
         setEndDate(endDate);
-        daysUntilDone = calculateDaysUntilDone(startDate,endDate);
+        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
         this.totalSubProjectDurationHourly = totalSubProjectDurationHourly;
         this.status = status;
         this.budget = budget;
@@ -41,7 +41,7 @@ public class Project {
         this.description = description;
         this.startDate = startDate;
         setEndDate(endDate);
-        daysUntilDone = calculateDaysUntilDone(startDate,endDate);
+        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
         this.totalSubProjectDurationHourly = totalSubProjectDurationHourly;
         this.status = status;
         this.budget = budget;
@@ -52,9 +52,9 @@ public class Project {
     public Project(String name, String description, LocalDate startDate, LocalDate endDate, double totalSubProjectDurationHourly, Status status, double budget, double actualPrice) {
         this.name = name;
         this.description = description;
-        this.startDate=startDate;
+        this.startDate = startDate;
         setEndDate(endDate);
-        daysUntilDone = calculateDaysUntilDone(startDate,endDate);
+        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
         this.totalSubProjectDurationHourly = totalSubProjectDurationHourly;
         this.status = status;
         this.budget = budget;
@@ -127,7 +127,7 @@ public class Project {
     }
 
     public void setEndDate(LocalDate endDate) {
-        if(endDate.isBefore(startDate)){
+        if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("End date cannot be before start date.");
         } else {
             this.endDate = endDate;
@@ -159,7 +159,7 @@ public class Project {
     }
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
-    private int calculateDaysUntilDone(LocalDate startDate, LocalDate endDate){
+    private int calculateDaysUntilDone(LocalDate startDate, LocalDate endDate) {
         // TODO kan datoer være null?
         if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("End date cannot be before start date.");
@@ -173,17 +173,17 @@ public class Project {
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return  "\nProject ID: "                       + id                            +
-                "\nProject name: "                     + name                          +
-                "\nDescription: "                      + description                   +
-                "\nStart date: "                       + startDate                     +
-                "\nEnd date="                          + endDate                       +
-                "\nDays until finished: "              + daysUntilDone                 +
+        return "\nProject ID: " + id +
+                "\nProject name: " + name +
+                "\nDescription: " + description +
+                "\nStart date: " + startDate +
+                "\nEnd date=" + endDate +
+                "\nDays until finished: " + daysUntilDone +
                 "\nTotal SubProject Duration (hour): " + totalSubProjectDurationHourly +
-                "\nStatus: "                           + status.getDisplayStatus()     +
-                "\nBudget: "                           + budget                        +
-                "\nActual Price: "                     + actualPrice                   +
-                "\nProfile ID: "                       + profileId                     ;
+                "\nStatus: " + status.getDisplayStatus() +
+                "\nBudget: " + budget +
+                "\nActual Price: " + actualPrice +
+                "\nProfile ID: " + profileId;
     }
 
     //***END***---------------------------------------------------------------------------------------------------------

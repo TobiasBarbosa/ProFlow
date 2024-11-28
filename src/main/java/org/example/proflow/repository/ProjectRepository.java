@@ -17,9 +17,9 @@ public class ProjectRepository {
     //***CREATE PROJECT***---------------------------------------------------------------------------------------------C
     public void addProject(Project project) throws SQLException {
         String insertProjectQuery = """
-        INSERT INTO Project (name, description, start_date, end_date, status, profile_id, budget, duration, actual_price)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """;
+                    INSERT INTO Project (name, description, start_date, end_date, status, profile_id, budget, duration, actual_price)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """;
 
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(insertProjectQuery)) {
@@ -38,7 +38,6 @@ public class ProjectRepository {
             ps.executeUpdate();
         }
     }
-
 
 
     //***READ PROJECT***-----------------------------------------------------------------------------------------------R
@@ -62,7 +61,8 @@ public class ProjectRepository {
                     project.setProfileId(rs.getInt("profile_id"));
                     project.setBudget(rs.getDouble("budget"));
                     project.setDaysUntilDone(rs.getInt("duration"));
-                    project.setActualPrice(rs.getObject("actual_price") != null ? rs.getDouble("actual_price") : null); // Handle nullable column
+                    Double actualPrice = rs.getObject("actual_price", Double.class);
+                    project.setActualPrice(actualPrice != null ? actualPrice : 0.0); // Default to 0.0 if null
                 }
             }
         }
@@ -88,7 +88,10 @@ public class ProjectRepository {
                 project.setProfileId(rs.getInt("profile_id"));
                 project.setBudget(rs.getDouble("budget"));
                 project.setDaysUntilDone(rs.getInt("duration"));
-                project.setActualPrice(rs.getObject("actual_price", Double.class));
+
+                // Handle null for actual_price explicitly
+                Double actualPrice = rs.getObject("actual_price", Double.class);
+                project.setActualPrice(actualPrice != null ? actualPrice : 0.0); // Default to 0.0 if null
                 projects.add(project);
             }
         }
@@ -100,10 +103,10 @@ public class ProjectRepository {
 
     public void updateProject(Project project) throws SQLException {
         String updateProjectQuery = """
-        UPDATE Project 
-        SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, profile_id = ?, budget = ?, duration = ?, actual_price = ? 
-        WHERE id = ?
-    """;
+                    UPDATE Project 
+                    SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, profile_id = ?, budget = ?, duration = ?, actual_price = ? 
+                    WHERE id = ?
+                """;
 
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateProjectQuery)) {
@@ -121,7 +124,6 @@ public class ProjectRepository {
             ps.executeUpdate();
         }
     }
-
 
 
     //***DELETE PROJECT***---------------------------------------------------------------------------------------------D

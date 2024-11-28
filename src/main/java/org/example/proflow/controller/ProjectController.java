@@ -1,8 +1,6 @@
 package org.example.proflow.controller;
 
-import jakarta.servlet.http.HttpSession;
 import org.example.proflow.model.Project;
-import org.example.proflow.model.SubProject;
 import org.example.proflow.service.ProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.sql.SQLException;
-import java.util.List;
 
 //TODO ProjectController: Rette HTML sider
 //TODO ProjectController: Rette navne/stier på endpoints
@@ -24,7 +21,7 @@ public class ProjectController {
     private Model model;
 
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
-    public ProjectController(ProjectService projectService){
+    public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
     }
 

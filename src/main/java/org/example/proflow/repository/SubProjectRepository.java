@@ -16,16 +16,11 @@ public class SubProjectRepository {
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE SUBPROJECT***------------------------------------------------------------------------------------------C
-//    public void addSubProject(SubProject subProject) throws SQLException {
-//        String insertSubProjectQuery = """
-//        INSERT INTO SubProject (name, description, start_date, end_date, status, project_id)
-//        VALUES (?, ?, ?, ?, ?, ?)
-//    """;
-        public void addSubProject(SubProject subProject) throws SQLException {
+    public void addSubProject(SubProject subProject) throws SQLException {
         String insertSubProjectQuery = """
-        INSERT INTO SubProject (name, description, start_date, end_date, status, assigned_to, project_id, price, budget, duration)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """;
+                    INSERT INTO SubProject (name, description, start_date, end_date, status, assigned_to, project_id, price, budget, duration)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """;
 
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(insertSubProjectQuery)) {
@@ -76,7 +71,7 @@ public class SubProjectRepository {
     }
 
     //GET SUB PROJECT BY ID
-        public SubProject getSubProjectById(int id) throws SQLException {
+    public SubProject getSubProjectById(int id) throws SQLException {
         String query = "SELECT * FROM SubProject WHERE id = ?";
         SubProject subProject = null;
 
@@ -108,29 +103,28 @@ public class SubProjectRepository {
     //***UPDATE SUBPROJECT***------------------------------------------------------------------------------------------U
     public void updateSubProject(SubProject subProject) throws SQLException {
         String updateSubProjectQuery = """
-            UPDATE SubProject 
-            SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, assigned_to = ?, project_id = ?, price = ?, budget = ?, duration = ? 
-            WHERE id = ?
-        """;
+                    UPDATE SubProject 
+                    SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, assigned_to = ?, project_id = ?, price = ?, budget = ?, duration = ? 
+                    WHERE id = ?
+                """;
 
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateSubProjectQuery)) {
 
-                    ps.setString(1, subProject.getName());
-                    ps.setString(2, subProject.getDescription());
-                    ps.setDate(3, Date.valueOf(subProject.getStartDate()));
-                    ps.setDate(4, Date.valueOf(subProject.getEndDate()));
-                    ps.setString(5, subProject.getStatus().name());
-                    ps.setString(6, subProject.getAssignedTo());
-                    ps.setInt(7, subProject.getProjectId());
-                    ps.setObject(8, subProject.getBudget());//TODO change to price
-                    ps.setDouble(9, subProject.getBudget());
-                    ps.setInt(10, subProject.getDaysUntilDone());
-                    ps.setInt(11, subProject.getId());
-                    ps.executeUpdate();
+            ps.setString(1, subProject.getName());
+            ps.setString(2, subProject.getDescription());
+            ps.setDate(3, Date.valueOf(subProject.getStartDate()));
+            ps.setDate(4, Date.valueOf(subProject.getEndDate()));
+            ps.setString(5, subProject.getStatus().name());
+            ps.setString(6, subProject.getAssignedTo());
+            ps.setInt(7, subProject.getProjectId());
+            ps.setObject(8, subProject.getBudget());//TODO change to price
+            ps.setDouble(9, subProject.getBudget());
+            ps.setInt(10, subProject.getDaysUntilDone());
+            ps.setInt(11, subProject.getId());
+            ps.executeUpdate();
         }
     }
-
 
 
     //***DELETE SUBPROJECT***------------------------------------------------------------------------------------------D

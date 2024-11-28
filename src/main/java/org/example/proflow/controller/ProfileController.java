@@ -7,9 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import java.awt.color.ProfileDataException;
+import java.util.List;
 
 //TODO ProfileController: Rette HTML sider
 //TODO ProfileController: Rette navne/stier på endpoints
@@ -79,7 +78,7 @@ public class ProfileController {
     //***EXCEPTION HANDLING***------------------------------------------------------------------------------------------
     @ExceptionHandler(ProfileException.class)
     public String handleError(Model model, Exception exception) {
-        model.addAttribute("message",exception.getMessage());
+        model.addAttribute("message", exception.getMessage());
         return "errorPage";
     }
 

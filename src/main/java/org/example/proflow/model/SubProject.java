@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 @Component
 public class SubProject {
@@ -33,7 +32,7 @@ public class SubProject {
         this.description = description;
         this.startDate = startDate;
         setEndDate(endDate);
-        daysUntilDone = calculateDaysUntilDone(startDate,endDate);
+        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
         this.totalTaskDurationHourly = totalTaskDurationHourly;
         this.status = status;
         this.projectId = projectId;
@@ -47,7 +46,7 @@ public class SubProject {
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        daysUntilDone = calculateDaysUntilDone(startDate,endDate);
+        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
         this.totalTaskDurationHourly = totalTaskDurationHourly;
         this.status = status;
         this.projectId = projectId;
@@ -60,7 +59,7 @@ public class SubProject {
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        daysUntilDone = calculateDaysUntilDone(startDate,endDate);
+        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
         this.totalTaskDurationHourly = totalTaskDurationHourly;
         this.status = status;
         this.assignedTo = assignedTo;
@@ -134,7 +133,7 @@ public class SubProject {
     }
 
     public void setEndDate(LocalDate endDate) {
-        if(endDate.isBefore(startDate)){
+        if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("End date cannot be before start date.");
         } else {
             this.endDate = endDate;
@@ -162,7 +161,7 @@ public class SubProject {
     }
 
     public void setBudget(double budget) {
-        if (budget < 0){
+        if (budget < 0) {
             throw new IllegalArgumentException("Budget cannot be less than 0");
         } else {
             this.budget = budget;
@@ -170,7 +169,7 @@ public class SubProject {
     }
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
-    private int calculateDaysUntilDone(LocalDate startDate, LocalDate endDate){
+    private int calculateDaysUntilDone(LocalDate startDate, LocalDate endDate) {
         if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("End date cannot be before start date.");
         }
@@ -180,10 +179,10 @@ public class SubProject {
         return (int) days; // Cast to int and return
     }
 
-    public SubProject findSubProjectById(int id){
+    public SubProject findSubProjectById(int id) {
         SubProject subProject = null;
-        for(SubProject s : subProjectRepository.getAllSubProjects()){
-            if(s.getId() == id){
+        for (SubProject s : subProjectRepository.getAllSubProjects()) {
+            if (s.getId() == id) {
                 subProject = s;
             } else {
                 throw new IllegalArgumentException("No SubProject with this ID");
@@ -195,17 +194,17 @@ public class SubProject {
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return  "\nSubProject ID: "              + id                        +
-                "\nSubProject name: "            + name                      +
-                "\nDescription: "                + description               +
-                "\nStart date: "                 + startDate                 +
-                "\nEnd date="                    + endDate                   +
-                "\nDays until finished: "        + daysUntilDone             +
-                "\nTotal task Duration (hour): " + totalTaskDurationHourly   +
-                "\nStatus: "                     + status.getDisplayStatus() +
-                "\nProject ID: "                 + projectId                 +
-                "\nAssigned to: "                + (assignedTo != null ? assignedTo : "Not assigned") +
-                "\nBudget: "                     + budget                    ;
+        return "\nSubProject ID: " + id +
+                "\nSubProject name: " + name +
+                "\nDescription: " + description +
+                "\nStart date: " + startDate +
+                "\nEnd date=" + endDate +
+                "\nDays until finished: " + daysUntilDone +
+                "\nTotal task Duration (hour): " + totalTaskDurationHourly +
+                "\nStatus: " + status.getDisplayStatus() +
+                "\nProject ID: " + projectId +
+                "\nAssigned to: " + (assignedTo != null ? assignedTo : "Not assigned") +
+                "\nBudget: " + budget;
 
     }
 

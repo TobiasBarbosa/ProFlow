@@ -34,8 +34,9 @@ public class Task {
         this.description = description;
         this.location = location;
         this.startDate = startDate;
-        setEndDate(endDate,subProjectId);
-        daysUntilDone = calculateDaysUntilDone(startDate,endDate);
+        //setEndDate(endDate,subProjectId);
+        this.endDate = endDate;
+        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
         setHourlyDuration(hourlyDuration);
         this.status = status;
         this.subProjectId = subProjectId;
@@ -48,8 +49,9 @@ public class Task {
         this.description = description;
         this.location = location;
         this.startDate = startDate;
-        setEndDate(endDate, subProjectId);
-        daysUntilDone = calculateDaysUntilDone(startDate,endDate);
+//        setEndDate(endDate, subProjectId);
+        this.endDate = endDate;
+        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
         setHourlyDuration(hourlyDuration);
         this.status = status;
         this.subProjectId = subProjectId;
@@ -62,8 +64,9 @@ public class Task {
         this.description = description;
         this.location = location;
         this.startDate = startDate;
-        setEndDate(endDate,subProjectId);
-        daysUntilDone = calculateDaysUntilDone(startDate,endDate);
+//        setEndDate(endDate,subProjectId);
+        this.endDate = endDate;
+        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
         setHourlyDuration(hourlyDuration);
         this.status = status;
         this.assignedTo = assignedTo;
@@ -142,19 +145,23 @@ public class Task {
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
+//TODO FIX the calculation;
 
-    public void setEndDate(LocalDate endDate, int subProjectId) {
-        if(endDate.isBefore(startDate)){
-            throw new IllegalArgumentException("End date cannot be before start date.");
-        } if(endDate.isAfter(subProject.findSubProjectById(subProjectId).getEndDate())){
-            throw new IllegalArgumentException("End date cannot be after SubProject end date");
-        } else {
-            this.endDate = endDate;
-        }
+    //    public void setEndDate(LocalDate endDate, int subProjectId) {
+//        if(endDate.isBefore(startDate)){
+//            throw new IllegalArgumentException("End date cannot be before start date.");
+//        } if(endDate.isAfter(subProject.findSubProjectById(subProjectId).getEndDate())){
+//            throw new IllegalArgumentException("End date cannot be after SubProject end date");
+//        } else {
+//            this.endDate = endDate;
+//        }
+//    }
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public void setHourlyDuration(double hourlyDuration) {
-        if (hourlyDuration < 0){
+        if (hourlyDuration < 0) {
             throw new IllegalArgumentException("Hourly duration cannot be less than 0");
         } else {
             this.hourlyDuration = hourlyDuration;
@@ -178,7 +185,7 @@ public class Task {
     }
 
     public void setTaskPrice(double taskPrice) {
-        if(taskPrice < 0){
+        if (taskPrice < 0) {
             throw new IllegalArgumentException("Task price cannot be less than 0");
         } else {
             this.taskPrice = taskPrice;
@@ -186,7 +193,7 @@ public class Task {
     }
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
-    private int calculateDaysUntilDone(LocalDate startDate, LocalDate endDate){
+    private int calculateDaysUntilDone(LocalDate startDate, LocalDate endDate) {
         if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("End date cannot be before start date.");
         }
@@ -199,18 +206,18 @@ public class Task {
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return  "\nTask ID: "             + id                        +
-                "\nTask name: "           + name                      +
-                "\nDescription: "         + description               +
-                "\nLocation: "            + location                  +
-                "\nStart date: "          + startDate                 +
-                "\nEnd date="             + endDate                   +
-                "\nDays until finished: " + daysUntilDone             +
-                "\nDuration in hours: "   + hourlyDuration            +
-                "\nStatus: "              + status.getDisplayStatus() +
-                "\nSubproject ID: "       + subProjectId              +
-                "\nAssigned to: "         + (assignedTo != null ? assignedTo : "Not assigned") +
-                "\nTask price: "          + taskPrice                 ;
+        return "\nTask ID: " + id +
+                "\nTask name: " + name +
+                "\nDescription: " + description +
+                "\nLocation: " + location +
+                "\nStart date: " + startDate +
+                "\nEnd date=" + endDate +
+                "\nDays until finished: " + daysUntilDone +
+                "\nDuration in hours: " + hourlyDuration +
+                "\nStatus: " + status.getDisplayStatus() +
+                "\nSubproject ID: " + subProjectId +
+                "\nAssigned to: " + (assignedTo != null ? assignedTo : "Not assigned") +
+                "\nTask price: " + taskPrice;
     }
 
     //***END***---------------------------------------------------------------------------------------------------------

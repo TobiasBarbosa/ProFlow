@@ -1,8 +1,6 @@
 package org.example.proflow.controller;
 
-import jakarta.servlet.http.HttpSession;
 import org.example.proflow.model.SubProject;
-import org.example.proflow.model.Task;
 import org.example.proflow.service.SubProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,17 +23,17 @@ public class SubProjectController {
     private Model model;
 
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
-    public SubProjectController(SubProjectService subProjectService){
+    public SubProjectController(SubProjectService subProjectService) {
         this.subProjectService = subProjectService;
     }
 
     //***CREATE SUBPROJECT METHODS***-----------------------------------------------------------------------------------
-   @GetMapping("/{projectId}/addSubProject")
+    @GetMapping("/{projectId}/addSubProject")
     public String addSubProject(@PathVariable("projectId") int projectId, Model model) {
-       model.addAttribute("projectId", projectId);
-       model.addAttribute("subProject", new SubProject());
-       return "homepage";
-   }
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("subProject", new SubProject());
+        return "homepage";
+    }
 
     @PostMapping("/{projectId}/saveSubProject")
     public String saveSubProject(@PathVariable("projectId") int projectId,
@@ -43,7 +41,7 @@ public class SubProjectController {
         subProject.setProjectId(projectId);
         subProjectService.addSubProject(subProject);
         return "subprojects";
-   }
+    }
 
 
     //***READ SUBPROJECT METHODS***-------------------------------------------------------------------------------------
@@ -95,7 +93,6 @@ public class SubProjectController {
         subProjectService.deleteSubProject(subProjectId);
         return "rediect:/homepage/userProfile";
     }
-
 
 
     //***END***---------------------------------------------------------------------------------------------------------
