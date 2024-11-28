@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 //TODO: add exceptions
 @Repository
 public class ProfileRepository {
@@ -15,11 +16,11 @@ public class ProfileRepository {
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE PROFILE***---------------------------------------------------------------------------------------------C
-    public void addProfile(Profile profile)  {
+    public void addProfile(Profile profile) {
         String insertProfileQuery = """
-        INSERT INTO Profile (name, lastName, email, password) 
-        VALUES (?, ?, ?, ?)
-    """;
+                    INSERT INTO Profile (name, lastName, email, password) 
+                    VALUES (?, ?, ?, ?)
+                """;
 
         try (Connection con = dataBaseConnection.getConnection()) {
             //TODO:
@@ -66,13 +67,36 @@ public class ProfileRepository {
         return profiles;
     }
 
-    //TODO getProfileById
+
+    public Profile getProfileById(int id) throws SQLException {
+        String query = "SELECT * FROM Profile WHERE id = ?";
+        Profile profile = null;
+
+        try (Connection con = dataBaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setInt(1, id); // Bind the id parameter
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) { // If a result is found
+                    profile = new Profile();
+                    profile.setId(rs.getInt("id"));
+                    profile.setFirstName(rs.getString("name"));
+                    profile.setLastName(rs.getString("lastName"));
+                    profile.setEmail(rs.getString("email"));
+                    profile.setPassword(rs.getString("password"));
+                }
+            }
+        }
+        return profile; // Return the Profile object or null if not found
+    }
+
 
     //***UPDATE***-----------------------------------------------------------------------------------------------------U
-    public void updateProfile(Profile profile)  {
+    public void updateProfile(Profile profile) {
         String updateProfileQuery = """
-        UPDATE Profile SET name = ?, lastName = ?, email = ?, password = ? WHERE id = ?
-    """;
+                    UPDATE Profile SET name = ?, lastName = ?, email = ?, password = ? WHERE id = ?
+                """;
 
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateProfileQuery)) {
@@ -89,7 +113,7 @@ public class ProfileRepository {
     }
 
     //***DELETE PROFILE***---------------------------------------------------------------------------------------------D
-    public void deleteProfile(int id)  {
+    public void deleteProfile(int id) {
         String deleteProfileQuery = "DELETE FROM Profile WHERE id = ?";
 
         try (Connection con = dataBaseConnection.getConnection();

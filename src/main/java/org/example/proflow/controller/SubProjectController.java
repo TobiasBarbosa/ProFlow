@@ -1,11 +1,6 @@
 package org.example.proflow.controller;
 
-import jakarta.servlet.http.HttpSession;
-import org.example.proflow.exception.SubProjectException;
-import org.example.proflow.model.Project;
-import org.example.proflow.model.Status;
 import org.example.proflow.model.SubProject;
-import org.example.proflow.model.Task;
 import org.example.proflow.service.SubProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 //TODO SubProjectController: Rette HTML sider
@@ -30,17 +24,17 @@ public class SubProjectController {
     private Model model;
 
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
-    public SubProjectController(SubProjectService subProjectService){
+    public SubProjectController(SubProjectService subProjectService) {
         this.subProjectService = subProjectService;
     }
 
     //***CREATE SUBPROJECT METHODS***-----------------------------------------------------------------------------------
-   @GetMapping("/{projectId}/addsubproject")
+    @GetMapping("/{projectId}/addsubproject")
     public String addSubProject(@PathVariable("projectId") int projectId, Model model) {
-       model.addAttribute("projectId", projectId);
-       model.addAttribute("subProject", new SubProject());
-       return "homepage";
-   }
+        model.addAttribute("projectId", projectId);
+        model.addAttribute("subProject", new SubProject());
+        return "homepage";
+    }
 
     @PostMapping("/{projectId}/savesubproject")
     public String saveSubProject(@PathVariable("projectId") int projectId,
@@ -48,7 +42,8 @@ public class SubProjectController {
         subProject.setProjectId(projectId);
         subProjectService.addSubProject(subProject);
         return "subprojects";
-   }
+    }
+
 
     //***READ SUBPROJECT METHODS***-------------------------------------------------------------------------------------
     @GetMapping("/subprojects")
@@ -87,7 +82,7 @@ public class SubProjectController {
     public String updateSubProject(@ModelAttribute SubProject subProject) throws SQLException {
         int subProjectId = subProject.getId();
         subProjectService.updateSubProject(subProject);
-        return "redirect:/homepage/subproject/"+ subProjectId;
+        return "redirect:/homepage/subproject/" + subProjectId;
     }
 
 

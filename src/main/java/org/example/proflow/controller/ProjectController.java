@@ -1,10 +1,6 @@
 package org.example.proflow.controller;
 
-import jakarta.servlet.http.HttpSession;
-import org.example.proflow.exception.ProjectException;
 import org.example.proflow.model.Project;
-import org.example.proflow.model.Status;
-import org.example.proflow.model.SubProject;
 import org.example.proflow.service.ProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.List;
 
 //TODO ProjectController: Rette HTML sider
 //TODO ProjectController: Rette navne/stier på endpoints
@@ -28,7 +22,7 @@ public class ProjectController {
     private Model model;
 
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
-    public ProjectController(ProjectService projectService){
+    public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
     }
 
@@ -43,7 +37,7 @@ public class ProjectController {
 
     @PostMapping("/{profileId}/saveproject")
     public String saveProject(@PathVariable("profileId") int profileId,
-                              @ModelAttribute("projectId") Project project, Model model) throws SQLException {
+                              @ModelAttribute("projectId") Project project, Model model) throws SQLException { //TODO ændre exception
         project.setProfileId(profileId);
         projectService.addProject(project);
         return "projects";
@@ -51,14 +45,12 @@ public class ProjectController {
 
 
     //***READ PROJECT METHODS***-------------------------------------------------------------------------------------
-//    TODO mangler getAllProjects i ProjectsRepository
 //    @GetMapping("/projects")
 //    public String getAllProjects(Model model) {
 //        List<Project> projects = projectService.getAllProjects();
 //        model.addAttribute("Projects", projects);
 //        return "homepage";
 //    }
-//
 
     @GetMapping("/project/{projectId}")
     public String getProjectById(@PathVariable("projectId") int projectId, Model model) throws SQLException {
@@ -88,7 +80,7 @@ public class ProjectController {
     public String updateProject(@ModelAttribute Project project) throws SQLException {
         int projectId = project.getId();
         projectService.updateProject(project);
-        return "redirect:/homepage/project/"+projectId;
+        return "redirect:/homepage/project/" + projectId;
     }
 
 
@@ -99,7 +91,6 @@ public class ProjectController {
         projectService.deleteProject(projectId);
         return "rediect:/homepage/userProfile";
     }
-
 
     //***END***---------------------------------------------------------------------------------------------------------
 

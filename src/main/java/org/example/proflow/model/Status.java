@@ -14,7 +14,7 @@ public enum Status {
     final String displayStatus;
 
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
-    Status(String displayStatus){
+    Status(String displayStatus) {
         this.displayStatus = displayStatus;
     }
 

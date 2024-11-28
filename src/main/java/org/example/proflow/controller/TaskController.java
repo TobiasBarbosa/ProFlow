@@ -1,7 +1,5 @@
 package org.example.proflow.controller;
 
-import jakarta.servlet.http.HttpSession;
-import org.example.proflow.model.Status;
 import org.example.proflow.model.Task;
 import org.example.proflow.service.TaskService;
 import org.springframework.stereotype.Controller;
@@ -9,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 //TODO TaskController: Rette HTML sider
@@ -24,13 +21,13 @@ public class TaskController {
     private Model model;
 
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
-    public TaskController(TaskService taskService){
-    this.taskService = taskService;
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
     }
 
     //***CREATE TASK METHODS***-----------------------------------------------------------------------------------------
     @GetMapping("/{subProjectId}/addtask")
-    public String addTask(@PathVariable("subProjectId") int subProjectId, Model model){
+    public String addTask(@PathVariable("subProjectId") int subProjectId, Model model) {
         model.addAttribute("subProjectId", subProjectId);
         model.addAttribute("task", new Task());
         return "addTask";
@@ -46,14 +43,14 @@ public class TaskController {
 
     //***READ TASK METHODS***-------------------------------------------------------------------------------------------
     @GetMapping("tasks")
-    public String getAllTasks(Model model){
-        List<Task> tasks  = taskService.getAllTasks();
+    public String getAllTasks(Model model) {
+        List<Task> tasks = taskService.getAllTasks();
         model.addAttribute("tasks", tasks);
         return "homepage";
     }
 
     @GetMapping("/task/{taskId}")
-    public String getTaskById(@PathVariable("taskId") int taskId, Model model) throws SQLException{
+    public String getTaskById(@PathVariable("taskId") int taskId, Model model) throws SQLException {
         Task task = taskService.getTaskById(taskId);
         model.addAttribute("task", task);
         model.addAttribute("name", task.getName());
@@ -62,7 +59,7 @@ public class TaskController {
 
     //***UPDATE TASK METHODS***-----------------------------------------------------------------------------------------
     @GetMapping("/task/edit/{taskId}")
-    public String editTask(@PathVariable("taskId") int taskId, Model model) throws SQLException{
+    public String editTask(@PathVariable("taskId") int taskId, Model model) throws SQLException {
         Task task = taskService.getTaskById(taskId);
         model.addAttribute("task", task);
         model.addAttribute("taskId", task.getId());
@@ -74,21 +71,22 @@ public class TaskController {
         model.addAttribute("status", task.getStatus());
         model.addAttribute("subProjectId", task.getSubProjectId());
         model.addAttribute("assignedTo", task.getAssignedTo());
-        model.addAttribute("uniqueVariable", task.getUniqueVariable());
+        //TODO, FIX THIS GETUNIQUE VARIABLE
+//        model.addAttribute("uniqueVariable", task.getUniqueVariable());
         return "editTask";
     }
 
 
     @PostMapping("/task/update")
-    public String updateTask(@ModelAttribute Task task) throws SQLException{
+    public String updateTask(@ModelAttribute Task task) throws SQLException {
         int taskId = task.getId();
         taskService.updateTask(task);
-        return "redirect:/homepage/task/edit"+taskId;
+        return "redirect:/homepage/task/edit" + taskId;
     }
 
     //***DELETE TASK METHODS***-----------------------------------------------------------------------------------------
     @PostMapping("/task/delete/{taskId}")
-    public String deleteTask(@PathVariable("taskId") int taskId) throws SQLException{
+    public String deleteTask(@PathVariable("taskId") int taskId) throws SQLException {
         Task task = taskService.getTaskById(taskId);
         taskService.deleteTask(taskId);
         return "redirect:/homepage/userProfile";

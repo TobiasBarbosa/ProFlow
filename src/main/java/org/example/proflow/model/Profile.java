@@ -28,7 +28,7 @@ public class Profile {
         this.password = password;
     }
 
-    public Profile(String email, String password){
+    public Profile(String email, String password) {
         this.email = email;
         this.password = password;
     }
@@ -81,11 +81,11 @@ public class Profile {
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return  "\nProfile ID: " + id        +
+        return "\nProfile ID: " + id +
                 "\nFirst name: " + firstName +
-                "\nLast name: "  + lastName  +
-                "\nEmail: "      + email     +
-                "\nPassword: "   + password  ;
+                "\nLast name: " + lastName +
+                "\nEmail: " + email +
+                "\nPassword: " + password;
     }
 
     //***END***---------------------------------------------------------------------------------------------------------
