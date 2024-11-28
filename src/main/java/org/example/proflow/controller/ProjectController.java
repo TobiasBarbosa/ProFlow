@@ -6,10 +6,7 @@ import org.example.proflow.model.SubProject;
 import org.example.proflow.service.ProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -20,6 +17,7 @@ import java.util.List;
 //TODO ProjectController: Rette exceptions til ProjectException
 
 @Controller
+@RequestMapping("homepage")
 public class ProjectController {
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final ProjectService projectService;
@@ -57,7 +55,7 @@ public class ProjectController {
     }
 
 
-    @GetMapping("/project/{projectId}")
+    @GetMapping("homepage/project/{projectId}")
     public String getProjectById(@PathVariable("projectId") int projectId, Model model) throws SQLException {
         Project project = projectService.getProjectById(projectId);
         model.addAttribute("projectId", projectId);

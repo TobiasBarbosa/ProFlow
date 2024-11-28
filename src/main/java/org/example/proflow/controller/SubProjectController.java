@@ -5,10 +5,7 @@ import org.example.proflow.model.SubProject;
 import org.example.proflow.service.SubProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -19,6 +16,7 @@ import java.util.List;
 //TODO SubProjectController: Rette exceptions til subProjectException
 
 @Controller
+@RequestMapping("homepage")
 public class SubProjectController {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
