@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.sql.SQLException;
-import java.util.List;
 
 //TODO ProjectController: Rette HTML sider
 //TODO ProjectController: Rette navne/stier på endpoints
@@ -81,7 +80,7 @@ public class ProjectController {
     public String updateProject(@ModelAttribute Project project) throws SQLException {
         int projectId = project.getId();
         projectService.updateProject(project);
-        return "redirect:/homepage/project/"+projectId;
+        return "redirect:/homepage/project/" + projectId;
     }
 
 
