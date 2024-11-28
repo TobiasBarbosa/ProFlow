@@ -3,6 +3,7 @@ package org.example.proflow.controller;
 import org.example.proflow.model.Project;
 import org.example.proflow.model.Status;
 import org.example.proflow.model.SubProject;
+import org.example.proflow.service.ProfileService;
 import org.example.proflow.service.ProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,23 +20,25 @@ import java.util.List;
 @Controller
 @RequestMapping("homepage")
 public class ProjectController {
+
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final ProjectService projectService;
     private Model model;
-
+    private final ProfileService profileService;
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
-    public ProjectController(ProjectService projectService) {
-        this.projectService = projectService;
-    }
 
+    public ProjectController(ProjectService projectService, ProfileService profileService) {
+        this.projectService = projectService;
+        this.profileService = profileService;
+    }
     //***CREATE PROJECT METHODS***-----------------------------------------------------------------------------------
+
     @GetMapping("/{profileId}/addproject")
     public String addProject(@PathVariable("profileId") int profileId, Model model) {
         model.addAttribute("profileId", profileId);
         model.addAttribute("project", new Project());
         return "homepage";
     }
-
 
     @PostMapping("/{profileId}/saveproject")
     public String saveProject(@PathVariable("profileId") int profileId,
@@ -45,15 +48,20 @@ public class ProjectController {
         return "projects";
     }
 
-
     //***READ PROJECT METHODS***-------------------------------------------------------------------------------------
+    @GetMapping("")
+    public String homepage(Model model) {
+        List<Project> projects = projectService.getAllProjects();
+        model.addAttribute("projects", projects);
+        return "homepage";
+    }
+
     @GetMapping("/projects")
     public String getAllProjects(Model model) throws SQLException{
         List<Project> projects = projectService.getAllProjects();
         model.addAttribute("Projects", projects);
         return "homepage";
     }
-
 
     @GetMapping("homepage/project/{projectId}")
     public String getProjectById(@PathVariable("projectId") int projectId, Model model) throws SQLException {
