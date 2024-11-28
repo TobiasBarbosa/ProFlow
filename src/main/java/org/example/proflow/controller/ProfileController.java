@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.color.ProfileDataException;
+import java.sql.SQLException;
 import java.util.List;
 
 //TODO ProfileController: Rette HTML sider
@@ -48,33 +49,32 @@ public class ProfileController {
     }
 
     //***UPDATE PROFILE***---------------------------------------------------------------------------------------------U
-//    @GetMapping("/edit/{id}")
-//    public String editProfile(@PathVariable("id") int profileId, Model model) throws ProfileException {
-//        Profile profile = profileService.getProfileById(profileId);
-//        model.addAttribute("profile", profile);
-//        model.addAttribute("profileName", profile.getFirstName());
-//        model.addAttribute("profileLastName", profile.getLastName());
-//        model.addAttribute("profileEmail", profile.getEmail());
-//        model.addAttribute("profilePassword",profile.getPassword());
-//        return "editProfile";
-//    }
+    @GetMapping("/edit/{profileId}")
+    public String editProfile(@PathVariable("profileId") int profileId, Model model) throws ProfileException, SQLException {
+        Profile profile = profileService.getProfileById(profileId);
+        model.addAttribute("profile", profile);
+        model.addAttribute("profileName", profile.getFirstName());
+        model.addAttribute("profileLastName", profile.getLastName());
+        model.addAttribute("profileEmail", profile.getEmail());
+        model.addAttribute("profilePassword",profile.getPassword());
+        return "editProfile";
+    }
 
     @PostMapping("/update/{id}")
-    public String updateProfile(@PathVariable("id") int profileId, @ModelAttribute Profile profile) throws ProfileException {
-//        model.addAttribute("profile", profile);
+    public String updateProfile(@PathVariable("id") int profileId, @ModelAttribute Profile profile, Model model) throws ProfileException {
+        model.addAttribute("profile", profile);
         profile.setId(profileId);
         profileService.updateProfile(profile);
         return "redirect:/profile";
     }
 
     //***DELETE PROFILE***---------------------------------------------------------------------------------------------D
-//    TODO mangler getProfileById i ProfileController
-//    @PostMapping("/{name}/remove")
-//    public String deleteProfile(@PathVariable int profileId) throws ProfileException {
-//        Profile profile = profileService.getProfileById(profileId);
-//        profileService.deleteProfile(profile.getId());
-//        return "redirect:/profile";
-//    }
+    @PostMapping("/{name}/remove")
+    public String deleteProfile(@PathVariable int profileId) throws ProfileException {
+        Profile profile = profileService.getProfileById(profileId);
+        profileService.deleteProfile(profile.getId());
+        return "redirect:/profile";
+    }
 
     //***EXCEPTION HANDLING***------------------------------------------------------------------------------------------
     @ExceptionHandler(ProfileException.class)

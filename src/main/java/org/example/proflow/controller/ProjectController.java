@@ -1,6 +1,8 @@
 package org.example.proflow.controller;
 
 import org.example.proflow.model.Project;
+import org.example.proflow.model.Status;
+import org.example.proflow.model.SubProject;
 import org.example.proflow.service.ProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
 
 //TODO ProjectController: Rette HTML sider
 //TODO ProjectController: Rette navne/stier på endpoints
@@ -45,12 +49,13 @@ public class ProjectController {
 
 
     //***READ PROJECT METHODS***-------------------------------------------------------------------------------------
-//    @GetMapping("/projects")
-//    public String getAllProjects(Model model) {
-//        List<Project> projects = projectService.getAllProjects();
-//        model.addAttribute("Projects", projects);
-//        return "homepage";
-//    }
+    @GetMapping("/projects")
+    public String getAllProjects(Model model) throws SQLException{
+        List<Project> projects = projectService.getAllProjects();
+        model.addAttribute("Projects", projects);
+        return "homepage";
+    }
+
 
     @GetMapping("/project/{projectId}")
     public String getProjectById(@PathVariable("projectId") int projectId, Model model) throws SQLException {
@@ -71,10 +76,14 @@ public class ProjectController {
         model.addAttribute("startDate", project.getStartDate());
         model.addAttribute("endDate", project.getEndDate());
         model.addAttribute("daysUntilDone", project.getDaysUntilDone());
+        model.addAttribute("totalSubProjectDurationHourly", project.getTotalSubProjectDurationHourly());
         model.addAttribute("status", project.getStatus());
+        model.addAttribute("budget", project.getBudget());
+        model.addAttribute("actualPrice", project.getActualPrice());
         model.addAttribute("profileId", project.getProfileId());
         return "editproject";
     }
+
 
     @PostMapping("/project/update")
     public String updateProject(@ModelAttribute Project project) throws SQLException {

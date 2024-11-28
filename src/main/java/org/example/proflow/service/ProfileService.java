@@ -1,9 +1,12 @@
 package org.example.proflow.service;
 
+import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
+import org.example.proflow.model.Project;
 import org.example.proflow.repository.ProfileRepository;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -27,7 +30,9 @@ public class ProfileService {
         return profileRepository.getAllProfiles();
     }
 
-    //TODO getProfileById
+    public Profile getProfileById(int id) throws ProfileException {
+        return profileRepository.getProfileById(id);
+    }
 
     //***UPDATE PROFILE***---------------------------------------------------------------------------------------------U
     public void updateProfile(Profile profile){
@@ -35,7 +40,7 @@ public class ProfileService {
     }
 
     //***DELETE PROFILE***---------------------------------------------------------------------------------------------D
-    public void deleteProfile(int id)  {
+    public void deleteProfile(int id) throws ProfileException {
         profileRepository.deleteProfile(id);
     }
     //**END***----------------------------------------------------------------------------------------------------------

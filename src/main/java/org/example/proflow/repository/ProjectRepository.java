@@ -70,13 +70,14 @@ public class ProjectRepository {
     }
 
 
-    public List<Project> getAllProjects() throws SQLException {
+    public List<Project> getAllProjects() {
         List<Project> projects = new ArrayList<>();
         String query = "SELECT * FROM Project";
 
         try (Connection con = dataBaseConnection.getConnection();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
+
             while (rs.next()) {
                 Project project = new Project();
                 project.setId(rs.getInt("id"));
@@ -94,6 +95,8 @@ public class ProjectRepository {
                 project.setActualPrice(actualPrice != null ? actualPrice : 0.0); // Default to 0.0 if null
                 projects.add(project);
             }
+        }  catch (SQLException e) {
+            e.printStackTrace();
         }
         return projects;
     }

@@ -2,6 +2,7 @@ package org.example.proflow.service;
 
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
+import org.example.proflow.model.SubProject;
 import org.example.proflow.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +27,9 @@ public class ProjectService {
     }
 
     //***READ PROFILE(S)***--------------------------------------------------------------------------------------------R
-//    public List<Profile> getAllProjects(){
-//        return projectRepository.getAllProjects();
-//    }
+    public List<Project> getAllProjects() {
+        return projectRepository.getAllProjects();
+    }
 
     public Project getProjectById(int id) throws SQLException{
         return projectRepository.getProjectById(id);

@@ -1,5 +1,6 @@
 package org.example.proflow.repository;
 
+import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -68,7 +69,7 @@ public class ProfileRepository {
     }
 
 
-    public Profile getProfileById(int id) throws SQLException {
+    public Profile getProfileById(int id) throws ProfileException {
         String query = "SELECT * FROM Profile WHERE id = ?";
         Profile profile = null;
 
@@ -86,8 +87,12 @@ public class ProfileRepository {
                     profile.setEmail(rs.getString("email"));
                     profile.setPassword(rs.getString("password"));
                 }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }  //TODO måske refaktorere?
         return profile; // Return the Profile object or null if not found
     }
 
