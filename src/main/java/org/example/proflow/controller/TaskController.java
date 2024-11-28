@@ -1,5 +1,6 @@
 package org.example.proflow.controller;
 
+import org.example.proflow.model.Status;
 import org.example.proflow.model.Task;
 import org.example.proflow.service.TaskService;
 import org.springframework.stereotype.Controller;
@@ -7,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 //TODO TaskController: Rette HTML sider
@@ -65,17 +67,17 @@ public class TaskController {
         model.addAttribute("taskId", task.getId());
         model.addAttribute("name", task.getName());
         model.addAttribute("description", task.getDescription());
+        model.addAttribute("location", task.getLocation());
         model.addAttribute("startDate", task.getStartDate());
         model.addAttribute("endDate", task.getEndDate());
         model.addAttribute("daysUntilDone", task.getDaysUntilDone());
+        model.addAttribute("hourlyDuration", task.getHourlyDuration());
         model.addAttribute("status", task.getStatus());
         model.addAttribute("subProjectId", task.getSubProjectId());
         model.addAttribute("assignedTo", task.getAssignedTo());
-        //TODO, FIX THIS GETUNIQUE VARIABLE
-//        model.addAttribute("uniqueVariable", task.getUniqueVariable());
+        model.addAttribute("taskPrice", task.getTaskPrice());
         return "editTask";
     }
-
 
     @PostMapping("/task/update")
     public String updateTask(@ModelAttribute Task task) throws SQLException {

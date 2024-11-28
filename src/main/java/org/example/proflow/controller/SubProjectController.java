@@ -1,5 +1,6 @@
 package org.example.proflow.controller;
 
+import org.example.proflow.model.Status;
 import org.example.proflow.model.SubProject;
 import org.example.proflow.service.SubProjectService;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 //TODO SubProjectController: Rette HTML sider
@@ -72,11 +74,14 @@ public class SubProjectController {
         model.addAttribute("startDate", subProject.getStartDate());
         model.addAttribute("endDate", subProject.getEndDate());
         model.addAttribute("daysUntilDone", subProject.getDaysUntilDone());
+        model.addAttribute("totalTaskDurationHourly", subProject.getTotalTaskDurationHourly());
         model.addAttribute("status", subProject.getStatus());
-        model.addAttribute("subProjectId", subProject.getProjectId());
+        model.addAttribute("projectId", subProject.getProjectId());
         model.addAttribute("assignedTo", subProject.getAssignedTo());
+        model.addAttribute("budget", subProject.getBudget());
         return "editSubProject";
     }
+
 
     @PostMapping("/subproject/update")
     public String updateSubProject(@ModelAttribute SubProject subProject) throws SQLException {
