@@ -2,6 +2,7 @@ package org.example.proflow.controller;
 
 import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
+import org.example.proflow.model.Project;
 import org.example.proflow.service.ProfileService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +42,13 @@ public class ProfileController {
     }
 
     //***READ PROFILE***-----------------------------------------------------------------------------------------------R
+    @GetMapping("/admin") //homepage til projektleder (viser alle projekter for en projektleder)
+    public String homepage(Model model, @RequestParam int profileId) throws ProfileException {
+        List<Project> projectsFromProfile = profileService.getProjectsFromProfile(profileId);
+        model.addAttribute("projectsFromProfile", projectsFromProfile);
+        return "homepage";
+    }
+
     @GetMapping("")
     public String getAllProfiles(Model model) throws ProfileException {
         List<Profile> profiles = profileService.getAllProfiles();
