@@ -160,7 +160,7 @@ public class Project {
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     private int calculateDaysUntilDone(LocalDate startDate, LocalDate endDate) {
-        // TODO kan datoer være null?
+        // TODO kan datoer være null? (PO svar 29/11: nej)
         if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("End date cannot be before start date.");
         }

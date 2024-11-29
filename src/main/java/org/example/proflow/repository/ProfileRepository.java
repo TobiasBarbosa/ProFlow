@@ -2,9 +2,12 @@ package org.example.proflow.repository;
 
 import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
+import org.example.proflow.model.Project;
+import org.example.proflow.model.Status;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,6 +98,37 @@ public class ProfileRepository {
         }  //TODO måske refaktorere?
         return profile; // Return the Profile object or null if not found
     }
+
+    public List<Project> getProjectsFromProfile(int profileId) throws ProfileException {
+        String query = "SELECT * FROM Project WHERE profile_id = ?";
+        List<Project> projectsFromProfile = new ArrayList<>();
+
+        try (Connection con = dataBaseConnection.getConnection();
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                Project project = new Project();
+                project.setId(rs.getInt("id"));
+                project.setName(rs.getString("name"));
+                project.setDescription(rs.getString("lastName"));
+                project.setStartDate(rs.getDate("startDate").toLocalDate());
+                project.setEndDate(rs.getDate("endDate").toLocalDate());
+                project.setDaysUntilDone(rs.getInt("daysUntilDone"));
+                project.setTotalSubProjectDurationHourly(rs.getDouble("totalSubProjectDurationHourly"));
+                project.setStatus(Status.valueOf(rs.getString("status")));
+                project.setBudget(rs.getDouble("budget"));
+                project.setActualPrice(rs.getDouble("actualPrice"));
+                project.setProfileId(rs.getInt("profileId"));
+                projectsFromProfile.add(project);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return projectsFromProfile;
+    }
+
 
 
     //***UPDATE***-----------------------------------------------------------------------------------------------------U

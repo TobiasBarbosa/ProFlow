@@ -7,7 +7,6 @@ import java.time.temporal.ChronoUnit;
 
 @Component
 public class Task {
-    //TODO hvad skal være det unikke i Task?
     //TODO skal Task have et projectID også?
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------

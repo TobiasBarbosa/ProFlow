@@ -34,6 +34,10 @@ public class ProfileService {
         return profileRepository.getProfileById(id);
     }
 
+    public List<Project> getProjectsFromProfile(int profileId) throws ProfileException {
+        return profileRepository.getProjectsFromProfile(profileId);
+    }
+
     //***UPDATE PROFILE***---------------------------------------------------------------------------------------------U
     public void updateProfile(Profile profile){
         profileRepository.updateProfile(profile);

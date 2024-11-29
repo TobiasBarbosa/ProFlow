@@ -8,7 +8,7 @@ public enum Status {
     DOING("Doing"),
     NOT_STARTED("Not started yet");
 
-    //TODO PO spørgsmål - hvad vil PO have a dropdown valgmuligheder?
+    //TODO PO spørgsmål - hvad vil PO have a dropdown valgmuligheder? (PO svar 29/11: aktiv og inaktiv)
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     final String displayStatus;
