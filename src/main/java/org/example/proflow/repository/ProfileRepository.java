@@ -45,7 +45,7 @@ public class ProfileRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
+    } //hej
 
     //***READ PROFILE(S)***--------------------------------------------------------------------------------------------R
     public List<Profile> getAllProfiles() {
