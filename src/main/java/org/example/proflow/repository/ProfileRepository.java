@@ -1,7 +1,9 @@
 package org.example.proflow.repository;
 
+import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
+import org.example.proflow.model.Status;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -69,7 +71,7 @@ public class ProfileRepository {
     }
 
 
-    public Profile getProfileById(int id) throws SQLException {
+    public Profile getProfileById(int id) throws ProfileException {
         String query = "SELECT * FROM Profile WHERE id = ?";
         Profile profile = null;
 
@@ -87,10 +89,53 @@ public class ProfileRepository {
                     profile.setEmail(rs.getString("email"));
                     profile.setPassword(rs.getString("password"));
                 }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }  //TODO måske refaktorere?
         return profile; // Return the Profile object or null if not found
     }
+
+    public List<Project> getProjectsFromProfile(int profileId) throws ProfileException {
+        String query = "SELECT * FROM Project WHERE profile_id = ?";
+        List<Project> projectsFromProfile = new ArrayList<>();
+
+        try (Connection con = dataBaseConnection.getConnection();
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                Project project = new Project();
+                project.setId(rs.getInt("id"));
+                project.setName(rs.getString("name"));
+                project.setDescription(rs.getString("lastName"));
+                project.setStartDate(rs.getDate("startDate").toLocalDate());
+                project.setEndDate(rs.getDate("endDate").toLocalDate());
+                project.setDaysUntilDone(rs.getInt("daysUntilDone"));
+                project.setTotalSubProjectDurationHourly(rs.getDouble("totalSubProjectDurationHourly"));
+                project.setStatus(Status.valueOf(rs.getString("status")));
+                project.setBudget(rs.getDouble("budget"));
+                project.setActualPrice(rs.getDouble("actualPrice"));
+                project.setProfileId(rs.getInt("profileId"));
+                projectsFromProfile.add(project);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return projectsFromProfile;
+    }
+
+    public Profile getProfileByEmailAndPassword(String profileEmail, String profilePassword) throws ProfileException {
+        for (Profile profile: getAllProfiles()) {
+            if (profile.getEmail().equalsIgnoreCase(profileEmail) && profile.getPassword().equalsIgnoreCase(profilePassword))
+                return profile;
+        }
+        return null;
+    }
+
 
 
     //***UPDATE***-----------------------------------------------------------------------------------------------------U

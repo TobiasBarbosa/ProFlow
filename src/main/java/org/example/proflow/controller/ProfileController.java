@@ -1,5 +1,6 @@
 package org.example.proflow.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
@@ -21,11 +22,55 @@ import java.util.List;
 public class ProfileController {
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final ProfileService profileService;
+    private HttpSession session;
 
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
     public ProfileController(ProfileService profileService) {
         this.profileService = profileService;
     }
+
+    //***LOGIN METHODS***---------------------------------------------------------------------------------------------C
+    @GetMapping("/login")
+    public String showLogin(){
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestParam("profileEmail") String profileEmail,
+                        @RequestParam("profilePassword") String profilePassword,
+                        HttpSession session, Model model) throws ProfileException{
+
+        if (profileService.login(profileEmail, profilePassword)) {
+            Profile profileToCheck = profileService.getProfileByEmailAndPassword(profileEmail, profilePassword);
+            session.setAttribute("profile", profileToCheck);
+            session.setMaxInactiveInterval(30);
+        }
+
+        model.addAttribute("wrongCredentials", true);
+        return "login";
+    }
+
+    @GetMapping("/userProfile")
+    public String showProfileDashboard(HttpSession session, Model model) throws ProfileException{
+        Profile profile = (Profile) session.getAttribute("profile");
+
+        if (profile == null) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("profile", profile);
+        List<Project> projects = profileService.getProjectsFromProfile(profile.getId());
+        model.addAttribute("projects", projects);
+        return "userProfile";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/homepage";
+    }
+
+
 
     //***CREATE PROFILE***---------------------------------------------------------------------------------------------C
     @GetMapping("/addprofile") // GetMapping henter data fra database
