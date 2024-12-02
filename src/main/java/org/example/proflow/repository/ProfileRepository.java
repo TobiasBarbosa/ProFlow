@@ -129,6 +129,14 @@ public class ProfileRepository {
         return projectsFromProfile;
     }
 
+    public Profile getProfileByEmailAndPassword(String profileEmail, String profilePassword) throws ProfileException {
+        for (Profile profile: getAllProfiles()) {
+            if (profile.getEmail().equalsIgnoreCase(profileEmail) && profile.getPassword().equalsIgnoreCase(profilePassword))
+                return profile;
+        }
+        return null;
+    }
+
 
 
     //***UPDATE***-----------------------------------------------------------------------------------------------------U
