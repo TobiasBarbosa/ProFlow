@@ -131,13 +131,11 @@ public class ProfileRepository {
 
     public Profile getProfileByEmailAndPassword(String profileEmail, String profilePassword) throws ProfileException {
         for (Profile profile: getAllProfiles()) {
-            if (profile.getEmail().equalsIgnoreCase(profileEmail) && profile.getPassword().equalsIgnoreCase(profilePassword))
+            if (profile.getEmail().equalsIgnoreCase(profileEmail) && profile.getPassword().equals(profilePassword))
                 return profile;
         }
         return null;
     }
-
-
 
     //***UPDATE***-----------------------------------------------------------------------------------------------------U
     public void updateProfile(Profile profile) {

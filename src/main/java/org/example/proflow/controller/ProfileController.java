@@ -43,11 +43,12 @@ public class ProfileController {
         if (profileService.login(profileEmail, profilePassword)) {
             Profile profileToCheck = profileService.getProfileByEmailAndPassword(profileEmail, profilePassword);
             session.setAttribute("profile", profileToCheck);
-            session.setMaxInactiveInterval(30);
+            session.setMaxInactiveInterval(300);
+            return "redirect:/homepage/userProfile";
         }
-
+        //wrong credentials
         model.addAttribute("wrongCredentials", true);
-        return "login";
+        return "login"; //TODO: HTML skal returnere noget ala "Forkerte brugeroplysninger, prøv igen"
     }
 
     @GetMapping("/userProfile")
@@ -69,7 +70,6 @@ public class ProfileController {
         session.invalidate();
         return "redirect:/homepage";
     }
-
 
 
     //***CREATE PROFILE***---------------------------------------------------------------------------------------------C
