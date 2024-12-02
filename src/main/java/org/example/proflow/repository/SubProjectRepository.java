@@ -2,6 +2,7 @@ package org.example.proflow.repository;
 
 import org.example.proflow.model.Status;
 import org.example.proflow.model.SubProject;
+import org.example.proflow.model.Task;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -13,6 +14,9 @@ public class SubProjectRepository {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private DataBaseConnection dataBaseConnection = new DataBaseConnection();
+
+    //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
+    TaskRepository taskRepository;
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE SUBPROJECT***------------------------------------------------------------------------------------------C
@@ -34,7 +38,6 @@ public class SubProjectRepository {
             ps.setInt(7, subProject.getProjectId());
             ps.setObject(8, subProject.getBudget());//TODO change it to price
             ps.setDouble(9, subProject.getBudget());
-            ps.setInt(10, subProject.getDaysUntilDone());
             ps.executeUpdate();
         }
     }
@@ -61,7 +64,7 @@ public class SubProjectRepository {
                 subProject.setProjectId(rs.getInt("project_id"));
                 subProject.setBudget(rs.getObject("price", Double.class)); //TODO change it to price
                 subProject.setBudget(rs.getDouble("budget"));
-                subProject.setDaysUntilDone(rs.getInt("duration"));
+                //subProject.setDaysUntilDone(rs.getInt("duration"));
                 subProjects.add(subProject);
             }
         } catch (SQLException e) {
@@ -91,9 +94,9 @@ public class SubProjectRepository {
                     subProject.setAssignedTo(rs.getString("assigned_to"));
                     subProject.setProjectId(rs.getInt("project_id"));
                     //todo change it to price
-                    subProject.setBudget(rs.getObject("price") != null ? rs.getDouble("price") : null); // Handle nullable column
+                    subProject.setBudget(rs.getObject("price") != null ? rs.getDouble("price") : null); // TODO lav om
                     subProject.setBudget(rs.getDouble("budget"));
-                    subProject.setDaysUntilDone(rs.getInt("duration"));
+                    //subProject.setDaysUntilDone(rs.getInt("duration"));
                 }
             }
         }
@@ -118,9 +121,9 @@ public class SubProjectRepository {
             ps.setString(5, subProject.getStatus().name());
             ps.setString(6, subProject.getAssignedTo());
             ps.setInt(7, subProject.getProjectId());
-            ps.setObject(8, subProject.getBudget());//TODO change to price
+            ps.setObject(8, subProject.getActualPrice());//TODO lav om?
             ps.setDouble(9, subProject.getBudget());
-            ps.setInt(10, subProject.getDaysUntilDone());
+            //ps.setInt(10, subProject.getDaysUntilDone());
             ps.setInt(11, subProject.getId());
             ps.executeUpdate();
         }
@@ -136,6 +139,21 @@ public class SubProjectRepository {
 
             ps.setInt(1, id);
             ps.executeUpdate();
+        }
+    }
+
+    //***OTHER METHODS***-----------------------------------------------------------------------------------------------
+    public void getTasksForSubProject() throws SQLException{
+
+        for (SubProject subProject : getAllSubProjects()){
+            List<Task> tasks = new ArrayList<>();
+            int subProjectId = subProject.getId();
+            for (Task t : taskRepository.getAllTasks()){
+                if(subProjectId == t.getSubProjectId()){
+                    tasks.add(t);
+                }
+            }
+            subProject.setTasks(tasks);
         }
     }
 

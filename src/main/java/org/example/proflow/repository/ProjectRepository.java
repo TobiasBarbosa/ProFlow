@@ -1,7 +1,6 @@
 package org.example.proflow.repository;
 
-import org.example.proflow.model.Project;
-import org.example.proflow.model.Status;
+import org.example.proflow.model.*;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -13,6 +12,9 @@ public class ProjectRepository {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private DataBaseConnection dataBaseConnection = new DataBaseConnection();
+
+    //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
+    SubProjectRepository subProjectRepository;
 
     //***CREATE PROJECT***---------------------------------------------------------------------------------------------C
     public void addProject(Project project) throws SQLException {
@@ -33,7 +35,7 @@ public class ProjectRepository {
             ps.setInt(6, project.getProfileId());
             ps.setDouble(7, project.getBudget());
 //            ps.setInt(8, project.getDuration());
-            ps.setInt(8, project.getDaysUntilDone());
+            //ps.setInt(8, project.getDaysUntilDone());
             ps.setObject(9, project.getActualPrice()); // Use setObject for nullable columns
             ps.executeUpdate();
         }
@@ -60,7 +62,7 @@ public class ProjectRepository {
                     project.setStatus(Status.valueOf(rs.getString("status")));
                     project.setProfileId(rs.getInt("profile_id"));
                     project.setBudget(rs.getDouble("budget"));
-                    project.setDaysUntilDone(rs.getInt("duration"));
+                    //project.setDaysUntilDone(rs.getInt("duration"));
                     Double actualPrice = rs.getObject("actual_price", Double.class);
                     project.setActualPrice(actualPrice != null ? actualPrice : 0.0); // Default to 0.0 if null
                 }
@@ -88,7 +90,7 @@ public class ProjectRepository {
                 project.setStatus(Status.valueOf(rs.getString("status")));
                 project.setProfileId(rs.getInt("profile_id"));
                 project.setBudget(rs.getDouble("budget"));
-                project.setDaysUntilDone(rs.getInt("duration"));
+                //project.setDaysUntilDone(rs.getInt("duration"));
 
                 // Handle null for actual_price explicitly
                 Double actualPrice = rs.getObject("actual_price", Double.class);
@@ -103,7 +105,6 @@ public class ProjectRepository {
 
 
     //***UPDATE PROJECT***---------------------------------------------------------------------------------------------U
-
     public void updateProject(Project project) throws SQLException {
         String updateProjectQuery = """
                     UPDATE Project 
@@ -121,7 +122,7 @@ public class ProjectRepository {
             ps.setString(5, project.getStatus().name());
             ps.setInt(6, project.getProfileId());
             ps.setDouble(7, project.getBudget());
-            ps.setInt(8, project.getDaysUntilDone());
+            //ps.setInt(8, project.getDaysUntilDone());
             ps.setObject(9, project.getActualPrice());
             ps.setInt(10, project.getId());
             ps.executeUpdate();
@@ -138,6 +139,20 @@ public class ProjectRepository {
 
             ps.setInt(1, id);
             ps.executeUpdate();
+        }
+    }
+
+    //***OTHER METHODS***-----------------------------------------------------------------------------------------------
+    public void getSubProjectsForProject() throws SQLException{
+        for (Project project : getAllProjects()){
+            List<SubProject> subProjects = new ArrayList<>();
+            int projectId = project.getId();
+            for (SubProject sp : subProjectRepository.getAllSubProjects()){
+                if(projectId == sp.getProjectId()){
+                    subProjects.add(sp);
+                }
+            }
+            project.setSubProjects(subProjects);
         }
     }
 

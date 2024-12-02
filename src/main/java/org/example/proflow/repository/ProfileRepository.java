@@ -7,7 +7,6 @@ import org.example.proflow.model.Status;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,8 +113,8 @@ public class ProfileRepository {
                 project.setDescription(rs.getString("lastName"));
                 project.setStartDate(rs.getDate("startDate").toLocalDate());
                 project.setEndDate(rs.getDate("endDate").toLocalDate());
-                project.setDaysUntilDone(rs.getInt("daysUntilDone"));
-                project.setTotalSubProjectDurationHourly(rs.getDouble("totalSubProjectDurationHourly"));
+                //project.setDaysUntilDone(rs.getInt("daysUntilDone"));
+                //project.setTotalSubProjectDurationHourly(rs.getDouble("totalSubProjectDurationHourly"));
                 project.setStatus(Status.valueOf(rs.getString("status")));
                 project.setBudget(rs.getDouble("budget"));
                 project.setActualPrice(rs.getDouble("actualPrice"));

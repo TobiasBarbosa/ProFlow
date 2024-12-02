@@ -1,69 +1,55 @@
 package org.example.proflow.model;
 
-import org.example.proflow.repository.SubProjectRepository;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
-public class SubProject {
+public class SubProject extends Project{
+
+    //^^^EXAM QUESTIONS^^^----------------------------------------------------------------------------------------------
+    //Hvorfor nedarver den her klasse fra Project?
+    //Hvorfor ikke bruge Super.toString() i toString method?
+    //Klasse adgang: Hvorfor har vi valgt at fylde List<Task> fra subProjectRepository?
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    private int id;
-    private String name;
-    private String description;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private int daysUntilDone;
-    private double totalTaskDurationHourly;
-    private Status status;
-    private int projectId;
-    private String assignedTo;
-    private double budget;
-
-    //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
-    private SubProjectRepository subProjectRepository;
+    private int projectId;        // Parent project ID
+    private String assignedTo;    // Assigned employee/team
+    private List<Task> tasks = new ArrayList<>(); // List of associated tasks
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
-    public SubProject(int id, String name, String description, LocalDate startDate, LocalDate endDate, double totalTaskDurationHourly, Status status, int projectId, String assignedTo, double budget) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.startDate = startDate;
-        setEndDate(endDate);
-        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
-        this.totalTaskDurationHourly = totalTaskDurationHourly;
-        this.status = status;
+    // Full constructor
+    public SubProject(int id, String name, String description, LocalDate createdDate, LocalDate startDate, LocalDate endDate,
+                      Status status, double budget, int projectId, String assignedTo) {
+        super(id, name, description, createdDate, startDate, endDate, status, budget); // Call parent constructor
         this.projectId = projectId;
         this.assignedTo = assignedTo;
-        setBudget(budget);
+
+        this.totalEstHours = calculateTotalEstHoursForSubProject(); // Use SubProject's method
+        this.actualPrice = calculateActualPriceForSubProject();     // Use SubProject's method
     }
 
-    // Constructor without `id` for new subprojects
-    public SubProject(String name, String description, LocalDate startDate, LocalDate endDate, double totalTaskDurationHourly, Status status, int projectId, String assignedTo, double budget) {
-        this.name = name;
-        this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
-        this.totalTaskDurationHourly = totalTaskDurationHourly;
-        this.status = status;
+    // Constructor without ID
+    public SubProject(String name, String description, LocalDate createdDate, LocalDate startDate, LocalDate endDate, Status status,
+                      double budget, int projectId, String assignedTo) {
+        super(name, description, createdDate, startDate, endDate, status, budget); // Call parent constructor
         this.projectId = projectId;
         this.assignedTo = assignedTo;
-        setBudget(budget);
+
+        this.totalEstHours = calculateTotalEstHoursForSubProject(); // Use SubProject's method
+        this.actualPrice = calculateActualPriceForSubProject();     // Use SubProject's method
     }
 
-    public SubProject(String name, String description, LocalDate startDate, LocalDate endDate, double totalTaskDurationHourly, Status status, String assignedTo, double budget) {
-        this.name = name;
-        this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
-        this.totalTaskDurationHourly = totalTaskDurationHourly;
-        this.status = status;
+    // Constructor without projectId
+    public SubProject(String name, String description, LocalDate createdDate, LocalDate startDate, LocalDate endDate, Status status, String assignedTo, double budget) {
+        super(name, description, createdDate, startDate, endDate, status, budget); // Call parent constructor
         this.assignedTo = assignedTo;
-        setBudget(budget);
+
+        this.totalEstHours = calculateTotalEstHoursForSubProject(); // Use SubProject's method
+        this.actualPrice = calculateActualPriceForSubProject();     // Use SubProject's method
     }
 
     // Default constructor
@@ -71,38 +57,6 @@ public class SubProject {
     }
 
     //***GETTER METHODS***----------------------------------------------------------------------------------------------
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public int getDaysUntilDone() {
-        return daysUntilDone;
-    }
-
-    public double getTotalTaskDurationHourly() {
-        return totalTaskDurationHourly;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
     public int getProjectId() {
         return projectId;
     }
@@ -111,47 +65,11 @@ public class SubProject {
         return assignedTo;
     }
 
-    public double getBudget() {
-        return budget;
+    public List<Task> getTasks() {
+        return tasks;
     }
 
     //***SETTER METHODS***----------------------------------------------------------------------------------------------
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("End date cannot be before start date.");
-        } else {
-            this.endDate = endDate;
-        }
-    }
-
-    public void setDaysUntilDone(int daysUntilDone) {
-        this.daysUntilDone = daysUntilDone;
-    }
-
-    public void setTotalTaskDurationHourly(double totalTaskDurationHourly) {
-        this.totalTaskDurationHourly = totalTaskDurationHourly;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
     public void setProjectId(int projectId) {
         this.projectId = projectId;
     }
@@ -160,54 +78,42 @@ public class SubProject {
         this.assignedTo = assignedTo;
     }
 
-    public void setBudget(double budget) {
-        if (budget < 0) {
-            throw new IllegalArgumentException("Budget cannot be less than 0");
-        } else {
-            this.budget = budget;
-        }
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
-    //***METHODS***-----------------------------------------------------------------------------------------------------
-    private int calculateDaysUntilDone(LocalDate startDate, LocalDate endDate) {
-        if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("End date cannot be before start date.");
+    //***UTILITY METHODS***---------------------------------------------------------------------------------------------
+    public double calculateActualPriceForSubProject(){
+        double actualPrice = 0;
+        for (Task t : tasks){
+            actualPrice += t.getTaskPrice();
         }
-
-        // Calculate the difference in days
-        long days = ChronoUnit.DAYS.between(startDate, endDate);
-        return (int) days; // Cast to int and return
+        return actualPrice;
     }
 
-    public SubProject findSubProjectById(int id) {
-        SubProject subProject = null;
-        for (SubProject s : subProjectRepository.getAllSubProjects()) {
-            if (s.getId() == id) {
-                subProject = s;
-            } else {
-                throw new IllegalArgumentException("No SubProject with this ID");
-            }
+    public double calculateTotalEstHoursForSubProject(){
+        double totalEstHours = 0;
+        for (Task t : tasks){
+            totalEstHours += t.getTotalEstHours();
         }
-        return subProject;
+        return totalEstHours;
     }
 
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return "\nSubProject ID: " + id +
-                "\nSubProject name: " + name +
-                "\nDescription: " + description +
-                "\nStart date: " + startDate +
-                "\nEnd date=" + endDate +
-                "\nDays until finished: " + daysUntilDone +
-                "\nTotal task Duration (hour): " + totalTaskDurationHourly +
-                "\nStatus: " + status.getDisplayStatus() +
+        return "\nSubProject ID: " + getId() +
+                "\nSubProject name: " + getName() +
+                "\nDescription: " + getDescription()+
+                "\nCreated date: " + getCreatedDate() +
+                "\nStart date: " + getStartDate() +
+                "\nEnd date=" + getEndDate() +
+                "\nTotal task Duration (hour): " + actualPrice +
+                "\nStatus: " + getStatus().getDisplayStatus() +
                 "\nProject ID: " + projectId +
                 "\nAssigned to: " + (assignedTo != null ? assignedTo : "Not assigned") +
-                "\nBudget: " + budget;
-
+                "\nBudget: " + getBudget();
     }
-
 
     //***END***---------------------------------------------------------------------------------------------------------
 }

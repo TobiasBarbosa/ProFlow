@@ -123,7 +123,7 @@ public class ProfileController {
 
     //***DELETE PROFILE***---------------------------------------------------------------------------------------------D
     @PostMapping("/{name}/remove")
-    public String deleteProfile(@PathVariable int profileId) throws ProfileException {
+    public String deleteProfile(@PathVariable int profileId) throws ProfileException, SQLException {
         Profile profile = profileService.getProfileById(profileId);
         profileService.deleteProfile(profile.getId());
         return "redirect:/profile";
