@@ -20,6 +20,13 @@ public class ProfileService {
         this.profileRepository = profileRepository;
     }
     //***METHODS***-----------------------------------------------------------------------------------------------------
+    public boolean login(String profileEmail, String profilePassword) throws ProfileException{
+        Profile profile = profileRepository.getProfileByEmailAndPassword(profileEmail, profilePassword);
+        if (profile != null)
+            return profile.getPassword().equals(profilePassword);
+        return false;
+    }
+
     //***CREATE PROFILE***---------------------------------------------------------------------------------------------C
     public void addProfile(Profile profile ){
         profileRepository.addProfile(profile);
@@ -36,6 +43,10 @@ public class ProfileService {
 
     public List<Project> getProjectsFromProfile(int profileId) throws ProfileException {
         return profileRepository.getProjectsFromProfile(profileId);
+    }
+
+    public Profile getProfileByEmailAndPassword(String profileEmail, String profilePassword) throws ProfileException {
+        return profileRepository.getProfileByEmailAndPassword(profileEmail,profilePassword);
     }
 
     //***UPDATE PROFILE***---------------------------------------------------------------------------------------------U
