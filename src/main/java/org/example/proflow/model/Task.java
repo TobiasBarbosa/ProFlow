@@ -7,73 +7,69 @@ import java.time.temporal.ChronoUnit;
 
 @Component
 public class Task {
-    //TODO skal Task have et projectID også?
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private int id;
     private String name;
     private String description;
     private String location;
+    private final LocalDate createdDate; // final makes sure that the date will not change once the object is created
     private LocalDate startDate;
     private LocalDate endDate;
-    private int daysUntilDone;
-    private double hourlyDuration;
+    private double totalEstHours;
     private Status status;
     private int subProjectId;
     private String assignedTo;
     private double taskPrice;
 
-    //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
-    private SubProject subProject; // access to class
-
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
-    public Task(int id, String name, String description, String location, LocalDate startDate, LocalDate endDate, double hourlyDuration, Status status, int subProjectId, String assignedTo, double taskPrice) {
+    public Task(int id, String name, String description, String location, LocalDate startDate, LocalDate endDate, double totalEstHours, Status status, int subProjectId, String assignedTo, double taskPrice) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.location = location;
-        this.startDate = startDate;
-        //setEndDate(endDate,subProjectId);
-        this.endDate = endDate;
-        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
-        setHourlyDuration(hourlyDuration);
+        this.createdDate = LocalDate.now(); // Set only once during object creation
+        setStartDate(startDate);
+        setEndDate(endDate);
+        calculateDaysUntilDone(startDate, endDate);
+        setTotalEstHours(totalEstHours);
         this.status = status;
         this.subProjectId = subProjectId;
         this.assignedTo = assignedTo;
         setTaskPrice(taskPrice);
     }
 
-    public Task(String name, String description, String location, LocalDate startDate, LocalDate endDate, double hourlyDuration, Status status, int subProjectId, String assignedTo, double taskPrice) {
+    public Task(String name, String description, String location, LocalDate startDate, LocalDate endDate, double totalEstHours, Status status, int subProjectId, String assignedTo, double taskPrice) {
         this.name = name;
         this.description = description;
         this.location = location;
+        this.createdDate = LocalDate.now(); // Set only once during object creation
         this.startDate = startDate;
-//        setEndDate(endDate, subProjectId);
-        this.endDate = endDate;
-        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
-        setHourlyDuration(hourlyDuration);
+        setEndDate(endDate);
+        calculateDaysUntilDone(startDate, endDate);
+        setTotalEstHours(totalEstHours);
         this.status = status;
         this.subProjectId = subProjectId;
         this.assignedTo = assignedTo;
         setTaskPrice(taskPrice);
     }
 
-    public Task(String name, String description, String location, LocalDate startDate, LocalDate endDate, double hourlyDuration, Status status, String assignedTo, double taskPrice) {
+    public Task(String name, String description, String location, LocalDate startDate, LocalDate endDate, double totalEstHours, Status status, String assignedTo, double taskPrice) {
         this.name = name;
         this.description = description;
         this.location = location;
+        this.createdDate = LocalDate.now(); // Set only once during object creation
         this.startDate = startDate;
 //        setEndDate(endDate,subProjectId);
         this.endDate = endDate;
-        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
-        setHourlyDuration(hourlyDuration);
+        calculateDaysUntilDone(startDate, endDate);
+        setTotalEstHours(totalEstHours);
         this.status = status;
         this.assignedTo = assignedTo;
         setTaskPrice(taskPrice);
     }
 
-    public Task() {
-    }
+    //TODO how to make default constructor when attributes are final?
 
     //***GETTER METHODS***----------------------------------------------------------------------------------------------
     public int getId() {
@@ -92,6 +88,10 @@ public class Task {
         return location;
     }
 
+    public LocalDate getCreatedDate() {
+        return createdDate;
+    }
+
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -100,12 +100,8 @@ public class Task {
         return endDate;
     }
 
-    public double getHourlyDuration() {
-        return hourlyDuration;
-    }
-
-    public int getDaysUntilDone() {
-        return daysUntilDone;
+    public double getTotalEstHours() {
+        return totalEstHours;
     }
 
     public Status getStatus() {
@@ -141,34 +137,30 @@ public class Task {
         this.location = location;
     }
 
+    //TODO do we need a setter for createdDate? kan man ikke når attribut er final...
+
     public void setStartDate(LocalDate startDate) {
+        if (startDate == null) {
+            throw new IllegalArgumentException("Start date cannot be null.");
+        }
         this.startDate = startDate;
     }
-//TODO FIX the calculation;
 
-    //    public void setEndDate(LocalDate endDate, int subProjectId) {
-//        if(endDate.isBefore(startDate)){
-//            throw new IllegalArgumentException("End date cannot be before start date.");
-//        } if(endDate.isAfter(subProject.findSubProjectById(subProjectId).getEndDate())){
-//            throw new IllegalArgumentException("End date cannot be after SubProject end date");
-//        } else {
-//            this.endDate = endDate;
-//        }
-//    }
     public void setEndDate(LocalDate endDate) {
+        if (endDate == null) {
+            throw new IllegalArgumentException("End date cannot be null.");
+        }
+        if (endDate.isBefore(startDate)) {
+            throw new IllegalArgumentException("End date cannot be before start date.");
+        }
         this.endDate = endDate;
     }
 
-    public void setHourlyDuration(double hourlyDuration) {
-        if (hourlyDuration < 0) {
+    public void setTotalEstHours(double totalEstHours) {
+        if (totalEstHours < 0) {
             throw new IllegalArgumentException("Hourly duration cannot be less than 0");
-        } else {
-            this.hourlyDuration = hourlyDuration;
         }
-    }
-
-    public void setDaysUntilDone(int daysUntilDone) {
-        this.daysUntilDone = daysUntilDone;
+        this.totalEstHours = totalEstHours;
     }
 
     public void setStatus(Status status) {
@@ -186,9 +178,8 @@ public class Task {
     public void setTaskPrice(double taskPrice) {
         if (taskPrice < 0) {
             throw new IllegalArgumentException("Task price cannot be less than 0");
-        } else {
-            this.taskPrice = taskPrice;
         }
+        this.taskPrice = taskPrice;
     }
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
@@ -209,10 +200,11 @@ public class Task {
                 "\nTask name: " + name +
                 "\nDescription: " + description +
                 "\nLocation: " + location +
+                "\nCreated date: " + createdDate +
                 "\nStart date: " + startDate +
                 "\nEnd date=" + endDate +
-                "\nDays until finished: " + daysUntilDone +
-                "\nDuration in hours: " + hourlyDuration +
+                "\nDays until finished: " + calculateDaysUntilDone(startDate,endDate) + // what to do here?
+                "\nDuration in hours: " + totalEstHours +
                 "\nStatus: " + status.getDisplayStatus() +
                 "\nSubproject ID: " + subProjectId +
                 "\nAssigned to: " + (assignedTo != null ? assignedTo : "Not assigned") +

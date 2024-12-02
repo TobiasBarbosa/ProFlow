@@ -103,7 +103,6 @@ public class ProjectRepository {
 
 
     //***UPDATE PROJECT***---------------------------------------------------------------------------------------------U
-
     public void updateProject(Project project) throws SQLException {
         String updateProjectQuery = """
                     UPDATE Project 

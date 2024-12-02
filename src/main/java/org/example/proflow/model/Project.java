@@ -4,61 +4,82 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
-public class Project {
+public class Project { //hvorfor ikke abstract?
+
+    //TODO slet unødvendige constructors
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private int id;
     private String name;
     private String description;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private int daysUntilDone;
-    private double totalSubProjectDurationHourly;
-    private Status status;
-    private double budget;
-    private double actualPrice;
-    private int profileId;
+    private LocalDate createdDate; // Date the project was created
+    private LocalDate startDate;   // Start date of the project
+    private LocalDate endDate;     // End date of the project
+    protected double totalEstHours;  // Total estimated hours for the project (protected so SubProject kan tilgå variable)
+    private Status status;         // Project status
+    private double budget;         // Budget for the project
+    protected double actualPrice;    // Actual price spent (protected so SubProject kan tilgå variable)
+
+    private int profileId;         // Profile ID associated with the project
+    private List<SubProject> subProjects = new ArrayList<>(); // List of associated sub-projects
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
-    public Project(int id, String name, String description, LocalDate startDate, LocalDate endDate, double totalSubProjectDurationHourly, Status status, double budget, double actualPrice, int profileId) {
+    public Project(int id, String name, String description, LocalDate startDate, LocalDate endDate, Status status, double budget) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
-        setEndDate(endDate);
-        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
-        this.totalSubProjectDurationHourly = totalSubProjectDurationHourly;
+        this.endDate = endDate;
         this.status = status;
         this.budget = budget;
-        this.actualPrice = actualPrice;
+    }
+
+    // Full constructor with all attributes
+    public Project(int id, String name, String description, LocalDate startDate, LocalDate endDate, Status status, double budget, int profileId) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.createdDate = LocalDate.now();
+        this.startDate = startDate;
+        setEndDate(endDate); // Use setter to validate endDate
+        this.status = status;
+        this.budget = budget;
+        this.profileId = profileId;
+
+        calculateDaysUntilDone(startDate, endDate);
+        this.totalEstHours = calculateTotalEstHoursForProject();
+        this.actualPrice = calculateActualPriceForProject();
+    }
+
+    public Project(String name, String description, LocalDate startDate, LocalDate endDate, Status status, double budget, int profileId) {
+        this.name = name;
+        this.description = description;
+        createdDate = LocalDate.now();
+        this.startDate = startDate;
+        setEndDate(endDate);
+        calculateDaysUntilDone(startDate, endDate);
+        totalEstHours = calculateTotalEstHoursForProject();
+        this.status = status;
+        this.budget = budget;
+        actualPrice = calculateActualPriceForProject();
         this.profileId = profileId;
     }
 
-    public Project(String name, String description, LocalDate startDate, LocalDate endDate, double totalSubProjectDurationHourly, Status status, double budget, double actualPrice, int profileId) {
+    public Project(String name, String description, LocalDate startDate, LocalDate endDate, Status status, double budget) {
         this.name = name;
         this.description = description;
+        createdDate = LocalDate.now();
         this.startDate = startDate;
         setEndDate(endDate);
-        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
-        this.totalSubProjectDurationHourly = totalSubProjectDurationHourly;
+        calculateDaysUntilDone(startDate, endDate);
+        totalEstHours = calculateTotalEstHoursForProject();
         this.status = status;
         this.budget = budget;
-        this.actualPrice = actualPrice;
-        this.profileId = profileId;
-    }
-
-    public Project(String name, String description, LocalDate startDate, LocalDate endDate, double totalSubProjectDurationHourly, Status status, double budget, double actualPrice) {
-        this.name = name;
-        this.description = description;
-        this.startDate = startDate;
-        setEndDate(endDate);
-        daysUntilDone = calculateDaysUntilDone(startDate, endDate);
-        this.totalSubProjectDurationHourly = totalSubProjectDurationHourly;
-        this.status = status;
-        this.budget = budget;
-        this.actualPrice = actualPrice;
+        actualPrice = calculateActualPriceForProject();
     }
 
     public Project() {
@@ -77,6 +98,10 @@ public class Project {
         return description;
     }
 
+    public LocalDate getCreatedDate() {
+        return createdDate;
+    }
+
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -85,12 +110,8 @@ public class Project {
         return endDate;
     }
 
-    public int getDaysUntilDone() {
-        return daysUntilDone;
-    }
-
-    public double getTotalSubProjectDurationHourly() {
-        return totalSubProjectDurationHourly;
+    public double getTotalEstHours() {
+        return totalEstHours;
     }
 
     public Status getStatus() {
@@ -109,6 +130,10 @@ public class Project {
         return profileId;
     }
 
+    public List<SubProject> getSubProjects() {
+        return subProjects;
+    }
+
     //***SETTER METHODS***----------------------------------------------------------------------------------------------
     public void setId(int id) {
         this.id = id;
@@ -122,25 +147,33 @@ public class Project {
         this.description = description;
     }
 
+    public void setCreatedDate(LocalDate createdDate) {
+        if(endDate == null){
+            throw new IllegalArgumentException("Created date cannot be null");
+        }
+        this.createdDate = createdDate;
+    }
+
     public void setStartDate(LocalDate startDate) {
+        if (startDate == null) {
+            throw new IllegalArgumentException("Start date cannot be null.");
+        }
         this.startDate = startDate;
     }
 
     public void setEndDate(LocalDate endDate) {
+        if (endDate == null) {
+            throw new IllegalArgumentException("End date cannot be null.");
+        }
         if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("End date cannot be before start date.");
-        } else {
-            this.endDate = endDate;
         }
+        this.endDate = endDate;
     }
 
-    public void setDaysUntilDone(int daysUntilDone) {
-        this.daysUntilDone = daysUntilDone;
-    }
-
-    public void setTotalSubProjectDurationHourly(double totalSubProjectDurationHourly) {
-        this.totalSubProjectDurationHourly = totalSubProjectDurationHourly;
-    }
+    public void setTotalEstHours(double totalEstHours) {
+        this.totalEstHours = totalEstHours;
+    } // TODO set default value 0
 
     public void setStatus(Status status) {
         this.status = status;
@@ -152,22 +185,41 @@ public class Project {
 
     public void setActualPrice(double actualPrice) {
         this.actualPrice = actualPrice;
-    }
+    } //TODO set default value 0
 
     public void setProfileId(int profileId) {
         this.profileId = profileId;
     }
 
+    public void setSubProjects(List<SubProject> subProjects) {
+        this.subProjects = subProjects;
+    }
+
     //***METHODS***-----------------------------------------------------------------------------------------------------
-    private int calculateDaysUntilDone(LocalDate startDate, LocalDate endDate) {
-        // TODO kan datoer være null? (PO svar 29/11: nej)
+    public int calculateDaysUntilDone(LocalDate startDate, LocalDate endDate) {
+        if (startDate == null || endDate == null) {
+            throw new IllegalArgumentException("Start and end dates must not be null.");
+        }
         if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("End date cannot be before start date.");
         }
+        return (int) ChronoUnit.DAYS.between(startDate, endDate);
+    }
 
-        // Calculate the difference in days
-        long days = ChronoUnit.DAYS.between(startDate, endDate);
-        return (int) days; // Cast to int and return
+    public double calculateActualPriceForProject(){
+        double actualPrice = 0;
+        for (SubProject sp : subProjects){
+            actualPrice += sp.getActualPrice();
+        }
+        return actualPrice;
+    }
+
+    public double calculateTotalEstHoursForProject(){
+        double totalEstHours = 0;
+        for (SubProject sp : subProjects){
+            totalEstHours += sp.getTotalEstHours();
+        }
+        return totalEstHours;
     }
 
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
@@ -176,11 +228,11 @@ public class Project {
         return "\nProject ID: " + id +
                 "\nProject name: " + name +
                 "\nDescription: " + description +
+                "\nCreated date: " + createdDate +
                 "\nStart date: " + startDate +
                 "\nEnd date=" + endDate +
-                "\nDays until finished: " + daysUntilDone +
-                "\nTotal SubProject Duration (hour): " + totalSubProjectDurationHourly +
-                "\nStatus: " + status.getDisplayStatus() +
+                "\nTotal SubProject Duration (hour): " + totalEstHours +
+                "\nStatus: " + (status != null ? status.getDisplayStatus() : "N/A") +
                 "\nBudget: " + budget +
                 "\nActual Price: " + actualPrice +
                 "\nProfile ID: " + profileId;

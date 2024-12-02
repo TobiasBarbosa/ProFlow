@@ -30,7 +30,7 @@ public class ProfileService {
         return profileRepository.getAllProfiles();
     }
 
-    public Profile getProfileById(int id) throws ProfileException {
+    public Profile getProfileById(int id) throws ProfileException, SQLException {
         return profileRepository.getProfileById(id);
     }
 
