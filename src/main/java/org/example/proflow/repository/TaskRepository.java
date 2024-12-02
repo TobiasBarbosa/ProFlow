@@ -33,12 +33,15 @@ public class TaskRepository {
             ps.setString(6, task.getAssignedTo());
             ps.setInt(7, task.getSubProjectId());
             ps.setDouble(8, task.getTaskPrice());
-            ps.setDouble(9, task.getDaysUntilDone());
             ps.setString(10, task.getLocation());
+            //DaysUntillDone
             ps.executeUpdate();
         }
-    }
 
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 
     //***READ TASK(S)***-----------------------------------------------------------------------------------------------R
     public List<Task> getAllTasks() {
@@ -62,7 +65,6 @@ public class TaskRepository {
                 task.setAssignedTo(rs.getString("assigned_to"));
                 task.setSubProjectId(rs.getInt("sub_project_id"));
                 task.setTaskPrice(rs.getDouble("price"));
-                task.setDaysUntilDone((int) rs.getDouble("duration")); //TODO change type to int in database
                 task.setLocation(rs.getString("location"));
                 tasks.add(task);
             }
@@ -97,7 +99,7 @@ public class TaskRepository {
                     task.setSubProjectId(rs.getInt("sub_project_id"));
                     task.setTaskPrice(rs.getDouble("price")); // Not null column
                     //todo change type to int in database
-                    task.setDaysUntilDone((int) rs.getDouble("duration")); // Not null column
+                    //DaysUntill Done task.setDaysUntilDone((int) rs.getDouble("duration")); // Not null column
                     task.setLocation(rs.getString("location"));
                 }
             }
@@ -125,7 +127,7 @@ public class TaskRepository {
             ps.setString(6, task.getAssignedTo());
             ps.setInt(7, task.getSubProjectId());
             ps.setDouble(8, task.getTaskPrice());
-            ps.setDouble(9, task.getDaysUntilDone());
+            //DaysUntilDoneps.setDouble(9, task.getDaysUntilDone());
             ps.setString(10, task.getLocation());
             ps.setInt(11, task.getId());
             ps.executeUpdate();

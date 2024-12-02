@@ -38,7 +38,6 @@ public class SubProjectRepository {
             ps.setInt(7, subProject.getProjectId());
             ps.setObject(8, subProject.getBudget());//TODO change it to price
             ps.setDouble(9, subProject.getBudget());
-            ps.setInt(10, subProject.getDaysUntilDone());
             ps.executeUpdate();
         }
     }
@@ -65,7 +64,7 @@ public class SubProjectRepository {
                 subProject.setProjectId(rs.getInt("project_id"));
                 subProject.setBudget(rs.getObject("price", Double.class)); //TODO change it to price
                 subProject.setBudget(rs.getDouble("budget"));
-                subProject.setDaysUntilDone(rs.getInt("duration"));
+                //subProject.setDaysUntilDone(rs.getInt("duration"));
                 subProjects.add(subProject);
             }
         } catch (SQLException e) {
@@ -97,7 +96,7 @@ public class SubProjectRepository {
                     //todo change it to price
                     subProject.setBudget(rs.getObject("price") != null ? rs.getDouble("price") : null); // TODO lav om
                     subProject.setBudget(rs.getDouble("budget"));
-                    subProject.setDaysUntilDone(rs.getInt("duration"));
+                    //subProject.setDaysUntilDone(rs.getInt("duration"));
                 }
             }
         }
@@ -124,7 +123,7 @@ public class SubProjectRepository {
             ps.setInt(7, subProject.getProjectId());
             ps.setObject(8, subProject.getActualPrice());//TODO lav om?
             ps.setDouble(9, subProject.getBudget());
-            ps.setInt(10, subProject.getDaysUntilDone());
+            //ps.setInt(10, subProject.getDaysUntilDone());
             ps.setInt(11, subProject.getId());
             ps.executeUpdate();
         }
@@ -144,7 +143,7 @@ public class SubProjectRepository {
     }
 
     //***OTHER METHODS***-----------------------------------------------------------------------------------------------
-    public void getSubProjectsForProject() throws SQLException{
+    public void getTasksForSubProject() throws SQLException{
 
         for (SubProject subProject : getAllSubProjects()){
             List<Task> tasks = new ArrayList<>();

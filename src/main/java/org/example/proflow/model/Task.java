@@ -8,27 +8,52 @@ import java.time.temporal.ChronoUnit;
 @Component
 public class Task {
 
+    //^^^EXAM QUESTION^^^-----------------------------------------------------------------------------------------------
+    //Arveforhold: Hvorfor nedarver den her klasse ikke SubProject // eller bliver en subklasse?
+    //CreatedDate - Hvorfor har vi valgt at lave createdDate final - problematikker?
+    //Duplikering af kode af caculateDaysUntilDone...kunne man have genbrugt Projects metode (som er den samme)??
+
+    //***TO DO***-------------------------------------------------------------------------------------------------------
+    //TODO lav createdDate attribute final
+
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    private int id;
-    private String name;
-    private String description;
-    private String location;
-    private final LocalDate createdDate; // final makes sure that the date will not change once the object is created
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private double totalEstHours;
-    private Status status;
-    private int subProjectId;
-    private String assignedTo;
-    private double taskPrice;
+    private int id;                      // Task ID, unique identifier for the task.
+    private String name;                 // Name of the task.
+    private String description;          // Description of the task.
+    private String location;             // Location where the task is performed.
+    private LocalDate createdDate; // final ensures this date cannot be changed once assigned.
+    private LocalDate startDate;         // The start date of the task.
+    private LocalDate endDate;           // The end date of the task.
+    private double totalEstHours;        // Estimated hours to complete the task.
+    private Status status;               // The current status of the task.
+    private int subProjectId;            // ID of the subproject this task is associated with.
+    private String assignedTo;           // Person to whom the task is assigned.
+    private double taskPrice;            // Price for completing the task.
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
-    public Task(int id, String name, String description, String location, LocalDate startDate, LocalDate endDate, double totalEstHours, Status status, int subProjectId, String assignedTo, double taskPrice) {
+    // FULL constructor with all fields
+    public Task(int id, String name, String description, String location,LocalDate createdDate, LocalDate startDate, LocalDate endDate, double totalEstHours, Status status, int subProjectId, String assignedTo, double taskPrice) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.location = location;
-        this.createdDate = LocalDate.now(); // Set only once during object creation
+        setCreatedDate(createdDate); // Set date once at object creation
+        setStartDate(startDate);
+        setEndDate(endDate);
+        calculateDaysUntilDone(startDate, endDate); // Calculate days from start to end date.
+        setTotalEstHours(totalEstHours);
+        this.status = status;
+        this.subProjectId = subProjectId;
+        this.assignedTo = assignedTo;
+        setTaskPrice(taskPrice);
+    }
+
+    // Constructor without the task ID, but all other fields
+    public Task(String name, String description, String location, LocalDate createdDate, LocalDate startDate, LocalDate endDate, double totalEstHours, Status status, int subProjectId, String assignedTo, double taskPrice) {
+        this.name = name;
+        this.description = description;
+        this.location = location;
+        setCreatedDate(createdDate); // Set only once during object creation
         setStartDate(startDate);
         setEndDate(endDate);
         calculateDaysUntilDone(startDate, endDate);
@@ -39,34 +64,22 @@ public class Task {
         setTaskPrice(taskPrice);
     }
 
-    public Task(String name, String description, String location, LocalDate startDate, LocalDate endDate, double totalEstHours, Status status, int subProjectId, String assignedTo, double taskPrice) {
+    // Constructor without subProjectId
+    public Task(String name, String description, String location, LocalDate createdDate, LocalDate startDate, LocalDate endDate, double totalEstHours, Status status, String assignedTo, double taskPrice) {
         this.name = name;
         this.description = description;
         this.location = location;
-        this.createdDate = LocalDate.now(); // Set only once during object creation
-        this.startDate = startDate;
+        setCreatedDate(createdDate); // Set only once during object creation
+        setStartDate(startDate);
         setEndDate(endDate);
         calculateDaysUntilDone(startDate, endDate);
         setTotalEstHours(totalEstHours);
         this.status = status;
-        this.subProjectId = subProjectId;
         this.assignedTo = assignedTo;
         setTaskPrice(taskPrice);
     }
 
-    public Task(String name, String description, String location, LocalDate startDate, LocalDate endDate, double totalEstHours, Status status, String assignedTo, double taskPrice) {
-        this.name = name;
-        this.description = description;
-        this.location = location;
-        this.createdDate = LocalDate.now(); // Set only once during object creation
-        this.startDate = startDate;
-//        setEndDate(endDate,subProjectId);
-        this.endDate = endDate;
-        calculateDaysUntilDone(startDate, endDate);
-        setTotalEstHours(totalEstHours);
-        this.status = status;
-        this.assignedTo = assignedTo;
-        setTaskPrice(taskPrice);
+    public Task(){
     }
 
     //TODO how to make default constructor when attributes are final?
@@ -137,7 +150,12 @@ public class Task {
         this.location = location;
     }
 
-    //TODO do we need a setter for createdDate? kan man ikke når attribut er final...
+    public void setCreatedDate(LocalDate createdDate) {
+        if(endDate == null){
+            throw new IllegalArgumentException("Created date cannot be null");
+        }
+        this.createdDate = createdDate;
+    }
 
     public void setStartDate(LocalDate startDate) {
         if (startDate == null) {
@@ -183,14 +201,11 @@ public class Task {
     }
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
-    private int calculateDaysUntilDone(LocalDate startDate, LocalDate endDate) {
+    public int calculateDaysUntilDone(LocalDate startDate, LocalDate endDate) {
         if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("End date cannot be before start date.");
         }
-
-        // Calculate the difference in days
-        long days = ChronoUnit.DAYS.between(startDate, endDate);
-        return (int) days; // Cast to int and returnn
+        return (int) ChronoUnit.DAYS.between(startDate, endDate);
     }
 
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
@@ -203,7 +218,7 @@ public class Task {
                 "\nCreated date: " + createdDate +
                 "\nStart date: " + startDate +
                 "\nEnd date=" + endDate +
-                "\nDays until finished: " + calculateDaysUntilDone(startDate,endDate) + // what to do here?
+                "\nDays until finished: " + calculateDaysUntilDone(startDate,endDate) +
                 "\nDuration in hours: " + totalEstHours +
                 "\nStatus: " + status.getDisplayStatus() +
                 "\nSubproject ID: " + subProjectId +

@@ -70,8 +70,8 @@ public class TaskController {
         model.addAttribute("location", task.getLocation());
         model.addAttribute("startDate", task.getStartDate());
         model.addAttribute("endDate", task.getEndDate());
-        model.addAttribute("daysUntilDone", task.getDaysUntilDone());
-        model.addAttribute("hourlyDuration", task.getHourlyDuration());
+        //model.addAttribute("daysUntilDone", task.getDaysUntilDone());
+        //model.addAttribute("hourlyDuration", task.getHourlyDuration());
         model.addAttribute("status", task.getStatus());
         model.addAttribute("subProjectId", task.getSubProjectId());
         model.addAttribute("assignedTo", task.getAssignedTo());

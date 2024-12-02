@@ -1,5 +1,6 @@
 package org.example.proflow.model;
 
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -10,41 +11,50 @@ import java.util.List;
 @Component
 public class Project { //hvorfor ikke abstract?
 
-    //TODO slet unødvendige constructors
+    //^^^EXAM QUESTIONS^^^----------------------------------------------------------------------------------------------
+    //Hvorfor er den her klasse ikke abstract?
+
+    //***TO DO***-------------------------------------------------------------------------------------------------------
+    // TODO slet unødvendige constructors
+    //TODO lav createdDate final
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    private int id;
-    private String name;
-    private String description;
-    private LocalDate createdDate; // Date the project was created
-    private LocalDate startDate;   // Start date of the project
-    private LocalDate endDate;     // End date of the project
-    protected double totalEstHours;  // Total estimated hours for the project (protected so SubProject kan tilgå variable)
-    private Status status;         // Project status
-    private double budget;         // Budget for the project
-    protected double actualPrice;    // Actual price spent (protected so SubProject kan tilgå variable)
+    private int id;                       // Project ID
+    private String name;                  // Project name
+    private String description;           // Project description
+    private LocalDate createdDate;  // Date the project was created
+    private LocalDate startDate;          // Start date of the project
+    private LocalDate endDate;            // End date of the project
+    protected double totalEstHours;       // Total estimated hours for the project (protected so SubProject kan tilgå variable)
+    private Status status;                // Project status
+    private double budget;                // Budget for the project
+    protected double actualPrice;         // Actual price spent (protected so SubProject kan tilgå variable)
 
-    private int profileId;         // Profile ID associated with the project
+    //***UNIQUE ATTRIBUTES***-------------------------------------------------------------------------------------------
+    private int profileId;          // Profile ID associated with the project
     private List<SubProject> subProjects = new ArrayList<>(); // List of associated sub-projects
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
-    public Project(int id, String name, String description, LocalDate startDate, LocalDate endDate, Status status, double budget) {
+    public Project(int id, String name, String description, LocalDate createdDate, LocalDate startDate, LocalDate endDate,
+                   Status status, double budget) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.startDate = startDate;
+        setCreatedDate(createdDate);
+        setStartDate(startDate);
         this.endDate = endDate;
         this.status = status;
         this.budget = budget;
     }
 
     // Full constructor with all attributes
-    public Project(int id, String name, String description, LocalDate startDate, LocalDate endDate, Status status, double budget, int profileId) {
+    public Project(int id, String name, String description, LocalDate createdDate, LocalDate startDate, LocalDate endDate,
+                   Status status, double budget, int profileId) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.createdDate = LocalDate.now();
-        this.startDate = startDate;
+        setCreatedDate(createdDate);
+        setStartDate(startDate);
         setEndDate(endDate); // Use setter to validate endDate
         this.status = status;
         this.budget = budget;
@@ -55,11 +65,12 @@ public class Project { //hvorfor ikke abstract?
         this.actualPrice = calculateActualPriceForProject();
     }
 
-    public Project(String name, String description, LocalDate startDate, LocalDate endDate, Status status, double budget, int profileId) {
+    public Project(String name, String description, LocalDate createdDate, LocalDate startDate, LocalDate endDate,
+                   Status status, double budget, int profileId) {
         this.name = name;
         this.description = description;
-        createdDate = LocalDate.now();
-        this.startDate = startDate;
+        setCreatedDate(createdDate);
+        setStartDate(startDate);
         setEndDate(endDate);
         calculateDaysUntilDone(startDate, endDate);
         totalEstHours = calculateTotalEstHoursForProject();
@@ -69,11 +80,12 @@ public class Project { //hvorfor ikke abstract?
         this.profileId = profileId;
     }
 
-    public Project(String name, String description, LocalDate startDate, LocalDate endDate, Status status, double budget) {
+    public Project(String name, String description, LocalDate createdDate, LocalDate startDate, LocalDate endDate,
+                   Status status, double budget) {
         this.name = name;
         this.description = description;
-        createdDate = LocalDate.now();
-        this.startDate = startDate;
+        setCreatedDate(createdDate);
+        setStartDate(startDate);
         setEndDate(endDate);
         calculateDaysUntilDone(startDate, endDate);
         totalEstHours = calculateTotalEstHoursForProject();

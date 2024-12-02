@@ -71,8 +71,8 @@ public class SubProjectController {
         model.addAttribute("description", subProject.getDescription());
         model.addAttribute("startDate", subProject.getStartDate());
         model.addAttribute("endDate", subProject.getEndDate());
-        model.addAttribute("daysUntilDone", subProject.getDaysUntilDone());
-        model.addAttribute("totalTaskDurationHourly", subProject.getTotalTaskDurationHourly());
+        //model.addAttribute("daysUntilDone", subProject.getDaysUntilDone());
+        //model.addAttribute("totalTaskDurationHourly", subProject.getTotalTaskDurationHourly());
         model.addAttribute("status", subProject.getStatus());
         model.addAttribute("projectId", subProject.getProjectId());
         model.addAttribute("assignedTo", subProject.getAssignedTo());

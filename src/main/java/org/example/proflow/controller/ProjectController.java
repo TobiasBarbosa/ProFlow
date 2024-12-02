@@ -81,8 +81,8 @@ public class ProjectController {
         model.addAttribute("description", project.getDescription());
         model.addAttribute("startDate", project.getStartDate());
         model.addAttribute("endDate", project.getEndDate());
-        model.addAttribute("daysUntilDone", project.getDaysUntilDone());
-        model.addAttribute("totalSubProjectDurationHourly", project.getTotalSubProjectDurationHourly());
+        //model.addAttribute("daysUntilDone", project.getDaysUntilDone());
+        //model.addAttribute("totalSubProjectDurationHourly", project.getTotalSubProjectDurationHourly());
         model.addAttribute("status", project.getStatus());
         model.addAttribute("budget", project.getBudget());
         model.addAttribute("actualPrice", project.getActualPrice());

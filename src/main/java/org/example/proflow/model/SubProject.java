@@ -8,7 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class SubProject extends Project{ //TODO lav om til subklasse
+public class SubProject extends Project{
+
+    //^^^EXAM QUESTIONS^^^----------------------------------------------------------------------------------------------
+    //Hvorfor nedarver den her klasse fra Project?
+    //Hvorfor ikke bruge Super.toString() i toString method?
+    //Klasse adgang: Hvorfor har vi valgt at fylde List<Task> fra subProjectRepository?
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private int projectId;        // Parent project ID
@@ -17,34 +22,34 @@ public class SubProject extends Project{ //TODO lav om til subklasse
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
     // Full constructor
-    public SubProject(int id, String name, String description, LocalDate startDate, LocalDate endDate,
+    public SubProject(int id, String name, String description, LocalDate createdDate, LocalDate startDate, LocalDate endDate,
                       Status status, double budget, int projectId, String assignedTo) {
-        super(id, name, description, startDate, endDate, status, budget); // Call parent constructor
+        super(id, name, description, createdDate, startDate, endDate, status, budget); // Call parent constructor
         this.projectId = projectId;
         this.assignedTo = assignedTo;
 
         this.totalEstHours = calculateTotalEstHoursForSubProject(); // Use SubProject's method
-        this.actualPrice = calculateActualPriceForSubProject(); // Use SubProject's method
+        this.actualPrice = calculateActualPriceForSubProject();     // Use SubProject's method
     }
 
     // Constructor without ID
-    public SubProject(String name, String description, LocalDate startDate, LocalDate endDate, Status status,
+    public SubProject(String name, String description, LocalDate createdDate, LocalDate startDate, LocalDate endDate, Status status,
                       double budget, int projectId, String assignedTo) {
-        super(name, description, startDate, endDate, status, budget); // Call parent constructor
+        super(name, description, createdDate, startDate, endDate, status, budget); // Call parent constructor
         this.projectId = projectId;
         this.assignedTo = assignedTo;
 
         this.totalEstHours = calculateTotalEstHoursForSubProject(); // Use SubProject's method
-        this.actualPrice = calculateActualPriceForSubProject();
+        this.actualPrice = calculateActualPriceForSubProject();     // Use SubProject's method
     }
 
     // Constructor without projectId
-    public SubProject(String name, String description, LocalDate startDate, LocalDate endDate, Status status, String assignedTo, double budget) {
-        super(name, description, startDate, endDate, status, budget); // Call parent constructor
+    public SubProject(String name, String description, LocalDate createdDate, LocalDate startDate, LocalDate endDate, Status status, String assignedTo, double budget) {
+        super(name, description, createdDate, startDate, endDate, status, budget); // Call parent constructor
         this.assignedTo = assignedTo;
 
         this.totalEstHours = calculateTotalEstHoursForSubProject(); // Use SubProject's method
-        this.actualPrice = calculateActualPriceForSubProject();
+        this.actualPrice = calculateActualPriceForSubProject();     // Use SubProject's method
     }
 
     // Default constructor
