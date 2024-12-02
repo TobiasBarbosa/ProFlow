@@ -11,7 +11,7 @@ public class Task {
     //^^^EXAM QUESTION^^^-----------------------------------------------------------------------------------------------
     //Arveforhold: Hvorfor nedarver den her klasse ikke SubProject // eller bliver en subklasse?
     //CreatedDate - Hvorfor har vi valgt at lave createdDate final - problematikker?
-    //Duplikering af kode af caculateDaysUntilDone...kunne man have genbrugt Projects metode (som er den samme)??
+    //Duplikering af kode af caculateDaysUntilDone...kunne man have genbrugt Projects metode (som er den samme)???
 
     //***TO DO***-------------------------------------------------------------------------------------------------------
     //TODO lav createdDate attribute final
