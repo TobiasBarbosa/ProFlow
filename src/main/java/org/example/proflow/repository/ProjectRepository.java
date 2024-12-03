@@ -45,8 +45,8 @@ public class ProjectRepository {
             ps.setString(7, project.getStatus().getDisplayStatus());
             ps.setDouble(8, project.getBudget());
             ps.setObject(9, project.getActualPrice());
-            ps.setInt(10, project.getProfileId());// Use setObject for nullable columns
-
+            ps.setInt(10, project.getProfileId());// //TODO hvordan henter vi profileId?  Use setObject for nullable columns
+            //TODO hvordan håndterer vi calculateDaysUntilDone?
             //ps.setInt(9, project.calculateDaysUntilDone(project.getStartDate(),project.getEndDate())); //TODO slet?
             ps.executeUpdate();
         }
@@ -75,6 +75,7 @@ public class ProjectRepository {
                     project.setBudget(rs.getDouble("budget"));
                     project.setActualPrice(rs.getDouble("actual_price"));
                     project.setProfileId(rs.getInt("profile_id"));
+                    //TODO hvordan håndterer vi calculateDaysUntilDone?
                     //Double actualPrice = rs.getObject("actual_price", Double.class);
                     //project.setActualPrice(actualPrice != null ? actualPrice : 0.0); // Default to 0.0 if null
                 }
@@ -104,7 +105,7 @@ public class ProjectRepository {
                 project.setBudget(rs.getDouble("budget"));
                 project.setActualPrice(rs.getDouble("actual_price"));
                 project.setProfileId(rs.getInt("profile_id"));
-                //project.setDaysUntilDone(rs.getInt("duration"));
+                //project.setDaysUntilDone(rs.getInt("duration")); //TODO hvordan håndterer vi calculateDaysUntilDone?
                 // Handle null for actual_price explicitly
                 //Double actualPrice = rs.getObject("actual_price", Double.class);
                 //project.setActualPrice(actualPrice != null ? actualPrice : 0.0); // Default to 0.0 if null
@@ -120,7 +121,7 @@ public class ProjectRepository {
     public void updateProject(Project project) throws SQLException {
         String updateProjectQuery = """
                     UPDATE Project 
-                    SET name = ?, description = ?, start_date = ?, end_date = ?, total_est_hours = ?, status = ?, budget = ?, actual_price = ?, profile_id = ? 
+                    SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, budget = ?
                     WHERE id = ?
                 """;
 
@@ -129,18 +130,16 @@ public class ProjectRepository {
 
             //id can not change
             //createdDate can not change
+            //totalEstHours can not change
+            //actualPrice can not change
             //profileId can not change
             ps.setString(1, project.getName());
             ps.setString(2, project.getDescription());
             ps.setDate(3, Date.valueOf(project.getStartDate()));
             ps.setDate(4, Date.valueOf(project.getEndDate()));
-            ps.setDouble(5, project.getTotalEstHours());
-            ps.setString(6, project.getStatus().name());
-            ps.setDouble(7, project.getBudget());
-            ps.setDouble(8, project.getActualPrice());
-            ps.setInt(9, project.getProfileId());
-            //ps.setInt(8, project.getDaysUntilDone());
-            //ps.setInt(10, project.getId());
+            ps.setString(5, project.getStatus().name());
+            ps.setDouble(6, project.getBudget());
+
             ps.executeUpdate();
         }
     }

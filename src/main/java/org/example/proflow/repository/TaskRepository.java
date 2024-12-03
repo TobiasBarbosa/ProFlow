@@ -35,15 +35,15 @@ public class TaskRepository {
             ps.setString(1, task.getName());
             ps.setString(2, task.getDescription());
             ps.setString(3, task.getLocation());
-            ps.setDate(4, Date.valueOf(task.getCreatedDate()));
+            ps.setDate(4, Date.valueOf(task.getCreatedDate())); //TODO automatiser createdDate?
             ps.setDate(5, Date.valueOf(task.getStartDate()));
             ps.setDate(6, Date.valueOf(task.getEndDate()));
             ps.setDouble(7,task.getTotalEstHours());
             ps.setString(8, task.getStatus().name());
-            ps.setInt(9, task.getSubProjectId());
+            ps.setInt(9, task.getSubProjectId()); //TODO hvordan henter vi subProjectId?
             ps.setString(10, task.getAssignedTo());
             ps.setDouble(11, task.getTaskPrice());
-            //TODO DaysUntillDone ?
+            //TODO hvordan håndterer vi  calculateDaysUntillDone ?
 
             ps.executeUpdate();
         }
@@ -78,6 +78,7 @@ public class TaskRepository {
                 task.setSubProjectId(rs.getInt("sub_project_id")); // TODO which one of these?
                 task.setAssignedTo(rs.getString("assigned_to"));
                 task.setTaskPrice(rs.getDouble("price"));
+                //TODO hvordan håndterer vi calculateDaysUntilDone?
 
                 tasks.add(task);
             }
@@ -113,6 +114,7 @@ public class TaskRepository {
                     task.setSubProjectId(rs.getInt("sub_project_id"));  // TODO which one of these?
                     task.setAssignedTo(rs.getString("assigned_to"));
                     task.setTaskPrice(rs.getDouble("price")); // Not null column
+                    //TODO hvordan håndterer vi calculateDaysUntilDone?
 
                 }
             }
@@ -124,7 +126,7 @@ public class TaskRepository {
     public void updateTask(Task task) throws SQLException {
         String updateTaskQuery = """
                     UPDATE Task 
-                    SET name = ?, description = ?, location = ?, created_date = ?, start_date = ?, end_date = ?, total_est_hours, status = ?, sub_project_id = ?, assigned_to = ?, price = ? 
+                    SET name = ?, description = ?, location = ?, start_date = ?, end_date = ?, total_est_hours, status = ?, assigned_to = ?, price = ? 
                     WHERE id = ?
                 """;
 
@@ -137,14 +139,12 @@ public class TaskRepository {
             ps.setString(1, task.getName());
             ps.setString(2, task.getDescription());
             ps.setString(3, task.getLocation());
-            ps.setDate(4, Date.valueOf(task.getCreatedDate())); // TODO slet?
-            ps.setDate(5, Date.valueOf(task.getStartDate()));
-            ps.setDate(6, Date.valueOf(task.getEndDate()));
-            ps.setDouble(7, task.getTotalEstHours());
-            ps.setString(8, task.getStatus().name());
-            ps.setInt(9, task.getSubProjectId()); //TODO slet?
-            ps.setString(10, task.getAssignedTo());
-            ps.setDouble(11, task.getTaskPrice());
+            ps.setDate(4, Date.valueOf(task.getStartDate()));
+            ps.setDate(5, Date.valueOf(task.getEndDate()));
+            ps.setDouble(6, task.getTotalEstHours());
+            ps.setString(7, task.getStatus().name());
+            ps.setString(8, task.getAssignedTo());
+            ps.setDouble(9, task.getTaskPrice());
             ps.executeUpdate();
         }
     }

@@ -45,11 +45,11 @@ public class SubProjectRepository {
             ps.setDate(5, Date.valueOf(subProject.getEndDate()));
             ps.setString(6, subProject.getStatus().name());
             ps.setDouble(7, subProject.getBudget());
-            ps.setInt(8, subProject.getProjectId());
+            ps.setInt(8, subProject.getProjectId()); //TODO hvordan henter vi projectId?
             ps.setString(9, subProject.getAssignedTo());
             ps.setDouble(10, subProject.getTotalEstHours());
             ps.setDouble(11, subProject.getActualPrice());
-
+            //TODO hvordan håndterer vi calculateDaysUntilDone?
             ps.executeUpdate();
         }
     }
@@ -77,7 +77,7 @@ public class SubProjectRepository {
                 subProject.setAssignedTo(rs.getString("assigned_to"));
                 subProject.setTotalEstHours(rs.getDouble("total_est_hours"));
                 subProject.setActualPrice(rs.getDouble("actual_price"));
-                //subProject.setBudget(rs.getObject("price", Double.class)); //TODO change it to price
+                //TODO hvordan håndterer vi calculateDaysUntilDone?
                 //subProject.setDaysUntilDone(rs.getInt("duration"));
                 subProjects.add(subProject);
             }
@@ -111,8 +111,7 @@ public class SubProjectRepository {
                     subProject.setAssignedTo(rs.getString("assigned_to"));
                     subProject.setTotalEstHours(rs.getDouble("total_est_hours"));
                     subProject.setActualPrice(rs.getDouble("actual_price"));
-
-                    //todo change it to price
+                    //TODO hvordan håndterer vi calculateDaysUntilDone?
                     //subProject.setBudget(rs.getObject("price") != null ? rs.getDouble("price") : null); // TODO lav om
                     //subProject.setDaysUntilDone(rs.getInt("duration"));
                 }
@@ -125,7 +124,7 @@ public class SubProjectRepository {
     public void updateSubProject(SubProject subProject) throws SQLException {
         String updateSubProjectQuery = """
                     UPDATE SubProject 
-                    SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, budget = ?, project_id = ?, assigned_to = ?, total_est_hours = ?, price = ? 
+                    SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, budget = ?, assigned_to = ?
                     WHERE id = ?
                 """;
 
@@ -136,17 +135,15 @@ public class SubProjectRepository {
             //createdDate can not change
             //projectId can not change
             //subProjectId can not change
+            //totalEstHours can not change
+            //actualPrice can not change
             ps.setString(1, subProject.getName());
             ps.setString(2, subProject.getDescription());
             ps.setDate(3, Date.valueOf(subProject.getStartDate()));
             ps.setDate(4, Date.valueOf(subProject.getEndDate()));
             ps.setString(5, subProject.getStatus().name());
             ps.setDouble(6, subProject.getBudget());
-            ps.setInt(7, subProject.getProjectId()); // TODO slet?
-            ps.setString(8, subProject.getAssignedTo());
-            ps.setDouble(9, subProject.getTotalEstHours());
-            ps.setDouble(10, subProject.getActualPrice());
-            ps.setInt(11, subProject.getId()); // TODO slet?
+            ps.setString(7, subProject.getAssignedTo());
             ps.executeUpdate();
         }
     }
