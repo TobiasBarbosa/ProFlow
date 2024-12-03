@@ -12,6 +12,12 @@ import java.util.List;
 @Repository
 public class TaskRepository {
 
+    //***EXAM QUESTIONS***----------------------------------------------------------------------------------------------
+
+    //***TO DO***-------------------------------------------------------------------------------------------------------
+    //TODO createdDate final?
+    //TODO updateTask hvilke værdier skal være med (se noter i metode)
+
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
@@ -37,8 +43,8 @@ public class TaskRepository {
             ps.setInt(9, task.getSubProjectId());
             ps.setString(10, task.getAssignedTo());
             ps.setDouble(11, task.getTaskPrice());
+            //TODO DaysUntillDone ?
 
-            //DaysUntillDone
             ps.executeUpdate();
         }
 
@@ -125,34 +131,23 @@ public class TaskRepository {
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateTaskQuery)) {
 
+            //id can not change
+            //createdDate can not change
+            //subProjectId can not change
             ps.setString(1, task.getName());
             ps.setString(2, task.getDescription());
             ps.setString(3, task.getLocation());
-            ps.setDate(4, Date.valueOf(task.getCreatedDate())); // TODO skal nok ikke være med?
+            ps.setDate(4, Date.valueOf(task.getCreatedDate())); // TODO slet?
             ps.setDate(5, Date.valueOf(task.getStartDate()));
             ps.setDate(6, Date.valueOf(task.getEndDate()));
             ps.setDouble(7, task.getTotalEstHours());
             ps.setString(8, task.getStatus().name());
-            ps.setInt(9, task.getSubProjectId());
+            ps.setInt(9, task.getSubProjectId()); //TODO slet?
             ps.setString(10, task.getAssignedTo());
             ps.setDouble(11, task.getTaskPrice());
             ps.executeUpdate();
         }
     }
-
-    //    private int id;                      // Task ID, unique identifier for the task.
-//    private String name;                 // Name of the task.
-//    private String description;          // Description of the task.
-//    private String location;             // Location where the task is performed.
-//    private LocalDate createdDate; // final ensures this date cannot be changed once assigned.
-//    private LocalDate startDate;         // The start date of the task.
-//    private LocalDate endDate;           // The end date of the task.
-//    private double totalEstHours;        // Estimated hours to complete the task.
-//    private Status status;               // The current status of the task.
-//    private int subProjectId;            // ID of the subproject this task is associated with.
-//    private String assignedTo;           // Person to whom the task is assigned.
-//    private double taskPrice;
-
 
     //***DELETE TASK***------------------------------------------------------------------------------------------------D
     public void deleteTask(int id) throws SQLException {

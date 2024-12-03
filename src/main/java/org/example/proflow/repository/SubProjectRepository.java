@@ -6,11 +6,18 @@ import org.example.proflow.model.Task;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class SubProjectRepository {
+
+    //***EXAM QUESTIONS***----------------------------------------------------------------------------------------------
+    // Kunne man have lavet en mere effektiv kode, eller mindre kode. eks.vis jdbc template??
+
+    //***TO DO***-------------------------------------------------------------------------------------------------------
+    //TODO createdDate final?
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private DataBaseConnection dataBaseConnection = new DataBaseConnection();
@@ -22,26 +29,30 @@ public class SubProjectRepository {
     //***CREATE SUBPROJECT***------------------------------------------------------------------------------------------C
     public void addSubProject(SubProject subProject) throws SQLException {
         String insertSubProjectQuery = """
-                    INSERT INTO SubProject (name, description, start_date, end_date, status, assigned_to, project_id, price, budget, duration)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO SubProject (name, description, created_date, start_date, end_date, status, budget, project_id, assigned_to, total_est_hours, actual_price)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(insertSubProjectQuery)) {
 
+            //Database setter SubProjectId
+            //How do we get projectId?
             ps.setString(1, subProject.getName());
             ps.setString(2, subProject.getDescription());
-            ps.setDate(3, Date.valueOf(subProject.getStartDate()));
-            ps.setDate(4, Date.valueOf(subProject.getEndDate()));
-            ps.setString(5, subProject.getStatus().name());
-            ps.setString(6, subProject.getAssignedTo());
-            ps.setInt(7, subProject.getProjectId());
-            ps.setObject(8, subProject.getBudget());//TODO change it to price
-            ps.setDouble(9, subProject.getBudget());
+            ps.setDate(3, Date.valueOf(subProject.getCreatedDate()));
+            ps.setDate(4, Date.valueOf(subProject.getStartDate()));
+            ps.setDate(5, Date.valueOf(subProject.getEndDate()));
+            ps.setString(6, subProject.getStatus().name());
+            ps.setDouble(7, subProject.getBudget());
+            ps.setInt(8, subProject.getProjectId());
+            ps.setString(9, subProject.getAssignedTo());
+            ps.setDouble(10, subProject.getTotalEstHours());
+            ps.setDouble(11, subProject.getActualPrice());
+
             ps.executeUpdate();
         }
     }
-
 
     //***READ SUBPROJECT(S)***-----------------------------------------------------------------------------------------R
     public List<SubProject> getAllSubProjects() {
@@ -57,13 +68,16 @@ public class SubProjectRepository {
                 subProject.setId(rs.getInt("id"));
                 subProject.setName(rs.getString("name"));
                 subProject.setDescription(rs.getString("description"));
+                subProject.setCreatedDate(rs.getDate("created_date").toLocalDate());
                 subProject.setStartDate(rs.getDate("start_date").toLocalDate());
                 subProject.setEndDate(rs.getDate("end_date").toLocalDate());
                 subProject.setStatus(Status.valueOf(rs.getString("status")));
-                subProject.setAssignedTo(rs.getString("assigned_to"));
-                subProject.setProjectId(rs.getInt("project_id"));
-                subProject.setBudget(rs.getObject("price", Double.class)); //TODO change it to price
                 subProject.setBudget(rs.getDouble("budget"));
+                subProject.setProjectId(rs.getInt("project_id"));
+                subProject.setAssignedTo(rs.getString("assigned_to"));
+                subProject.setTotalEstHours(rs.getDouble("total_est_hours"));
+                subProject.setActualPrice(rs.getDouble("actual_price"));
+                //subProject.setBudget(rs.getObject("price", Double.class)); //TODO change it to price
                 //subProject.setDaysUntilDone(rs.getInt("duration"));
                 subProjects.add(subProject);
             }
@@ -88,14 +102,18 @@ public class SubProjectRepository {
                     subProject.setId(rs.getInt("id"));
                     subProject.setName(rs.getString("name"));
                     subProject.setDescription(rs.getString("description"));
+                    subProject.setCreatedDate(rs.getDate("created_date").toLocalDate());
                     subProject.setStartDate(rs.getDate("start_date").toLocalDate());
                     subProject.setEndDate(rs.getDate("end_date").toLocalDate());
                     subProject.setStatus(Status.valueOf(rs.getString("status")));
-                    subProject.setAssignedTo(rs.getString("assigned_to"));
-                    subProject.setProjectId(rs.getInt("project_id"));
-                    //todo change it to price
-                    subProject.setBudget(rs.getObject("price") != null ? rs.getDouble("price") : null); // TODO lav om
                     subProject.setBudget(rs.getDouble("budget"));
+                    subProject.setProjectId(rs.getInt("project_id"));
+                    subProject.setAssignedTo(rs.getString("assigned_to"));
+                    subProject.setTotalEstHours(rs.getDouble("total_est_hours"));
+                    subProject.setActualPrice(rs.getDouble("actual_price"));
+
+                    //todo change it to price
+                    //subProject.setBudget(rs.getObject("price") != null ? rs.getDouble("price") : null); // TODO lav om
                     //subProject.setDaysUntilDone(rs.getInt("duration"));
                 }
             }
@@ -107,28 +125,31 @@ public class SubProjectRepository {
     public void updateSubProject(SubProject subProject) throws SQLException {
         String updateSubProjectQuery = """
                     UPDATE SubProject 
-                    SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, assigned_to = ?, project_id = ?, price = ?, budget = ?, duration = ? 
+                    SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, budget = ?, project_id = ?, assigned_to = ?, total_est_hours = ?, price = ? 
                     WHERE id = ?
                 """;
 
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateSubProjectQuery)) {
 
+            //id is already set
+            //createdDate can not change
+            //projectId can not change
+            //subProjectId can not change
             ps.setString(1, subProject.getName());
             ps.setString(2, subProject.getDescription());
             ps.setDate(3, Date.valueOf(subProject.getStartDate()));
             ps.setDate(4, Date.valueOf(subProject.getEndDate()));
             ps.setString(5, subProject.getStatus().name());
-            ps.setString(6, subProject.getAssignedTo());
-            ps.setInt(7, subProject.getProjectId());
-            ps.setObject(8, subProject.getActualPrice());//TODO lav om?
-            ps.setDouble(9, subProject.getBudget());
-            //ps.setInt(10, subProject.getDaysUntilDone());
-            ps.setInt(11, subProject.getId());
+            ps.setDouble(6, subProject.getBudget());
+            ps.setInt(7, subProject.getProjectId()); // TODO slet?
+            ps.setString(8, subProject.getAssignedTo());
+            ps.setDouble(9, subProject.getTotalEstHours());
+            ps.setDouble(10, subProject.getActualPrice());
+            ps.setInt(11, subProject.getId()); // TODO slet?
             ps.executeUpdate();
         }
     }
-
 
     //***DELETE SUBPROJECT***------------------------------------------------------------------------------------------D
     public void deleteSubProject(int id) throws SQLException {

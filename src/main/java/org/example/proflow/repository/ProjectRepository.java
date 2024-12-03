@@ -15,6 +15,7 @@ public class ProjectRepository {
     //TODO fix duration in database & methods
     //TODO make method that ensures warning when actualPrice passes budget
     //TODO what do we do with duration?
+    //TODO createdDate final?
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private DataBaseConnection dataBaseConnection = new DataBaseConnection();
@@ -25,24 +26,28 @@ public class ProjectRepository {
     //***CREATE PROJECT***---------------------------------------------------------------------------------------------C
     public void addProject(Project project) throws SQLException {
         String insertProjectQuery = """
-                    INSERT INTO Project (name, description, start_date, end_date, status, profile_id, total_est_hours, budget, duration, actual_price)
+                    INSERT INTO Project (name, description, created_date, start_date, end_date, total_est_hours, status, budget, actual_price, profile_id)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(insertProjectQuery)) {
 
-
+            //Database setter Id
+            //Hvordan fanger vi profileId?
+            //createdDate = hvordan setter vi dato automatisk?
             ps.setString(1, project.getName());
             ps.setString(2, project.getDescription());
-            ps.setDate(3, Date.valueOf(project.getStartDate()));
-            ps.setDate(4, Date.valueOf(project.getEndDate()));
-            ps.setString(5, project.getStatus().getDisplayStatus());
-            ps.setInt(6, project.getProfileId());
-            ps.setDouble(7, project.getTotalEstHours());
+            ps.setDate(3, Date.valueOf(project.getCreatedDate()));
+            ps.setDate(4, Date.valueOf(project.getStartDate()));
+            ps.setDate(5, Date.valueOf(project.getEndDate()));
+            ps.setDouble(6, project.getTotalEstHours());
+            ps.setString(7, project.getStatus().getDisplayStatus());
             ps.setDouble(8, project.getBudget());
-            ps.setInt(9, project.calculateDaysUntilDone(project.getStartDate(),project.getEndDate()));
-            ps.setObject(10, project.getActualPrice()); // Use setObject for nullable columns
+            ps.setObject(9, project.getActualPrice());
+            ps.setInt(10, project.getProfileId());// Use setObject for nullable columns
+
+            //ps.setInt(9, project.calculateDaysUntilDone(project.getStartDate(),project.getEndDate())); //TODO slet?
             ps.executeUpdate();
         }
     }
@@ -67,9 +72,9 @@ public class ProjectRepository {
                     project.setEndDate(rs.getDate("end_date").toLocalDate());
                     project.setTotalEstHours(rs.getDouble("total_est_hours"));
                     project.setStatus(Status.valueOf(rs.getString("status")));
-                    project.setProfileId(rs.getInt("profile_id"));
                     project.setBudget(rs.getDouble("budget"));
                     project.setActualPrice(rs.getDouble("actual_price"));
+                    project.setProfileId(rs.getInt("profile_id"));
                     //Double actualPrice = rs.getObject("actual_price", Double.class);
                     //project.setActualPrice(actualPrice != null ? actualPrice : 0.0); // Default to 0.0 if null
                 }
@@ -96,9 +101,9 @@ public class ProjectRepository {
                 project.setEndDate(rs.getDate("end_date").toLocalDate());
                 project.setTotalEstHours(rs.getDouble("total_est_hours"));
                 project.setStatus(Status.valueOf(rs.getString("status")));
-                project.setProfileId(rs.getInt("profile_id"));
                 project.setBudget(rs.getDouble("budget"));
                 project.setActualPrice(rs.getDouble("actual_price"));
+                project.setProfileId(rs.getInt("profile_id"));
                 //project.setDaysUntilDone(rs.getInt("duration"));
                 // Handle null for actual_price explicitly
                 //Double actualPrice = rs.getObject("actual_price", Double.class);
@@ -115,38 +120,30 @@ public class ProjectRepository {
     public void updateProject(Project project) throws SQLException {
         String updateProjectQuery = """
                     UPDATE Project 
-                    SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, profile_id = ?, budget = ?, duration = ?, actual_price = ? 
+                    SET name = ?, description = ?, start_date = ?, end_date = ?, total_est_hours = ?, status = ?, budget = ?, actual_price = ?, profile_id = ? 
                     WHERE id = ?
                 """;
 
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateProjectQuery)) {
 
+            //id can not change
+            //createdDate can not change
+            //profileId can not change
             ps.setString(1, project.getName());
             ps.setString(2, project.getDescription());
             ps.setDate(3, Date.valueOf(project.getStartDate()));
             ps.setDate(4, Date.valueOf(project.getEndDate()));
-            ps.setString(5, project.getStatus().name());
-            ps.setInt(6, project.getProfileId());
+            ps.setDouble(5, project.getTotalEstHours());
+            ps.setString(6, project.getStatus().name());
             ps.setDouble(7, project.getBudget());
+            ps.setDouble(8, project.getActualPrice());
+            ps.setInt(9, project.getProfileId());
             //ps.setInt(8, project.getDaysUntilDone());
-            ps.setObject(9, project.getActualPrice());
-            ps.setInt(10, project.getId());
+            //ps.setInt(10, project.getId());
             ps.executeUpdate();
         }
     }
-
-    //    private int id;                       // Project ID
-//    private String name;                  // Project name
-//    private String description;           // Project description
-//    private LocalDate createdDate;  // Date the project was created
-//    private LocalDate startDate;          // Start date of the project
-//    private LocalDate endDate;            // End date of the project
-//    protected double totalEstHours;       // Total estimated hours for the project (protected so SubProject kan tilgå variable)
-//    private Status status;                // Project status
-//    private double budget;                // Budget for the project
-//    protected double actualPrice;
-
 
     //***DELETE PROJECT***---------------------------------------------------------------------------------------------D
     public void deleteProject(int id) throws SQLException {
