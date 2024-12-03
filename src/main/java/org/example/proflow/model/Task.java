@@ -151,7 +151,7 @@ public class Task {
     }
 
     public void setCreatedDate(LocalDate createdDate) {
-        if(endDate == null){
+        if(createdDate == null){
             throw new IllegalArgumentException("Created date cannot be null");
         }
         this.createdDate = createdDate;
