@@ -15,6 +15,7 @@ public class Task {
 
     //***TO DO***-------------------------------------------------------------------------------------------------------
     //TODO lav createdDate attribute final
+    //TODO slet unødvendige constructors
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private int id;                      // Task ID, unique identifier for the task.

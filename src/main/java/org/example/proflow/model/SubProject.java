@@ -14,6 +14,10 @@ public class SubProject extends Project{
     //Hvorfor nedarver den her klasse fra Project?
     //Hvorfor ikke bruge Super.toString() i toString method?
     //Klasse adgang: Hvorfor har vi valgt at fylde List<Task> fra subProjectRepository?
+    //Hvorfor arver ikke
+
+    //***TO DO***-------------------------------------------------------------------------------------------------------
+    //TODO slet unødvendige constructors
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private int projectId;        // Parent project ID
