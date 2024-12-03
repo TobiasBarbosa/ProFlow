@@ -8,6 +8,7 @@ import org.example.proflow.service.ProfileService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import util.Validator;
 
 import java.awt.color.ProfileDataException;
 import java.sql.SQLException;
@@ -53,6 +54,8 @@ public class ProfileController {
 
     @GetMapping("/userProfile")
     public String showProfileDashboard(HttpSession session, Model model) throws ProfileException{
+
+
         Profile profile = (Profile) session.getAttribute("profile");
 
         if (profile == null) {
@@ -102,8 +105,11 @@ public class ProfileController {
     }
 
     //***UPDATE PROFILE***---------------------------------------------------------------------------------------------U
-    @GetMapping("/edit/{profileId}")
-    public String editProfile(@PathVariable("profileId") int profileId, Model model) throws ProfileException, SQLException {
+    @GetMapping("/edit/{profileId}") //TODO skal tage en metode ind i stedet, som tjekker om cookie matcher
+    public String editProfile(@PathVariable("profileId") int profileId, Model model, HttpSession session) throws ProfileException, SQLException {
+        if(!Validator.isValid(session, profileId)) {
+            //NO NO redirect
+        }
         Profile profile = profileService.getProfileById(profileId);
         model.addAttribute("profile", profile);
         model.addAttribute("profileName", profile.getFirstName());
