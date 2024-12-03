@@ -2,11 +2,15 @@ package org.example.proflow.model;
 
 public enum Status {
 
+    //***EXAM QUESTIONS***----------------------------------------------------------------------------------------------
+    //Hvorfor har vi valgt enum fremfor en boolean (især når der kun er to konstanter)?
+
+    //***TO DO***-------------------------------------------------------------------------------------------------------
+    //TODO PO spørgsmål - hvad vil PO have a dropdown valgmuligheder?
+
     //***ENUMS***-------------------------------------------------------------------------------------------------------
     ACTIVE("Active"),
     INACTIVE("Inactive");
-
-    //TODO PO spørgsmål - hvad vil PO have a dropdown valgmuligheder?
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     final String displayStatus;

@@ -15,26 +15,45 @@ public class Project { //hvorfor ikke abstract?
     //Hvorfor er den her klasse ikke abstract?
 
     //***TO DO***-------------------------------------------------------------------------------------------------------
-    // TODO slet unødvendige constructors
+    //TODO slet unødvendige constructors
     //TODO lav createdDate final
+    //TODO lav default value 0 - på dem som skal have det
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private int id;                       // Project ID
     private String name;                  // Project name
     private String description;           // Project description
-    private LocalDate createdDate;  // Date the project was created
+    private LocalDate createdDate;        // Date the project was created
     private LocalDate startDate;          // Start date of the project
     private LocalDate endDate;            // End date of the project
-    protected double totalEstHours;       // Total estimated hours for the project (protected so SubProject kan tilgå variable)
+    protected double totalEstHours;       // Total estimated hours for the project (protected so SubProject kan tilgå variable i underklasse)
     private Status status;                // Project status
     private double budget;                // Budget for the project
-    protected double actualPrice;         // Actual price spent (protected so SubProject kan tilgå variable)
+    protected double actualPrice;         // Actual price spent (protected so SubProject kan tilgå variable i underklasse)
 
     //***UNIQUE ATTRIBUTES***-------------------------------------------------------------------------------------------
-    private int profileId;          // Profile ID associated with the project
+    private int profileId;                // Profile ID associated with the project
     private List<SubProject> subProjects = new ArrayList<>(); // List of associated sub-projects
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
+    // Full constructor with all attributes
+    public Project(int id, String name, String description, LocalDate createdDate, LocalDate startDate, LocalDate endDate,
+                   Status status, double budget, int profileId) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        setCreatedDate(createdDate);
+        setStartDate(startDate);
+        setEndDate(endDate);
+        this.status = status;
+        setBudget(budget);
+        this.profileId = profileId;
+
+        calculateDaysUntilDone(startDate, endDate);
+        this.totalEstHours = calculateTotalEstHoursForProject();
+        this.actualPrice = calculateActualPriceForProject();
+    }
+
     public Project(int id, String name, String description, LocalDate createdDate, LocalDate startDate, LocalDate endDate,
                    Status status, double budget) {
         this.id = id;
@@ -44,25 +63,7 @@ public class Project { //hvorfor ikke abstract?
         setStartDate(startDate);
         setEndDate(endDate);
         this.status = status;
-        this.budget = budget;
-    }
-
-    // Full constructor with all attributes
-    public Project(int id, String name, String description, LocalDate createdDate, LocalDate startDate, LocalDate endDate,
-                   Status status, double budget, int profileId) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        setCreatedDate(createdDate);
-        setStartDate(startDate);
-        setEndDate(endDate); // Use setter to validate endDate
-        this.status = status;
-        this.budget = budget;
-        this.profileId = profileId;
-
-        calculateDaysUntilDone(startDate, endDate);
-        this.totalEstHours = calculateTotalEstHoursForProject();
-        this.actualPrice = calculateActualPriceForProject();
+        setBudget(budget);
     }
 
     public Project(String name, String description, LocalDate createdDate, LocalDate startDate, LocalDate endDate,
@@ -75,7 +76,7 @@ public class Project { //hvorfor ikke abstract?
         calculateDaysUntilDone(startDate, endDate);
         totalEstHours = calculateTotalEstHoursForProject();
         this.status = status;
-        this.budget = budget;
+        setBudget(budget);
         actualPrice = calculateActualPriceForProject();
         this.profileId = profileId;
     }
@@ -90,7 +91,7 @@ public class Project { //hvorfor ikke abstract?
         calculateDaysUntilDone(startDate, endDate);
         totalEstHours = calculateTotalEstHoursForProject();
         this.status = status;
-        this.budget = budget;
+        setBudget(budget);
         actualPrice = calculateActualPriceForProject();
     }
 
@@ -144,7 +145,7 @@ public class Project { //hvorfor ikke abstract?
 
     public List<SubProject> getSubProjects() {
         return subProjects;
-    }
+    } //TODO slet? bruges ikke (vi kan få liste i repo)
 
     //***SETTER METHODS***----------------------------------------------------------------------------------------------
     public void setId(int id) {
@@ -185,19 +186,22 @@ public class Project { //hvorfor ikke abstract?
 
     public void setTotalEstHours(double totalEstHours) {
         this.totalEstHours = totalEstHours;
-    } // TODO set default value 0
+    } // TODO set default value 0?
 
     public void setStatus(Status status) {
         this.status = status;
     }
 
     public void setBudget(double budget) {
+        if (budget < 0){
+            throw new IllegalArgumentException("budget can not be less than 0");
+        }
         this.budget = budget;
     }
 
     public void setActualPrice(double actualPrice) {
         this.actualPrice = actualPrice;
-    } //TODO set default value 0
+    } //TODO set default value 0?
 
     public void setProfileId(int profileId) {
         this.profileId = profileId;
@@ -207,7 +211,7 @@ public class Project { //hvorfor ikke abstract?
         this.subProjects = subProjects;
     }
 
-    //***METHODS***-----------------------------------------------------------------------------------------------------
+    //***UTILITY METHODS***---------------------------------------------------------------------------------------------
     public int calculateDaysUntilDone(LocalDate startDate, LocalDate endDate) {
         if (startDate == null || endDate == null) {
             throw new IllegalArgumentException("Start and end dates must not be null.");
@@ -237,17 +241,17 @@ public class Project { //hvorfor ikke abstract?
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return "\nProject ID: " + id +
-                "\nProject name: " + name +
-                "\nDescription: " + description +
-                "\nCreated date: " + createdDate +
-                "\nStart date: " + startDate +
-                "\nEnd date=" + endDate +
-                "\nTotal SubProject Duration (hour): " + totalEstHours +
-                "\nStatus: " + (status != null ? status.getDisplayStatus() : "N/A") +
-                "\nBudget: " + budget +
-                "\nActual Price: " + actualPrice +
-                "\nProfile ID: " + profileId;
+        return "\nProject ID: "                    + id            +
+                "\nProject name: "                 + name          +
+                "\nDescription: "                  + description   +
+                "\nCreated date: "                 + createdDate   +
+                "\nStart date: "                   + startDate     +
+                "\nEnd date="                      + endDate       +
+                "\nTotal Est Hours (SubProject): " + totalEstHours +
+                "\nStatus: "                       + status        +
+                "\nBudget: "                       + budget        +
+                "\nActual Price: "                 + actualPrice   +
+                "\nProfile ID: "                   + profileId;
     }
 
     //***END***---------------------------------------------------------------------------------------------------------

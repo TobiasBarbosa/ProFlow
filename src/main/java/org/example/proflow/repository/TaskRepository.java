@@ -33,20 +33,21 @@ public class TaskRepository {
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(insertTaskQuery)) {
 
+            //Id oprettes i database
             ps.setString(1, task.getName());
             ps.setString(2, task.getDescription());
             ps.setString(3, task.getLocation());
-            ps.setDate(4, Date.valueOf(task.getCreatedDate())); //TODO automatiser createdDate?
+            ps.setDate(4, Date.valueOf(task.getCreatedDate())); //TODO automatiser createdDate i database? (måske slet)
             ps.setDate(5, Date.valueOf(task.getStartDate()));
             ps.setDate(6, Date.valueOf(task.getEndDate()));
             ps.setDouble(7,task.getTotalEstHours());
             ps.setString(8, task.getStatus().name());
-            ps.setInt(9, task.getSubProjectId()); //TODO hvordan henter vi subProjectId?
+            ps.setInt(9, task.getSubProjectId()); //TODO hvordan henter vi subProjectId!!? (måske slet)
             ps.setString(10, task.getAssignedTo());
             ps.setDouble(11, task.getTaskPrice());
             //TODO hvordan håndterer vi  calculateDaysUntillDone ?
-
             ps.executeUpdate();
+
         }
 
         catch (SQLException e){
@@ -75,8 +76,7 @@ public class TaskRepository {
                 task.setEndDate(rs.getDate("end_date").toLocalDate());
                 task.setTotalEstHours(rs.getDouble("total_est_hours"));
                 task.setStatus(Status.valueOf(rs.getString("status")));
-                //int subProjectId = rs.getInt("sub_project_id");    // TODO which one of these?
-                task.setSubProjectId(rs.getInt("sub_project_id")); // TODO which one of these?
+                task.setSubProjectId(rs.getInt("sub_project_id"));
                 task.setAssignedTo(rs.getString("assigned_to"));
                 task.setTaskPrice(rs.getDouble("price"));
                 //TODO hvordan håndterer vi calculateDaysUntilDone?
@@ -111,8 +111,7 @@ public class TaskRepository {
                     task.setEndDate(rs.getDate("end_date").toLocalDate());
                     task.setTotalEstHours(rs.getDouble("total_est_hours"));
                     task.setStatus(Status.valueOf(rs.getString("status")));
-                    // int subProjectId = rs.getInt("sub_project_id");             // TODO which one of these?
-                    task.setSubProjectId(rs.getInt("sub_project_id"));  // TODO which one of these?
+                    task.setSubProjectId(rs.getInt("sub_project_id"));
                     task.setAssignedTo(rs.getString("assigned_to"));
                     task.setTaskPrice(rs.getDouble("price")); // Not null column
                     //TODO hvordan håndterer vi calculateDaysUntilDone?
