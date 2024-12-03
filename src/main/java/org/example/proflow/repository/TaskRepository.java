@@ -5,11 +5,19 @@ import org.example.proflow.model.Task;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class TaskRepository {
+
+    //***EXAM QUESTIONS***----------------------------------------------------------------------------------------------
+    //what?
+
+    //***TO DO***-------------------------------------------------------------------------------------------------------
+    //TODO createdDate final?
+    //TODO updateTask hvilke værdier skal være med (se noter i metode)
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private DataBaseConnection dataBaseConnection = new DataBaseConnection();
@@ -18,8 +26,8 @@ public class TaskRepository {
     //***CREATE TASK***------------------------------------------------------------------------------------------------C
     public void addTask(Task task) throws SQLException {
         String insertTaskQuery = """
-                    INSERT INTO Task (name, description, start_date, end_date, status, assigned_to, sub_project_id, price, duration, location)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO Task (name, description, location, created_date, start_date, end_date, total_est_hours, status, sub_project_id, assigned_to, price)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (Connection con = dataBaseConnection.getConnection();
@@ -27,14 +35,17 @@ public class TaskRepository {
 
             ps.setString(1, task.getName());
             ps.setString(2, task.getDescription());
-            ps.setDate(3, Date.valueOf(task.getStartDate()));
-            ps.setDate(4, Date.valueOf(task.getEndDate()));
-            ps.setString(5, task.getStatus().name());
-            ps.setString(6, task.getAssignedTo());
-            ps.setInt(7, task.getSubProjectId());
-            ps.setDouble(8, task.getTaskPrice());
-            ps.setString(10, task.getLocation());
-            //DaysUntillDone
+            ps.setString(3, task.getLocation());
+            ps.setDate(4, Date.valueOf(task.getCreatedDate())); //TODO automatiser createdDate?
+            ps.setDate(5, Date.valueOf(task.getStartDate()));
+            ps.setDate(6, Date.valueOf(task.getEndDate()));
+            ps.setDouble(7,task.getTotalEstHours());
+            ps.setString(8, task.getStatus().name());
+            ps.setInt(9, task.getSubProjectId()); //TODO hvordan henter vi subProjectId?
+            ps.setString(10, task.getAssignedTo());
+            ps.setDouble(11, task.getTaskPrice());
+            //TODO hvordan håndterer vi  calculateDaysUntillDone ?
+
             ps.executeUpdate();
         }
 
@@ -54,18 +65,22 @@ public class TaskRepository {
 
             while (rs.next()) {
                 Task task = new Task();
-                int subProjectId = rs.getInt("sub_project_id");
+
                 task.setId(rs.getInt("id"));
                 task.setName(rs.getString("name"));
                 task.setDescription(rs.getString("description"));
-                task.setStartDate(rs.getDate("start_date").toLocalDate());
-                //task.setEndDate(rs.getDate("end_date").toLocalDate(), subProjectId);
-                task.setEndDate(rs.getDate("end_date").toLocalDate());
-                task.setStatus(Status.valueOf(rs.getString("status")));
-                task.setAssignedTo(rs.getString("assigned_to"));
-                task.setSubProjectId(rs.getInt("sub_project_id"));
-                task.setTaskPrice(rs.getDouble("price"));
                 task.setLocation(rs.getString("location"));
+                task.setCreatedDate(rs.getDate("created_date").toLocalDate());
+                task.setStartDate(rs.getDate("start_date").toLocalDate());
+                task.setEndDate(rs.getDate("end_date").toLocalDate());
+                task.setTotalEstHours(rs.getDouble("total_est_hours"));
+                task.setStatus(Status.valueOf(rs.getString("status")));
+                //int subProjectId = rs.getInt("sub_project_id");    // TODO which one of these?
+                task.setSubProjectId(rs.getInt("sub_project_id")); // TODO which one of these?
+                task.setAssignedTo(rs.getString("assigned_to"));
+                task.setTaskPrice(rs.getDouble("price"));
+                //TODO hvordan håndterer vi calculateDaysUntilDone?
+
                 tasks.add(task);
             }
         } catch (SQLException e) {
@@ -73,7 +88,6 @@ public class TaskRepository {
         }
         return tasks;
     }
-
 
     //GET TASKS BY ID
     public Task getTaskById(int id) throws SQLException {
@@ -87,53 +101,54 @@ public class TaskRepository {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     task = new Task();
-                    int subProjectId = rs.getInt("sub_project_id");
+
                     task.setId(rs.getInt("id"));
                     task.setName(rs.getString("name"));
                     task.setDescription(rs.getString("description"));
-                    task.setStartDate(rs.getDate("start_date").toLocalDate());
-                    // task.setEndDate(rs.getDate("end_date").toLocalDate(), subProjectId);
-                    task.setEndDate(rs.getDate("end_date").toLocalDate());
-                    task.setStatus(Status.valueOf(rs.getString("status")));
-                    task.setAssignedTo(rs.getString("assigned_to"));
-                    task.setSubProjectId(rs.getInt("sub_project_id"));
-                    task.setTaskPrice(rs.getDouble("price")); // Not null column
-                    //todo change type to int in database
-                    //DaysUntill Done task.setDaysUntilDone((int) rs.getDouble("duration")); // Not null column
                     task.setLocation(rs.getString("location"));
+                    task.setCreatedDate(rs.getDate("created_date").toLocalDate());
+                    task.setStartDate(rs.getDate("start_date").toLocalDate());
+                    task.setEndDate(rs.getDate("end_date").toLocalDate());
+                    task.setTotalEstHours(rs.getDouble("total_est_hours"));
+                    task.setStatus(Status.valueOf(rs.getString("status")));
+                    // int subProjectId = rs.getInt("sub_project_id");             // TODO which one of these?
+                    task.setSubProjectId(rs.getInt("sub_project_id"));  // TODO which one of these?
+                    task.setAssignedTo(rs.getString("assigned_to"));
+                    task.setTaskPrice(rs.getDouble("price")); // Not null column
+                    //TODO hvordan håndterer vi calculateDaysUntilDone?
+
                 }
             }
         }
         return task;
     }
 
-
     //***UPDATE TASK***------------------------------------------------------------------------------------------------U
     public void updateTask(Task task) throws SQLException {
         String updateTaskQuery = """
                     UPDATE Task 
-                    SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, assigned_to = ?, sub_project_id = ?, price = ?, duration = ?, location = ? 
+                    SET name = ?, description = ?, location = ?, start_date = ?, end_date = ?, total_est_hours, status = ?, assigned_to = ?, price = ? 
                     WHERE id = ?
                 """;
 
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateTaskQuery)) {
 
+            //id can not change
+            //createdDate can not change
+            //subProjectId can not change
             ps.setString(1, task.getName());
             ps.setString(2, task.getDescription());
-            ps.setDate(3, Date.valueOf(task.getStartDate()));
-            ps.setDate(4, Date.valueOf(task.getEndDate()));
-            ps.setString(5, task.getStatus().name());
-            ps.setString(6, task.getAssignedTo());
-            ps.setInt(7, task.getSubProjectId());
-            ps.setDouble(8, task.getTaskPrice());
-            //DaysUntilDoneps.setDouble(9, task.getDaysUntilDone());
-            ps.setString(10, task.getLocation());
-            ps.setInt(11, task.getId());
+            ps.setString(3, task.getLocation());
+            ps.setDate(4, Date.valueOf(task.getStartDate()));
+            ps.setDate(5, Date.valueOf(task.getEndDate()));
+            ps.setDouble(6, task.getTotalEstHours());
+            ps.setString(7, task.getStatus().name());
+            ps.setString(8, task.getAssignedTo());
+            ps.setDouble(9, task.getTaskPrice());
             ps.executeUpdate();
         }
     }
-
 
     //***DELETE TASK***------------------------------------------------------------------------------------------------D
     public void deleteTask(int id) throws SQLException {

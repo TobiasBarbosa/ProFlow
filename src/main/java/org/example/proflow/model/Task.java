@@ -15,6 +15,7 @@ public class Task {
 
     //***TO DO***-------------------------------------------------------------------------------------------------------
     //TODO lav createdDate attribute final
+    //TODO slet unødvendige constructors
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private int id;                      // Task ID, unique identifier for the task.
@@ -28,7 +29,7 @@ public class Task {
     private Status status;               // The current status of the task.
     private int subProjectId;            // ID of the subproject this task is associated with.
     private String assignedTo;           // Person to whom the task is assigned.
-    private double taskPrice;            // Price for completing the task.
+    private double taskPrice;            // Total price for completing the task.
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
     // FULL constructor with all fields
@@ -151,7 +152,7 @@ public class Task {
     }
 
     public void setCreatedDate(LocalDate createdDate) {
-        if(endDate == null){
+        if(createdDate == null){
             throw new IllegalArgumentException("Created date cannot be null");
         }
         this.createdDate = createdDate;
