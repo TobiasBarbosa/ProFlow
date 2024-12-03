@@ -11,7 +11,7 @@ import java.util.List;
 public class SubProjectTest {
 
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
-    private final SubProject subProject = new SubProject();
+//    private final SubProject subProject = new SubProject();
 
     //***SUBPROJECT TEST METHODS***-------------------------------------------------------------------------------------
     //***JUNIT TEST***--------------------------------------------------------------------------------------------------
