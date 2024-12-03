@@ -28,7 +28,7 @@ public class Task {
     private Status status;               // The current status of the task.
     private int subProjectId;            // ID of the subproject this task is associated with.
     private String assignedTo;           // Person to whom the task is assigned.
-    private double taskPrice;            // Price for completing the task.
+    private double taskPrice;            // Total price for completing the task.
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
     // FULL constructor with all fields

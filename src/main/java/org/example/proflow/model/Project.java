@@ -42,7 +42,7 @@ public class Project { //hvorfor ikke abstract?
         this.description = description;
         setCreatedDate(createdDate);
         setStartDate(startDate);
-        this.endDate = endDate;
+        setEndDate(endDate);
         this.status = status;
         this.budget = budget;
     }
