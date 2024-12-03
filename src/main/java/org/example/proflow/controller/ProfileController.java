@@ -8,7 +8,7 @@ import org.example.proflow.service.ProfileService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import util.Validator;
+import org.example.proflow.util.Validator;
 
 import java.awt.color.ProfileDataException;
 import java.sql.SQLException;
@@ -30,7 +30,7 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    //***LOGIN METHODS***---------------------------------------------------------------------------------------------C
+    //***LOGIN METHODS***-----------------------------------------------------------------------------------------------
     @GetMapping("/login")
     public String showLogin(){
         return "login";
@@ -54,8 +54,6 @@ public class ProfileController {
 
     @GetMapping("/userProfile")
     public String showProfileDashboard(HttpSession session, Model model) throws ProfileException{
-
-
         Profile profile = (Profile) session.getAttribute("profile");
 
         if (profile == null) {
@@ -92,6 +90,9 @@ public class ProfileController {
     //***READ PROFILE***-----------------------------------------------------------------------------------------------R
     @GetMapping("/admin") //homepage til projektleder (viser alle projekter for en projektleder)
     public String homepage(Model model, @RequestParam int profileId) throws ProfileException {
+        if(!Validator.isValid(session, profileId)) {
+            return "redirect:/homepage";
+        }
         List<Project> projectsFromProfile = profileService.getProjectsFromProfile(profileId);
         model.addAttribute("projectsFromProfile", projectsFromProfile);
         return "homepage";
@@ -105,10 +106,11 @@ public class ProfileController {
     }
 
     //***UPDATE PROFILE***---------------------------------------------------------------------------------------------U
-    @GetMapping("/edit/{profileId}") //TODO skal tage en metode ind i stedet, som tjekker om cookie matcher
-    public String editProfile(@PathVariable("profileId") int profileId, Model model, HttpSession session) throws ProfileException, SQLException {
+    @GetMapping("/edit/{profileId}")
+    public String editProfile(@PathVariable("profileId") int profileId, Model model, HttpSession session)
+            throws ProfileException, SQLException {
         if(!Validator.isValid(session, profileId)) {
-            //NO NO redirect
+            return "redirect:/homepage";
         }
         Profile profile = profileService.getProfileById(profileId);
         model.addAttribute("profile", profile);
@@ -120,7 +122,11 @@ public class ProfileController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateProfile(@PathVariable("id") int profileId, @ModelAttribute Profile profile, Model model) throws ProfileException {
+    public String updateProfile(@PathVariable("id") int profileId, @ModelAttribute Profile profile, Model model)
+            throws ProfileException {
+        if(!Validator.isValid(session, profileId)) {
+            return "redirect:/homepage";
+        }
         model.addAttribute("profile", profile);
         profile.setId(profileId);
         profileService.updateProfile(profile);
@@ -128,8 +134,11 @@ public class ProfileController {
     }
 
     //***DELETE PROFILE***---------------------------------------------------------------------------------------------D
-    @PostMapping("/{name}/remove")
+    @PostMapping("/remove/{id}")
     public String deleteProfile(@PathVariable int profileId) throws ProfileException, SQLException {
+        if(!Validator.isValid(session, profileId)) {
+            return "redirect:/homepage";
+        }
         Profile profile = profileService.getProfileById(profileId);
         profileService.deleteProfile(profile.getId());
         return "redirect:/profile";

@@ -1,16 +1,16 @@
 package org.example.proflow.controller;
 
+import jakarta.servlet.http.HttpSession;
+import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
-import org.example.proflow.model.Status;
-import org.example.proflow.model.SubProject;
 import org.example.proflow.service.ProfileService;
 import org.example.proflow.service.ProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.example.proflow.util.Validator;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 //TODO ProjectController: Rette HTML sider
@@ -23,18 +23,21 @@ public class ProjectController {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final ProjectService projectService;
-    private Model model;
+    private Model model; //TODO slet?
     private final ProfileService profileService;
-    //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
 
+    //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
     public ProjectController(ProjectService projectService, ProfileService profileService) {
         this.projectService = projectService;
         this.profileService = profileService;
     }
-    //***CREATE PROJECT METHODS***-----------------------------------------------------------------------------------
 
+    //***CREATE PROJECT METHODS***-----------------------------------------------------------------------------------
     @GetMapping("/{profileId}/addproject")
-    public String addProject(@PathVariable("profileId") int profileId, Model model) {
+    public String addProject(@PathVariable("profileId") int profileId, Model model, HttpSession session) {
+        if(!Validator.isValid(session, profileId)) {
+            return "redirect:/homepage";
+        }
         model.addAttribute("profileId", profileId);
         model.addAttribute("project", new Project());
         return "homepage";
@@ -42,7 +45,8 @@ public class ProjectController {
 
     @PostMapping("/{profileId}/saveproject")
     public String saveProject(@PathVariable("profileId") int profileId,
-                              @ModelAttribute("projectId") Project project, Model model) throws SQLException { //TODO ændre exception
+                              @ModelAttribute("projectId") Project project,
+                              Model model, HttpSession session) throws SQLException { //TODO ændre exception
         project.setProfileId(profileId);
         projectService.addProject(project);
         return "projects";
@@ -64,8 +68,18 @@ public class ProjectController {
     }
 
     @GetMapping("homepage/project/{projectId}")
-    public String getProjectById(@PathVariable("projectId") int projectId, Model model) throws SQLException {
-        Project project = projectService.getProjectById(projectId);
+    public String getProjectById(@PathVariable("projectId") int projectId, Model model, HttpSession session) throws SQLException {
+        Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
+        if(!Validator.isValid(session, profile.getId())) {
+            return "redirect:/homepage";
+        }
+
+        Project project = projectService.getProjectById(projectId); //Henter projektet fra databasen
+
+        if(!Validator.isProjectOwned(profile.getId(), project.getProfileId())){ //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
+            return "redirect:/homepage";
+        }
+
         model.addAttribute("projectId", projectId);
         model.addAttribute("name", project.getName());
         return "projects";
@@ -73,8 +87,18 @@ public class ProjectController {
 
     //***UPDATE PROJECT METHODS***-----------------------------------------------------------------------------------
     @GetMapping("/project/edit/{projectId}")
-    public String editProject(@PathVariable("projectId") int projectId, Model model) throws SQLException {
-        Project project = projectService.getProjectById(projectId);
+    public String editProject(@PathVariable("projectId") int projectId, Model model, HttpSession session) throws SQLException {
+        Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
+        if(!Validator.isValid(session, profile.getId())) {
+            return "redirect:/homepage";
+        }
+
+        Project project = projectService.getProjectById(projectId); //Henter projektet fra databasen
+
+        if(!Validator.isProjectOwned(profile.getId(), project.getProfileId())){ //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
+            return "redirect:/homepage";
+        }
+
         model.addAttribute("project", project);
         model.addAttribute("projectId", project.getId());
         model.addAttribute("name", project.getName());
@@ -101,8 +125,18 @@ public class ProjectController {
 
     //***DELETE PROJECT METHODS***-----------------------------------------------------------------------------------
     @PostMapping("/project/delete/{projectId}")
-    public String deleteProject(@PathVariable("projectId") int projectId) throws SQLException {
-        Project project = projectService.getProjectById(projectId);
+    public String deleteProject(@PathVariable("projectId") int projectId, HttpSession session) throws SQLException {
+        Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
+        if(!Validator.isValid(session, profile.getId())) {
+            return "redirect:/homepage";
+        }
+
+        Project project = projectService.getProjectById(projectId); //Henter projektet fra databasen
+
+        if(!Validator.isProjectOwned(profile.getId(), project.getProfileId())){ //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
+            return "redirect:/homepage";
+        }
+
         projectService.deleteProject(projectId);
         return "rediect:/homepage/userProfile";
     }
