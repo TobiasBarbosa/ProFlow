@@ -12,24 +12,26 @@ public class Task {
     //Arveforhold: Hvorfor nedarver den her klasse ikke SubProject // eller bliver en subklasse?
     //CreatedDate - Hvorfor har vi valgt at lave createdDate final - problematikker?
     //Duplikering af kode af caculateDaysUntilDone...kunne man have genbrugt Projects metode (som er den samme)???
+    //@Component - Hvad gør den?
 
     //***TO DO***-------------------------------------------------------------------------------------------------------
-    //TODO lav createdDate attribute final
+    //TODO lav createdDate attribute final!
     //TODO slet unødvendige constructors
+    //TODO lav implementer interface?
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    private int id;                      // Task ID, unique identifier for the task.
-    private String name;                 // Name of the task.
-    private String description;          // Description of the task.
-    private String location;             // Location where the task is performed.
-    private LocalDate createdDate; // final ensures this date cannot be changed once assigned.
-    private LocalDate startDate;         // The start date of the task.
-    private LocalDate endDate;           // The end date of the task.
-    private double totalEstHours;        // Estimated hours to complete the task.
-    private Status status;               // The current status of the task.
-    private int subProjectId;            // ID of the subproject this task is associated with.
-    private String assignedTo;           // Person to whom the task is assigned.
-    private double taskPrice;            // Total price for completing the task.
+    private int id;                 // Task ID, unique identifier for the task.
+    private String name;            // Name of the task.
+    private String description;     // Description of the task.
+    private String location;        // Location where the task is performed.
+    private LocalDate createdDate;  // final ensures this date cannot be changed once assigned.
+    private LocalDate startDate;    // The start date of the task.
+    private LocalDate endDate;      // The end date of the task.
+    private double totalEstHours;   // Estimated hours to complete the task.
+    private Status status;          // The current status of the task.
+    private int subProjectId;       // ID of the subproject this task is associated with.
+    private String assignedTo;      // Person to whom the task is assigned.
+    private double taskPrice;       // Total price for completing the task.
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
     // FULL constructor with all fields
@@ -38,7 +40,7 @@ public class Task {
         this.name = name;
         this.description = description;
         this.location = location;
-        setCreatedDate(createdDate); // Set date once at object creation
+        setCreatedDate(createdDate);               // Set date once at object creation
         setStartDate(startDate);
         setEndDate(endDate);
         calculateDaysUntilDone(startDate, endDate); // Calculate days from start to end date.
@@ -54,7 +56,7 @@ public class Task {
         this.name = name;
         this.description = description;
         this.location = location;
-        setCreatedDate(createdDate); // Set only once during object creation
+        setCreatedDate(createdDate);                // Set only once during object creation
         setStartDate(startDate);
         setEndDate(endDate);
         calculateDaysUntilDone(startDate, endDate);
@@ -70,7 +72,7 @@ public class Task {
         this.name = name;
         this.description = description;
         this.location = location;
-        setCreatedDate(createdDate); // Set only once during object creation
+        setCreatedDate(createdDate);                // Set only once during object creation
         setStartDate(startDate);
         setEndDate(endDate);
         calculateDaysUntilDone(startDate, endDate);
@@ -184,7 +186,7 @@ public class Task {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
+    } //TODO not null?
 
     public void setSubProjectId(int subProjectId) {
         this.subProjectId = subProjectId;
@@ -201,7 +203,7 @@ public class Task {
         this.taskPrice = taskPrice;
     }
 
-    //***METHODS***-----------------------------------------------------------------------------------------------------
+    //***UTILITY METHODS***---------------------------------------------------------------------------------------------
     public int calculateDaysUntilDone(LocalDate startDate, LocalDate endDate) {
         if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("End date cannot be before start date.");
@@ -212,19 +214,19 @@ public class Task {
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return "\nTask ID: " + id +
-                "\nTask name: " + name +
-                "\nDescription: " + description +
-                "\nLocation: " + location +
-                "\nCreated date: " + createdDate +
-                "\nStart date: " + startDate +
-                "\nEnd date=" + endDate +
-                "\nDays until finished: " + calculateDaysUntilDone(startDate,endDate) +
-                "\nDuration in hours: " + totalEstHours +
-                "\nStatus: " + status.getDisplayStatus() +
-                "\nSubproject ID: " + subProjectId +
-                "\nAssigned to: " + (assignedTo != null ? assignedTo : "Not assigned") +
-                "\nTask price: " + taskPrice;
+        return "\nTask ID: "              + id                                                 +
+                "\nTask name: "           + name                                               +
+                "\nDescription: "         + description                                        +
+                "\nLocation: "            + location                                           +
+                "\nCreated date: "        + createdDate                                        +
+                "\nStart date: "          + startDate                                          +
+                "\nEnd date="             + endDate                                            +
+                "\nDays until finished: " + calculateDaysUntilDone(startDate,endDate)          +
+                "\nDuration in hours: "   + totalEstHours                                      +
+                "\nStatus: "              + status.getDisplayStatus()                          +
+                "\nSubproject ID: "       + subProjectId                                       +
+                "\nAssigned to: "         + (assignedTo != null ? assignedTo : "Not assigned") +
+                "\nTask price: "          + taskPrice;
     }
 
     //***END***---------------------------------------------------------------------------------------------------------
