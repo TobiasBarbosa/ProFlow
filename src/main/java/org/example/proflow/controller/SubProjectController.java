@@ -18,7 +18,7 @@ import java.util.List;
 
 //TODO SubProjectController: Rette HTML sider
 //TODO SubProjectController: Rette navne/stier på endpoints
-//TODO SubProjectController: Rette exceptions til subProjectException
+//TODO SubProjectController: Rette exceptions til subProjectException ..
 
 @Controller
 @RequestMapping("dashboard/{profileId}/{projectId}")
