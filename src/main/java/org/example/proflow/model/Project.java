@@ -42,7 +42,7 @@ public class Project { //hvorfor ikke abstract?
         this.description = description;
         setCreatedDate(createdDate);
         setStartDate(startDate);
-        this.endDate = endDate;
+        setEndDate(endDate);
         this.status = status;
         this.budget = budget;
     }
@@ -160,7 +160,7 @@ public class Project { //hvorfor ikke abstract?
     }
 
     public void setCreatedDate(LocalDate createdDate) {
-        if(endDate == null){
+        if(createdDate == null){
             throw new IllegalArgumentException("Created date cannot be null");
         }
         this.createdDate = createdDate;
