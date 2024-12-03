@@ -78,7 +78,7 @@ public class ProfileController {
     public String addProfile(Model model) {
         Profile profile = new Profile();
         model.addAttribute("profile", profile);
-        return "signup";
+        return "signup"; //TODO har vi denne eller skal den bare hedde signup?
     }
 
     @PostMapping("/saveprofile") //PostMapping tilføjer data til database

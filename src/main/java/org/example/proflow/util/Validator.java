@@ -14,11 +14,7 @@ public class Validator {
     }
 
     public static boolean isProjectOwned(int profileId, int projectProfileId) {
-
-        if(profileId != projectProfileId)  {
-            return false;
-        }
-        return true;
+        return projectProfileId == profileId;
     }
 
 
