@@ -22,8 +22,9 @@ public class SubProjectRepository {
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
+
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
-    TaskRepository taskRepository;
+    private TaskRepository taskRepository = new TaskRepository();
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE SUBPROJECT***------------------------------------------------------------------------------------------C
@@ -37,7 +38,7 @@ public class SubProjectRepository {
              PreparedStatement ps = con.prepareStatement(insertSubProjectQuery)) {
 
             //Database setter SubProjectId
-            //How do we get projectId?
+
             ps.setString(1, subProject.getName());
             ps.setString(2, subProject.getDescription());
             ps.setDate(3, Date.valueOf(subProject.getCreatedDate()));
@@ -45,11 +46,11 @@ public class SubProjectRepository {
             ps.setDate(5, Date.valueOf(subProject.getEndDate()));
             ps.setString(6, subProject.getStatus().name());
             ps.setDouble(7, subProject.getBudget());
-            ps.setInt(8, subProject.getProjectId()); //TODO hvordan henter vi projectId?
+            ps.setInt(8, subProject.getProjectId());
             ps.setString(9, subProject.getAssignedTo());
             ps.setDouble(10, subProject.getTotalEstHours());
             ps.setDouble(11, subProject.getActualPrice());
-            //TODO hvordan håndterer vi calculateDaysUntilDone?
+
             ps.executeUpdate();
         }
     }
@@ -77,9 +78,11 @@ public class SubProjectRepository {
                 subProject.setAssignedTo(rs.getString("assigned_to"));
                 subProject.setTotalEstHours(rs.getDouble("total_est_hours"));
                 subProject.setActualPrice(rs.getDouble("actual_price"));
-                //TODO hvordan håndterer vi calculateDaysUntilDone?
-                //subProject.setDaysUntilDone(rs.getInt("duration"));
+
                 subProjects.add(subProject);
+            }
+            for (SubProject subProject : subProjects) {
+                subProject.setTasks(getTaskFromSubProject(subProject.getId()));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -116,7 +119,9 @@ public class SubProjectRepository {
                     //subProject.setDaysUntilDone(rs.getInt("duration"));
                 }
             }
+
         }
+        getTaskFromSubProject(subProject.getId());
         return subProject;
     }
 
@@ -161,21 +166,59 @@ public class SubProjectRepository {
     }
 
     //***OTHER METHODS***-----------------------------------------------------------------------------------------------
-    public void getTasksForSubProject() throws SQLException{
+    public List<Task> getTaskFromSubProject(int subProjectId) throws SQLException{
 
-        for (SubProject subProject : getAllSubProjects()){
+
             List<Task> tasks = new ArrayList<>();
-            int subProjectId = subProject.getId();
+
             for (Task t : taskRepository.getAllTasks()){
                 if(subProjectId == t.getSubProjectId()){
                     tasks.add(t);
                 }
             }
-            subProject.setTasks(tasks);
+            return tasks;
         }
+
+
+        //    public List<Task> getTaskFromSubProject(int subProjectId) throws SQLException {
+    //        String query = "SELECT * FROM Task WHERE sub_project_id = ?";
+    //        List<Task> tasksFromSubProject = new ArrayList<>();
+    //        Task task = null;
+    //
+    //        try (Connection con = dataBaseConnection.getConnection();
+    //             PreparedStatement ps = con.prepareStatement(query)) {
+    //            ps.setInt(1, subProjectId);
+    //            try (ResultSet rs = ps.executeQuery()) {
+    //                while (rs.next()){
+//                    task = new Task();
+//                    task.setId(rs.getInt("id"));
+//                    task.setName(rs.getString("name"));
+//                    task.setDescription(rs.getString("description"));
+//                    task.setLocation(rs.getString("location"));
+//                    task.setCreatedDate(rs.getDate("created_date").toLocalDate());
+//                    task.setStartDate(rs.getDate("start_date").toLocalDate());
+//                    task.setEndDate(rs.getDate("end_date").toLocalDate());
+//                    task.setTotalEstHours(rs.getDouble("total_est_hours"));
+//                    task.setStatus(Status.valueOf(rs.getString("status")));
+//                    task.setSubProjectId(rs.getInt("sub_project_id"));
+//                    task.setAssignedTo(rs.getString("assigned_to"));
+//                    task.setTaskPrice(rs.getDouble("price")); // Not null column
+     //               tasksFromSubProject.add(task);
+    //                }
+    //
+    //            }
+    //        } catch (SQLException e) {
+    //            e.printStackTrace();
+    //        }
+    //
+    //        return tasksFromSubProject;
+    //    }
+
+
+
     }
 
     //***END***---------------------------------------------------------------------------------------------------------
-}
+
 
 

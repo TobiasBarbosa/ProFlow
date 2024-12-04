@@ -21,7 +21,7 @@ public class ProjectRepository {
     private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
-    SubProjectRepository subProjectRepository;
+    private SubProjectRepository subProjectRepository = new SubProjectRepository();
 
     //***CREATE PROJECT***---------------------------------------------------------------------------------------------C
     public void addProject(Project project) throws SQLException {
@@ -34,8 +34,6 @@ public class ProjectRepository {
              PreparedStatement ps = con.prepareStatement(insertProjectQuery)) {
 
             //Database setter Id
-            //Hvordan fanger vi profileId?
-            //createdDate = hvordan setter vi dato automatisk?
             ps.setString(1, project.getName());
             ps.setString(2, project.getDescription());
             ps.setDate(3, Date.valueOf(project.getCreatedDate()));
@@ -46,7 +44,7 @@ public class ProjectRepository {
             ps.setDouble(8, project.getBudget());
             ps.setObject(9, project.getActualPrice());
             ps.setInt(10, project.getProfileId());// //TODO hvordan henter vi profileId?  Use setObject for nullable columns
-            //TODO hvordan håndterer vi calculateDaysUntilDone?
+
             //ps.setInt(9, project.calculateDaysUntilDone(project.getStartDate(),project.getEndDate())); //TODO slet?
             ps.executeUpdate();
         }
@@ -80,6 +78,8 @@ public class ProjectRepository {
                     //project.setActualPrice(actualPrice != null ? actualPrice : 0.0); // Default to 0.0 if null
                 }
             }
+//            getSubProjectsForProject(project);
+            project.setSubProjects(getSubProjectsFromProject(project.getId()));
         }
         return project;
     }
@@ -109,11 +109,18 @@ public class ProjectRepository {
                 // Handle null for actual_price explicitly
                 //Double actualPrice = rs.getObject("actual_price", Double.class);
                 //project.setActualPrice(actualPrice != null ? actualPrice : 0.0); // Default to 0.0 if null
+//                project.setSubProjects(getSubProjectsFromProject(project.getId()));
                 projects.add(project);
             }
-        }  catch (SQLException e) {
+            // loop through all Projects and add the related subprojects.
+            for (Project p : projects) {
+                p.setSubProjects(getSubProjectsFromProject(p.getId()));
+            }
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return projects;
     }
 
@@ -157,18 +164,54 @@ public class ProjectRepository {
     }
 
     //***OTHER METHODS***-----------------------------------------------------------------------------------------------
-    public void getSubProjectsForProject() throws SQLException{
-        for (Project project : getAllProjects()){
-            List<SubProject> subProjects = new ArrayList<>();
-            int projectId = project.getId();
-            for (SubProject sp : subProjectRepository.getAllSubProjects()){
-                if(projectId == sp.getProjectId()){
-                    subProjects.add(sp);
+//
+//    public List<SubProject> getSubProjectsFromProject(int projectId) throws SQLException{
+//
+//        List<SubProject> subProjects = new ArrayList<>();
+//
+//        for (SubProject sp : subProjectRepository.getAllSubProjects()){
+//            if(projectId == sp.getProjectId()){
+//                subProjects.add(sp);
+//            }
+//        }
+//     return subProjects;
+//    }
+
+
+    public List<SubProject> getSubProjectsFromProject(int projectId) throws SQLException {
+        String query = "SELECT * FROM SubProject WHERE project_id = ?";
+        List<SubProject> subProjectsFromProject = new ArrayList<>();
+        SubProject subProject = null;
+
+        try (Connection con = dataBaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, projectId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()){
+                    subProject = new SubProject();
+                    subProject.setId(rs.getInt("id"));
+                    subProject.setName(rs.getString("name"));
+                    subProject.setDescription(rs.getString("description"));
+                    subProject.setCreatedDate(rs.getDate("created_date").toLocalDate());
+                    subProject.setStartDate(rs.getDate("start_date").toLocalDate());
+                    subProject.setEndDate(rs.getDate("end_date").toLocalDate());
+                    subProject.setStatus(Status.valueOf(rs.getString("status")));
+                    subProject.setBudget(rs.getDouble("budget"));
+                    subProject.setProjectId(rs.getInt("project_id"));
+                    subProject.setAssignedTo(rs.getString("assigned_to"));
+                    subProject.setTotalEstHours(rs.getDouble("total_est_hours"));
+                    subProject.setActualPrice(rs.getDouble("actual_price"));
+                    subProjectsFromProject.add(subProject);
                 }
+
             }
-            project.setSubProjects(subProjects);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
+        return subProjectsFromProject;
     }
+}
 
     //***END***---------------------------------------------------------------------------------------------------------
-}
+
