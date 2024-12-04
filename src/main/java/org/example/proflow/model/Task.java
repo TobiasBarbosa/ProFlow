@@ -35,7 +35,7 @@ public class Task {
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
     // FULL constructor with all fields
-    public Task(int id, String name, String description, String location,LocalDate createdDate, LocalDate startDate, LocalDate endDate, double totalEstHours, Status status, int subProjectId, String assignedTo, double taskPrice) {
+    public Task(int id, String name, String description, String location, LocalDate createdDate, LocalDate startDate, LocalDate endDate, double totalEstHours, Status status, int subProjectId, String assignedTo, double taskPrice) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -82,7 +82,7 @@ public class Task {
         setTaskPrice(taskPrice);
     }
 
-    public Task(){
+    public Task() {
     }
 
     //TODO how to make default constructor when attributes are final?
@@ -154,7 +154,7 @@ public class Task {
     }
 
     public void setCreatedDate(LocalDate createdDate) {
-        if(createdDate == null){
+        if (createdDate == null) {
             throw new IllegalArgumentException("Created date cannot be null");
         }
         this.createdDate = createdDate;
@@ -214,19 +214,19 @@ public class Task {
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return "\nTask ID: "              + id                                                 +
-                "\nTask name: "           + name                                               +
-                "\nDescription: "         + description                                        +
-                "\nLocation: "            + location                                           +
-                "\nCreated date: "        + createdDate                                        +
-                "\nStart date: "          + startDate                                          +
-                "\nEnd date="             + endDate                                            +
-                "\nDays until finished: " + calculateDaysUntilDone(startDate,endDate)          +
-                "\nDuration in hours: "   + totalEstHours                                      +
-                "\nStatus: "              + status.getDisplayStatus()                          +
-                "\nSubproject ID: "       + subProjectId                                       +
-                "\nAssigned to: "         + (assignedTo != null ? assignedTo : "Not assigned") +
-                "\nTask price: "          + taskPrice;
+        return "\nTask ID: " + id +
+                "\nTask name: " + name +
+                "\nDescription: " + description +
+                "\nLocation: " + location +
+                "\nCreated date: " + createdDate +
+                "\nStart date: " + startDate +
+                "\nEnd date=" + endDate +
+                "\nDays until finished: " + calculateDaysUntilDone(startDate, endDate) +
+                "\nDuration in hours: " + totalEstHours +
+                "\nStatus: " + status.getDisplayStatus() +
+                "\nSubproject ID: " + subProjectId +
+                "\nAssigned to: " + (assignedTo != null ? assignedTo : "Not assigned") +
+                "\nTask price: " + taskPrice;
     }
 
     //***END***---------------------------------------------------------------------------------------------------------

@@ -3,12 +3,11 @@ package org.example.proflow.model;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class SubProject extends Project{
+public class SubProject extends Project {
 
     //^^^EXAM QUESTIONS^^^----------------------------------------------------------------------------------------------
     //Hvorfor nedarver den her klasse fra Project?
@@ -87,17 +86,17 @@ public class SubProject extends Project{
     }
 
     //***UTILITY METHODS***---------------------------------------------------------------------------------------------
-    public double calculateActualPriceForSubProject(){
+    public double calculateActualPriceForSubProject() {
         double actualPrice = 0;
-        for (Task t : tasks){
+        for (Task t : tasks) {
             actualPrice += t.getTaskPrice();
         }
         return actualPrice;
     }
 
-    public double calculateTotalEstHoursForSubProject(){
+    public double calculateTotalEstHoursForSubProject() {
         double totalEstHours = 0;
-        for (Task t : tasks){
+        for (Task t : tasks) {
             totalEstHours += t.getTotalEstHours();
         }
         return totalEstHours;
@@ -106,17 +105,17 @@ public class SubProject extends Project{
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return  "\nSubProject ID: "               + getId()                                           +
-                "\nSubProject name: "            + getName()                                          +
-                "\nDescription: "                + getDescription()                                   +
-                "\nCreated date: "               + getCreatedDate()                                   +
-                "\nStart date: "                 + getStartDate()                                     +
-                "\nEnd date="                    + getEndDate()                                       +
-                "\nTotal task Duration (hour): " + actualPrice                                        +
-                "\nStatus: "                     + getStatus().getDisplayStatus()                     +
-                "\nProject ID: "                 + projectId                                          +
-                "\nAssigned to: "                + (assignedTo != null ? assignedTo : "Not assigned") +
-                "\nBudget: "                     + getBudget();
+        return "\nSubProject ID: " + getId() +
+                "\nSubProject name: " + getName() +
+                "\nDescription: " + getDescription() +
+                "\nCreated date: " + getCreatedDate() +
+                "\nStart date: " + getStartDate() +
+                "\nEnd date=" + getEndDate() +
+                "\nTotal task Duration (hour): " + actualPrice +
+                "\nStatus: " + getStatus().getDisplayStatus() +
+                "\nProject ID: " + projectId +
+                "\nAssigned to: " + (assignedTo != null ? assignedTo : "Not assigned") +
+                "\nBudget: " + getBudget();
     }
 
     //***END***---------------------------------------------------------------------------------------------------------

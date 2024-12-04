@@ -18,6 +18,8 @@ public class ProfileRepository {
     private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
+    private ProjectRepository projectRepository = new ProjectRepository();
+
     //***CREATE PROFILE***---------------------------------------------------------------------------------------------C
     public void addProfile(Profile profile) {
         String insertProfileQuery = """
@@ -64,7 +66,11 @@ public class ProfileRepository {
                 profile.setPassword(rs.getString("password"));
                 profiles.add(profile);
             }
-        } catch (SQLException e) {
+            for (Profile profile : profiles) {
+
+                profile.setProjects(getProjectsFromProfile(profile.getId()));
+            }
+        } catch (SQLException | ProfileException e) {
             e.printStackTrace();
         }
         return profiles;
@@ -88,48 +94,23 @@ public class ProfileRepository {
                     profile.setLastName(rs.getString("lastName"));
                     profile.setEmail(rs.getString("email"));
                     profile.setPassword(rs.getString("password"));
+
                 }
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }  //TODO måske refaktorere?
+        profile.setProjects(getProjectsFromProfile(id));
         return profile; // Return the Profile object or null if not found
     }
 
-    public List<Project> getProjectsFromProfile(int profileId) throws ProfileException {
-        String query = "SELECT * FROM Project WHERE profile_id = ?";
-        List<Project> projectsFromProfile = new ArrayList<>();
-
-        try (Connection con = dataBaseConnection.getConnection();
-             Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
-
-            while (rs.next()) {
-                Project project = new Project();
-                project.setId(rs.getInt("id"));
-                project.setName(rs.getString("name"));
-                project.setDescription(rs.getString("lastName"));
-                project.setStartDate(rs.getDate("startDate").toLocalDate());
-                project.setEndDate(rs.getDate("endDate").toLocalDate());
-                //project.setDaysUntilDone(rs.getInt("daysUntilDone"));
-                //project.setTotalSubProjectDurationHourly(rs.getDouble("totalSubProjectDurationHourly"));
-                project.setStatus(Status.valueOf(rs.getString("status")));
-                project.setBudget(rs.getDouble("budget"));
-                project.setActualPrice(rs.getDouble("actualPrice"));
-                project.setProfileId(rs.getInt("profileId"));
-                projectsFromProfile.add(project);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return projectsFromProfile;
-    }
 
     public Profile getProfileByEmailAndPassword(String profileEmail, String profilePassword) throws ProfileException {
-        for (Profile profile: getAllProfiles()) {
+        for (Profile profile : getAllProfiles()) {
             if (profile.getEmail().equalsIgnoreCase(profileEmail) && profile.getPassword().equals(profilePassword))
                 return profile;
         }
@@ -169,6 +150,41 @@ public class ProfileRepository {
             throw new RuntimeException(e);
         }
     }
+
+
+    public List<Project> getProjectsFromProfile(int profileId) throws ProfileException {
+        String query = "SELECT * FROM Project WHERE profile_id = ?";
+        List<Project> projectsFromProfile = new ArrayList<>();
+        Project project = null;
+
+        try (Connection con = dataBaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, profileId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    project = new Project();
+                    project.setId(rs.getInt("id"));
+                    project.setName(rs.getString("name"));
+                    project.setDescription(rs.getString("description"));
+                    project.setCreatedDate(rs.getDate("created_date").toLocalDate());
+                    project.setStartDate(rs.getDate("start_date").toLocalDate());
+                    project.setEndDate(rs.getDate("end_date").toLocalDate());
+                    project.setTotalEstHours(rs.getDouble("total_est_hours"));
+                    project.setStatus(Status.valueOf(rs.getString("status")));
+                    project.setBudget(rs.getDouble("budget"));
+                    project.setActualPrice(rs.getDouble("actual_price"));
+                    project.setProfileId(rs.getInt("profile_id"));
+
+                }
+                projectsFromProfile.add(project);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return projectsFromProfile;
+    }
+
 
     //***END***---------------------------------------------------------------------------------------------------------
 }

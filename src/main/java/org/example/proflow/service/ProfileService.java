@@ -16,11 +16,12 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
-    public ProfileService(ProfileRepository profileRepository){
+    public ProfileService(ProfileRepository profileRepository) {
         this.profileRepository = profileRepository;
     }
+
     //***METHODS***-----------------------------------------------------------------------------------------------------
-    public boolean login(String profileEmail, String profilePassword) throws ProfileException{
+    public boolean login(String profileEmail, String profilePassword) throws ProfileException {
         Profile profile = profileRepository.getProfileByEmailAndPassword(profileEmail, profilePassword);
         if (profile != null)
             return profile.getPassword().equals(profilePassword);
@@ -28,12 +29,12 @@ public class ProfileService {
     }
 
     //***CREATE PROFILE***---------------------------------------------------------------------------------------------C
-    public void addProfile(Profile profile ){
+    public void addProfile(Profile profile) {
         profileRepository.addProfile(profile);
     }
 
     //***READ PROFILE(S)***--------------------------------------------------------------------------------------------R
-    public List<Profile> getAllProfiles(){
+    public List<Profile> getAllProfiles() {
         return profileRepository.getAllProfiles();
     }
 
@@ -46,11 +47,11 @@ public class ProfileService {
     }
 
     public Profile getProfileByEmailAndPassword(String profileEmail, String profilePassword) throws ProfileException {
-        return profileRepository.getProfileByEmailAndPassword(profileEmail,profilePassword);
+        return profileRepository.getProfileByEmailAndPassword(profileEmail, profilePassword);
     }
 
     //***UPDATE PROFILE***---------------------------------------------------------------------------------------------U
-    public void updateProfile(Profile profile){
+    public void updateProfile(Profile profile) {
         profileRepository.updateProfile(profile);
     }
 

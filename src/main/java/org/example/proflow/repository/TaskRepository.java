@@ -5,7 +5,6 @@ import org.example.proflow.model.Task;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,23 +33,23 @@ public class TaskRepository {
              PreparedStatement ps = con.prepareStatement(insertTaskQuery)) {
 
             //Id oprettes i database
+            // Calculate days until done håndteres i class
             ps.setString(1, task.getName());
             ps.setString(2, task.getDescription());
             ps.setString(3, task.getLocation());
-            ps.setDate(4, Date.valueOf(task.getCreatedDate())); //TODO automatiser createdDate i database? (måske slet)
+            //Created date automatically add in DB
+//            ps.setDate(4, Date.valueOf(task.getCreatedDate()));
             ps.setDate(5, Date.valueOf(task.getStartDate()));
             ps.setDate(6, Date.valueOf(task.getEndDate()));
-            ps.setDouble(7,task.getTotalEstHours());
+            ps.setDouble(7, task.getTotalEstHours());
             ps.setString(8, task.getStatus().name());
-            ps.setInt(9, task.getSubProjectId()); //TODO hvordan henter vi subProjectId!!? (måske slet)
+            ps.setInt(9, task.getSubProjectId());
             ps.setString(10, task.getAssignedTo());
             ps.setDouble(11, task.getTaskPrice());
-            //TODO hvordan håndterer vi  calculateDaysUntillDone ?
+
             ps.executeUpdate();
 
-        }
-
-        catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -79,7 +78,7 @@ public class TaskRepository {
                 task.setSubProjectId(rs.getInt("sub_project_id"));
                 task.setAssignedTo(rs.getString("assigned_to"));
                 task.setTaskPrice(rs.getDouble("price"));
-                //TODO hvordan håndterer vi calculateDaysUntilDone?
+
 
                 tasks.add(task);
             }
@@ -114,7 +113,7 @@ public class TaskRepository {
                     task.setSubProjectId(rs.getInt("sub_project_id"));
                     task.setAssignedTo(rs.getString("assigned_to"));
                     task.setTaskPrice(rs.getDouble("price")); // Not null column
-                    //TODO hvordan håndterer vi calculateDaysUntilDone?
+
 
                 }
             }
