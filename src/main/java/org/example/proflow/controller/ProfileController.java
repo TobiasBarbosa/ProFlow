@@ -15,10 +15,8 @@ import java.awt.color.ProfileDataException;
 import java.sql.SQLException;
 import java.util.List;
 
-//TODO ProfileController: Rette HTML sider
-//TODO ProfileController: Rette navne/stier på endpoints
+//TODO ProfileController: Rette endpoints og HTML sider
 //TODO ProfileController: Rette exceptions til ProfileException
-//TODO ProfileController: add admin dashboard
 
 @Controller
 @RequestMapping("homepage")
@@ -130,7 +128,7 @@ public class ProfileController {
 //        model.addAttribute("profileLastName", profile.getLastName());
 //        model.addAttribute("profileEmail", profile.getEmail());
 //        model.addAttribute("profilePassword",profile.getPassword());
-        return "editProfile";
+        return "edit_profile";
     }
 
     @PostMapping("/update/{profileId}")
@@ -159,7 +157,7 @@ public class ProfileController {
     @ExceptionHandler(ProfileException.class)
     public String handleError(Model model, Exception exception) {
         model.addAttribute("message", exception.getMessage());
-        return "errorPage";
+        return "error";
     }
 
     //***END***---------------------------------------------------------------------------------------------------------
