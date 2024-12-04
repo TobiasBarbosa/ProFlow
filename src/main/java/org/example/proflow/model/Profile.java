@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class Profile {
 
+    //***TO DO***-------------------------------------------------------------------------------------------------------
+    //TODO slet unødvendige constructors
+
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private int id;
     private String firstName;
@@ -17,19 +20,19 @@ public class Profile {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        setEmail(email);
         this.password = password;
     }
 
     public Profile(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        setEmail(email);
         this.password = password;
     }
 
     public Profile(String email, String password) {
-        this.email = email;
+        setEmail(email);
         this.password = password;
     }
 
@@ -71,6 +74,9 @@ public class Profile {
     }
 
     public void setEmail(String email) {
+        if(!email.contains("@") || !email.contains(".") ){
+            throw new IllegalArgumentException("Email has to have a '@' and a '.'");
+        }
         this.email = email;
     }
 
@@ -81,11 +87,11 @@ public class Profile {
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return "\nProfile ID: " + id +
+        return "\nProfile ID: "  + id        +
                 "\nFirst name: " + firstName +
-                "\nLast name: " + lastName +
-                "\nEmail: " + email +
-                "\nPassword: " + password;
+                "\nLast name: "  + lastName  +
+                "\nEmail: "      + email     +
+                "\nPassword: "   + password  ;
     }
 
     //***END***---------------------------------------------------------------------------------------------------------
