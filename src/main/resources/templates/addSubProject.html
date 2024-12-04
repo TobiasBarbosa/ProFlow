@@ -1,10 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>addSubproject</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
 </head>
+
 <body>
 
+<h1>Create new subproject</h1>
+<div class="add">
+    <form th:action="@{dashboard/{profileId}/{projectId}/savesubproject}" th:object="${subproject}" method="post">
+        <label class="addLabel" for="name">Name</label>
+        <input class="placeholder" type="text" id="name" th:field="*{subProject.getName()}"> <!-- ved ikke om subProject.getName() er rigtigt-->
+
+        <br><label class="addLabel" for="description">Description</label>
+        <input class="placeholder" type="text" id="description" th:field="*{subProject.getDescription()}">
+
+        <br><label class="addLabel" for="startDate">Start date</label>
+        <input class="placeholder" type="text" id="startDate" th:field="*{subProject.getStartDate()}">
+
+        <br><label class="addLabel" for="endDate">End date</label>
+        <input class="placeholder" type="text" id="endDate" th:field="*{subProject.getEndDate()}">
+
+        <br><label class="addLabel" for="Status">Status</label>
+        <input class="placeholder" type="text" id="status" th:field="*{subProject.getStatus()}">
+
+        <br><label class="addLabel" for="budget">Budget</label>
+        <input class="placeholder" type="text" id="budget" th:field="*{subProject.getBudget()}">
+
+        <br><label class="addLabel" for="assignedTo">Assign</label>
+        <input class="placeholder" type="text" id="assignedTo" th:field="*{subProject.getAssignedTo()}">
+
+
+        <br><button class="button" method="submit">Save</button>
+        <button class="button" href="/projects">Back</button>
+    </form>
+</div>
+
 </body>
+
 </html>

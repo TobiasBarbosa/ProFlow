@@ -1,10 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>addTask</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
 </head>
+
 <body>
+<h1>Create new task</h1>
+<div class="add">
+    <form th:action="@{dashboard/{profileId}/{projectId}/savesubproject}" th:object="${subproject}" method="post">
+        <label class="addLabel" for="name">Name</label>
+        <input class="placeholder" type="text" id="name" th:field="*{task.getName()}"> <!-- ved ikke om subProject.getName() er rigtigt-->
+
+        <br><label class="addLabel" for="description">Description</label>
+        <input class="placeholder" type="text" id="description" th:field="*{task.getDescription()}">
+
+        <br><label class="addLabel" for="location">Location</label>
+        <input class="placeholder" type="text" id="location" th:field="*{task.getLocation()}">
+
+        <br><label class="addLabel" for="startDate">Start date</label>
+        <input class="placeholder" type="text" id="startDate" th:field="*{task.getStartDate()}">
+
+        <br><label class="addLabel" for="endDate">End date</label>
+        <input class="placeholder" type="text" id="endDate" th:field="*{task.getEndDate()}">
+
+        <br><label class="addLabel" for="totalEstHours">Estimated hours</label>
+        <input class="placeholder" type="text" id="totalEstHours" th:field="*{task.getTotalEstHours()}">
+
+        <br><label class="addLabel" for="status">Status</label>
+        <input class="placeholder" type="text" id="status" th:field="*{task.getStatus()}">
+
+
+        <br><label class="addLabel" for="assignedTo">Assign</label>
+        <input class="placeholder" type="text" id="assignedTo" th:field="*{task.getAssignedTo()}">
+
+        <br><label class="addLabel" for="taskPrice">Price</label>
+        <input class="placeholder" type="text" id="taskPrice" th:field="*{task.getTaskPrice()}">
+
+        <br><button class="button" method="submit">Save</button>
+        <button class="button" href="/projects">Back</button>
+    </form>
+</div>
 
 </body>
+
 </html>

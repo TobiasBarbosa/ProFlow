@@ -17,7 +17,7 @@ public class Project { //hvorfor ikke abstract?
     //***TO DO***-------------------------------------------------------------------------------------------------------
     //TODO slet unødvendige constructors
     //TODO lav createdDate final
-    //TODO lav default value 0 - på dem som skal have det
+    //TODO lav default value 0 - på dem som skal have det?
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private int id;                       // Project ID
