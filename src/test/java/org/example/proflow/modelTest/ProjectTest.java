@@ -72,7 +72,7 @@ public class ProjectTest {
         //1: Tjekker at budget ikke er null
         assertNotNull(actualBudget, "Budget should not be null");
 
-        //2: Tjekker at actual og expected budget stemmer overens
+        //2: Tjekker at actual og expected budget stemmer overens-
         assertEquals(actualBudget, expectedBudget);
 
         //3: Tjekker at den kaster en fejlmeddelelse hvis budget er under 0
