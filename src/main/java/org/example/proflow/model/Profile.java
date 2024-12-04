@@ -9,7 +9,7 @@ import java.util.List;
 public class Profile {
 
     //***TO DO***-------------------------------------------------------------------------------------------------------
-    //TODO slet unødvendige constructors
+    //TODO slet unødvendige constructors g
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private int id;
