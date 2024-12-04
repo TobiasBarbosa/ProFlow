@@ -13,6 +13,7 @@ public class ProjectTest {
     //***EXAM QUESTIONS***----------------------------------------------------------------------------------------------
     //Hvorfor bruge assertions?
     //Hvad er JUnit test? Og hvad differentierer dem fra andre test kategorier?
+    //Exceptions rapport
 
     //***TO DO***-------------------------------------------------------------------------------------------------------
     //TODO test calculateActualPriceForProject()   - bemærk at den looper igennem sæt fra database...
@@ -71,7 +72,7 @@ public class ProjectTest {
         //1: Tjekker at budget ikke er null
         assertNotNull(actualBudget, "Budget should not be null");
 
-        //2: Tjekker at actual og expected budget stemmer overens
+        //2: Tjekker at actual og expected budget stemmer overens-
         assertEquals(actualBudget, expectedBudget);
 
         //3: Tjekker at den kaster en fejlmeddelelse hvis budget er under 0
@@ -98,7 +99,7 @@ public class ProjectTest {
         //1: tester at metode beregner rigtigt
         assertEquals(expectedDaysUntilDone,actualDaysUntilDone);
 
-        //2: tester at den spytter den rigtige exception ud når en date er null
+        //2: tester at den spytter den rigtige exception ud når (en) date er null
         assertEquals(expectedExceptionMessage, exception.getMessage());
     }
 
