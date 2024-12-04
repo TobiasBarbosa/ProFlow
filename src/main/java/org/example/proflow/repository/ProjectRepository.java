@@ -21,7 +21,7 @@ public class ProjectRepository {
     private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
-    private SubProjectRepository subProjectRepository = new SubProjectRepository();
+//    private SubProjectRepository subProjectRepository = new SubProjectRepository();
 
     //***CREATE PROJECT***---------------------------------------------------------------------------------------------C
     public void addProject(Project project) throws SQLException {
@@ -43,9 +43,9 @@ public class ProjectRepository {
             ps.setString(7, project.getStatus().getDisplayStatus());
             ps.setDouble(8, project.getBudget());
             ps.setObject(9, project.getActualPrice());
-            ps.setInt(10, project.getProfileId());// //TODO hvordan henter vi profileId?  Use setObject for nullable columns
+            ps.setInt(10, project.getProfileId());
 
-            //ps.setInt(9, project.calculateDaysUntilDone(project.getStartDate(),project.getEndDate())); //TODO slet?
+
             ps.executeUpdate();
         }
     }
@@ -73,12 +73,10 @@ public class ProjectRepository {
                     project.setBudget(rs.getDouble("budget"));
                     project.setActualPrice(rs.getDouble("actual_price"));
                     project.setProfileId(rs.getInt("profile_id"));
-                    //TODO hvordan håndterer vi calculateDaysUntilDone?
-                    //Double actualPrice = rs.getObject("actual_price", Double.class);
-                    //project.setActualPrice(actualPrice != null ? actualPrice : 0.0); // Default to 0.0 if null
+
                 }
             }
-//            getSubProjectsForProject(project);
+
             project.setSubProjects(getSubProjectsFromProject(project.getId()));
         }
         return project;
@@ -105,11 +103,6 @@ public class ProjectRepository {
                 project.setBudget(rs.getDouble("budget"));
                 project.setActualPrice(rs.getDouble("actual_price"));
                 project.setProfileId(rs.getInt("profile_id"));
-                //project.setDaysUntilDone(rs.getInt("duration")); //TODO hvordan håndterer vi calculateDaysUntilDone?
-                // Handle null for actual_price explicitly
-                //Double actualPrice = rs.getObject("actual_price", Double.class);
-                //project.setActualPrice(actualPrice != null ? actualPrice : 0.0); // Default to 0.0 if null
-//                project.setSubProjects(getSubProjectsFromProject(project.getId()));
                 projects.add(project);
             }
             // loop through all Projects and add the related subprojects.
