@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 
-//TODO ProjectController: Rette HTML sider
-//TODO ProjectController: Rette navne/stier på endpoints
+//TODO ProjectController: Rette endpoints og HTML sider
 //TODO ProjectController: Rette exceptions til ProjectException
-//TODO projectId ? hedder rigtigt id i vores Project klasse
 
 @Controller
 @RequestMapping("dashboard")
@@ -38,7 +36,7 @@ public class ProjectController {
         }
         model.addAttribute("profileId", profileId);
         model.addAttribute("project", new Project());
-        return "dashboard";
+        return "add_project";
     }
 
     @PostMapping("/save-project")
@@ -97,11 +95,11 @@ public class ProjectController {
 //        model.addAttribute("budget", project.getBudget());
 //        model.addAttribute("actualPrice", project.getActualPrice());
 //        model.addAttribute("profileId", project.getProfileId());
-        return "editproject";
+        return "edit_project";
     }
 
 
-    @PostMapping("/project/update")
+    @PostMapping("/project/update") //TODO lave tjek med isValid og isProjectOwned (men skal det gøres på både edit og update?)
     public String updateProject(@ModelAttribute Project project) throws SQLException {
         projectService.updateProject(project);
         return "redirect:/dashboard";
@@ -113,7 +111,7 @@ public class ProjectController {
     public String deleteProject(@PathVariable("projectId") int projectId, HttpSession session) throws SQLException {
 
         projectService.deleteProject(projectId);
-        return "rediect:/dashboard";
+        return "redirect:/dashboard";
     }
 
     //***END***---------------------------------------------------------------------------------------------------------
