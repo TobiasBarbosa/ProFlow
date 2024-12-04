@@ -1,15 +1,44 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
-    <link rel="stylesheet" th:href="@{/main.css}">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/static/main.css}">
+
 </head>
 <body>
-<h1>Project List</h1>
+<div class="center">
+<h1>ProFlow</h1>
+<h5>Project Management System</h5><br>
+</div>
+
+<div class="container login-container">
+    <div class="login-card bg-light">
+        <h3 class="text-center">Login</h3>
+        <!-- Login form with email and password fields -->
+        <form th:action="@{/homepage/login}" method="post">
+            <div class="form-group">
+                <label for="profileEmail">Email</label>
+                <input type="email" class="form-control" id="profileEmail" name="profileEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="profilePassword">Password</label>
+                <input type="password" class="form-control" id="profilePassword" name="profilePassword" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+            <p class="text-center mt-3">
+                Don't have an account? <a th:href="@{/signup}">Sign up here</a><br>
+                <a th:href="@{/signup}">Forgot password?</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+<!--
 <ul>
     <li th:each="project : ${projects}" th:text="${project.getName()}"></li>
 </ul>
-
+-->
 </body>
 </html>

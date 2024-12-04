@@ -16,7 +16,7 @@ import java.util.List;
 //TODO TaskController: Rette exceptions til taskException
 
 @Controller
-@RequestMapping("homepage")
+@RequestMapping("dashboard/{profileId}/{projectId}")
 public class TaskController {
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final TaskService taskService;
