@@ -5,7 +5,6 @@ import org.example.proflow.model.Task;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +41,7 @@ public class TaskRepository {
 //            ps.setDate(4, Date.valueOf(task.getCreatedDate()));
             ps.setDate(5, Date.valueOf(task.getStartDate()));
             ps.setDate(6, Date.valueOf(task.getEndDate()));
-            ps.setDouble(7,task.getTotalEstHours());
+            ps.setDouble(7, task.getTotalEstHours());
             ps.setString(8, task.getStatus().name());
             ps.setInt(9, task.getSubProjectId());
             ps.setString(10, task.getAssignedTo());
@@ -50,9 +49,7 @@ public class TaskRepository {
 
             ps.executeUpdate();
 
-        }
-
-        catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

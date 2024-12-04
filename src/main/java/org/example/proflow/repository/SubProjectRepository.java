@@ -6,7 +6,6 @@ import org.example.proflow.model.Task;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -178,16 +177,16 @@ public class SubProjectRepository {
 //        }
 
 
-            public List<Task> getTaskFromSubProject(int subProjectId) throws SQLException {
-            String query = "SELECT * FROM Task WHERE sub_project_id = ?";
-            List<Task> tasksFromSubProject = new ArrayList<>();
-            Task task = null;
+    public List<Task> getTaskFromSubProject(int subProjectId) throws SQLException {
+        String query = "SELECT * FROM Task WHERE sub_project_id = ?";
+        List<Task> tasksFromSubProject = new ArrayList<>();
+        Task task = null;
 
-            try (Connection con = dataBaseConnection.getConnection();
-                 PreparedStatement ps = con.prepareStatement(query)) {
-                ps.setInt(1, subProjectId);
-                try (ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()){
+        try (Connection con = dataBaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, subProjectId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
                     task = new Task();
                     task.setId(rs.getInt("id"));
                     task.setName(rs.getString("name"));
@@ -202,21 +201,20 @@ public class SubProjectRepository {
                     task.setAssignedTo(rs.getString("assigned_to"));
                     task.setTaskPrice(rs.getDouble("price")); // Not null column
                     tasksFromSubProject.add(task);
-                    }
-
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
 
-            return tasksFromSubProject;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-
-
+        return tasksFromSubProject;
     }
 
-    //***END***---------------------------------------------------------------------------------------------------------
+
+}
+
+//***END***---------------------------------------------------------------------------------------------------------
 
 
 

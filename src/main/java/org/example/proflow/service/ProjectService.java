@@ -1,8 +1,6 @@
 package org.example.proflow.service;
 
-import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
-import org.example.proflow.model.SubProject;
 import org.example.proflow.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +14,13 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
-    public ProjectService(ProjectRepository projectRepository){
+    public ProjectService(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
     }
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE PROFILE***---------------------------------------------------------------------------------------------C
-    public void addProject(Project project ) throws SQLException{
+    public void addProject(Project project) throws SQLException {
         projectRepository.addProject(project);
     }
 
@@ -31,12 +29,12 @@ public class ProjectService {
         return projectRepository.getAllProjects();
     }
 
-    public Project getProjectById(int id) throws SQLException{
+    public Project getProjectById(int id) throws SQLException {
         return projectRepository.getProjectById(id);
     }
 
     //***UPDATE PROFILE***---------------------------------------------------------------------------------------------U
-    public void updateProject(Project project) throws SQLException{
+    public void updateProject(Project project) throws SQLException {
         projectRepository.updateProject(project);
     }
 

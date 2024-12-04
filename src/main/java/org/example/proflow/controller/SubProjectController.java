@@ -3,7 +3,6 @@ package org.example.proflow.controller;
 import jakarta.servlet.http.HttpSession;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
-import org.example.proflow.model.Status;
 import org.example.proflow.model.SubProject;
 import org.example.proflow.service.ProjectService;
 import org.example.proflow.service.SubProjectService;
@@ -13,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 //TODO SubProjectController: Rette HTML sider
@@ -39,13 +37,13 @@ public class SubProjectController {
     @GetMapping("/addsubproject")
     public String addSubProject(@PathVariable("projectId") int projectId, Model model, HttpSession session) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
-        if(!Validator.isValid(session, profile.getId())) {
+        if (!Validator.isValid(session, profile.getId())) {
             return "redirect:/homepage";
         }
 
         Project project = projectService.getProjectById(projectId); //Henter projektet fra databasen
 
-        if(!Validator.isProjectOwned(profile.getId(), project.getProfileId())){ //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
+        if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())) { //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
             return "redirect:/homepage";
         }
         model.addAttribute("projectId", projectId);
@@ -66,13 +64,13 @@ public class SubProjectController {
     @GetMapping("/subprojects")
     public String getAllSubProjects(Model model, HttpSession session, int projectId) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
-        if(!Validator.isValid(session, profile.getId())) {
+        if (!Validator.isValid(session, profile.getId())) {
             return "redirect:/homepage";
         }
 
         Project project = projectService.getProjectById(projectId); //Henter projektet fra databasen
 
-        if(!Validator.isProjectOwned(profile.getId(), project.getProfileId())){ //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
+        if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())) { //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
             return "redirect:/homepage";
         }
         List<SubProject> subProjects = subProjectService.getAllSubProjects();
@@ -84,13 +82,13 @@ public class SubProjectController {
     public String getSubProjectById(@PathVariable("subprojectId") int subprojectId, Model model, HttpSession session, int projectId)
             throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
-        if(!Validator.isValid(session, profile.getId())) {
+        if (!Validator.isValid(session, profile.getId())) {
             return "redirect:/homepage";
         }
 
         Project project = projectService.getProjectById(projectId); //Henter projektet fra databasen
 
-        if(!Validator.isProjectOwned(profile.getId(), project.getProfileId())){ //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
+        if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())) { //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
             return "redirect:/homepage";
         }
         SubProject subProject = subProjectService.getSubProjectById(subprojectId);
@@ -103,13 +101,13 @@ public class SubProjectController {
     @GetMapping("/subproject/edit/{id}") //TODO skal den bare hedde id her?
     public String editSubProject(@PathVariable("id") int subProjectId, Model model, HttpSession session, int projectId) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
-        if(!Validator.isValid(session, profile.getId())) {
+        if (!Validator.isValid(session, profile.getId())) {
             return "redirect:/homepage";
         }
 
         Project project = projectService.getProjectById(projectId); //Henter projektet fra databasen
 
-        if(!Validator.isProjectOwned(profile.getId(), project.getProfileId())){ //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
+        if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())) { //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
             return "redirect:/homepage";
         }
         SubProject subProject = subProjectService.getSubProjectById(subProjectId);
@@ -132,13 +130,13 @@ public class SubProjectController {
     @PostMapping("/subproject/update")
     public String updateSubProject(@ModelAttribute SubProject subProject, HttpSession session, int projectId) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
-        if(!Validator.isValid(session, profile.getId())) {
+        if (!Validator.isValid(session, profile.getId())) {
             return "redirect:/homepage";
         }
 
         Project project = projectService.getProjectById(projectId); //Henter projektet fra databasen
 
-        if(!Validator.isProjectOwned(profile.getId(), project.getProfileId())){ //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
+        if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())) { //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
             return "redirect:/homepage";
         }
         int subProjectId = subProject.getId();
@@ -151,13 +149,13 @@ public class SubProjectController {
     @PostMapping("/subproject/delete/{subProjectId}")
     public String deleteSubProject(@PathVariable("subProjectId") int subProjectId, int projectId, HttpSession session) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
-        if(!Validator.isValid(session, profile.getId())) {
+        if (!Validator.isValid(session, profile.getId())) {
             return "redirect:/homepage";
         }
 
         Project project = projectService.getProjectById(projectId); //Henter projektet fra databasen
 
-        if(!Validator.isProjectOwned(profile.getId(), project.getProfileId())){ //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
+        if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())) { //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
             return "redirect:/homepage";
         }
         SubProject subProject = subProjectService.getSubProjectById(subProjectId);

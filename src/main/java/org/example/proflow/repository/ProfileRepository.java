@@ -19,6 +19,7 @@ public class ProfileRepository {
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     private ProjectRepository projectRepository = new ProjectRepository();
+
     //***CREATE PROFILE***---------------------------------------------------------------------------------------------C
     public void addProfile(Profile profile) {
         String insertProfileQuery = """
@@ -108,11 +109,8 @@ public class ProfileRepository {
     }
 
 
-
-
-
     public Profile getProfileByEmailAndPassword(String profileEmail, String profilePassword) throws ProfileException {
-        for (Profile profile: getAllProfiles()) {
+        for (Profile profile : getAllProfiles()) {
             if (profile.getEmail().equalsIgnoreCase(profileEmail) && profile.getPassword().equals(profilePassword))
                 return profile;
         }

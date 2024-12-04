@@ -6,10 +6,10 @@ import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
 import org.example.proflow.service.ProfileService;
 import org.example.proflow.service.ProjectService;
+import org.example.proflow.util.Validator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.example.proflow.util.Validator;
 
 import java.awt.color.ProfileDataException;
 import java.sql.SQLException;
@@ -36,14 +36,14 @@ public class ProfileController {
 
     //***LOGIN METHODS***-----------------------------------------------------------------------------------------------
     @GetMapping("/login")
-    public String showLogin(){
+    public String showLogin() {
         return "login";
     }
 
     @PostMapping("/login")
     public String login(@RequestParam("profileEmail") String profileEmail,
                         @RequestParam("profilePassword") String profilePassword,
-                        HttpSession session, Model model) throws ProfileException{
+                        HttpSession session, Model model) throws ProfileException {
 
         if (profileService.login(profileEmail, profilePassword)) {
             Profile profileToCheck = profileService.getProfileByEmailAndPassword(profileEmail, profilePassword);
@@ -57,7 +57,7 @@ public class ProfileController {
     }
 
     @GetMapping("/profile")
-    public String showProfileDashboard(HttpSession session, Model model) throws ProfileException{
+    public String showProfileDashboard(HttpSession session, Model model) throws ProfileException {
         Profile profile = (Profile) session.getAttribute("profile");
 
         if (profile == null) {
@@ -71,7 +71,7 @@ public class ProfileController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session){
+    public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/homepage";
     }
@@ -94,7 +94,7 @@ public class ProfileController {
     //***PROFILE(PM)***
     @GetMapping("/dashboard") //dashboard til projektleder (viser alle projekter for en projektleder)
     public String dashboard(Model model, @RequestParam int profileId) throws ProfileException {
-        if(!Validator.isValid(session, profileId)) {
+        if (!Validator.isValid(session, profileId)) {
             return "redirect:/homepage";
         }
         List<Project> projectsFromProfile = profileService.getProjectsFromProfile(profileId);
@@ -111,7 +111,7 @@ public class ProfileController {
     }
 
     @GetMapping("/admin-dashboard")
-    public String getAllProjects(Model model) throws SQLException{ //til admin til at se liste over alle projekter
+    public String getAllProjects(Model model) throws SQLException { //til admin til at se liste over alle projekter
         List<Project> projects = projectService.getAllProjects();
         model.addAttribute("Projects", projects);
         return "admin_dashboard";
@@ -121,7 +121,7 @@ public class ProfileController {
     @GetMapping("/edit/{profileId}")
     public String editProfile(@PathVariable("profileId") int profileId, Model model, HttpSession session)
             throws ProfileException, SQLException {
-        if(!Validator.isValid(session, profileId)) {
+        if (!Validator.isValid(session, profileId)) {
             return "redirect:/homepage";
         }
         Profile profile = profileService.getProfileById(profileId);
@@ -136,7 +136,7 @@ public class ProfileController {
     @PostMapping("/update/{profileId}")
     public String updateProfile(@PathVariable("profileId") int profileId, @ModelAttribute Profile profile, Model model)
             throws ProfileException {
-        if(!Validator.isValid(session, profileId)) {
+        if (!Validator.isValid(session, profileId)) {
             return "redirect:/homepage";
         }
         model.addAttribute("profile", profile);
@@ -147,7 +147,7 @@ public class ProfileController {
     //***DELETE PROFILE***---------------------------------------------------------------------------------------------D
     @PostMapping("/remove/{profileId}")
     public String deleteProfile(@PathVariable int profileId) throws ProfileException, SQLException {
-        if(!Validator.isValid(session, profileId)) {
+        if (!Validator.isValid(session, profileId)) {
             return "redirect:/homepage";
         }
         Profile profile = profileService.getProfileById(profileId);

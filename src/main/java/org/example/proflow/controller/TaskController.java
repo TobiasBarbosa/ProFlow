@@ -1,6 +1,5 @@
 package org.example.proflow.controller;
 
-import org.example.proflow.model.Status;
 import org.example.proflow.model.Task;
 import org.example.proflow.service.TaskService;
 import org.springframework.stereotype.Controller;
@@ -8,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 //TODO TaskController: Rette HTML sider

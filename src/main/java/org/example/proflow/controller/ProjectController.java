@@ -3,15 +3,13 @@ package org.example.proflow.controller;
 import jakarta.servlet.http.HttpSession;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
-import org.example.proflow.service.ProfileService;
 import org.example.proflow.service.ProjectService;
+import org.example.proflow.util.Validator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.example.proflow.util.Validator;
 
 import java.sql.SQLException;
-import java.util.List;
 
 //TODO ProjectController: Rette HTML sider
 //TODO ProjectController: Rette navne/stier på endpoints
@@ -35,7 +33,7 @@ public class ProjectController {
     //***CREATE PROJECT METHODS***-----------------------------------------------------------------------------------
     @GetMapping("/add-project")
     public String addProject(@PathVariable("profileId") int profileId, Model model, HttpSession session) {
-        if(!Validator.isValid(session, profileId)) {
+        if (!Validator.isValid(session, profileId)) {
             return "redirect:/homepage";
         }
         model.addAttribute("profileId", profileId);
@@ -56,13 +54,13 @@ public class ProjectController {
     @GetMapping("/{projectId}/{name}")
     public String getProjectById(@PathVariable("projectId") int projectId, Model model, HttpSession session) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
-        if(!Validator.isValid(session, profile.getId())) {
+        if (!Validator.isValid(session, profile.getId())) {
             return "redirect:/homepage";
         }
 
         Project project = projectService.getProjectById(projectId); //Henter projektet fra databasen
 
-        if(!Validator.isProjectOwned(profile.getId(), project.getProfileId())){ //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
+        if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())) { //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
             return "redirect:/homepage";
         }
 
@@ -77,13 +75,13 @@ public class ProjectController {
     @GetMapping("/project/edit/{projectId}")
     public String editProject(@PathVariable("projectId") int projectId, Model model, HttpSession session) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
-        if(!Validator.isValid(session, profile.getId())) {
+        if (!Validator.isValid(session, profile.getId())) {
             return "redirect:/homepage";
         }
 
         Project project = projectService.getProjectById(projectId); //Henter projektet fra databasen
 
-        if(!Validator.isProjectOwned(profile.getId(), project.getProfileId())){ //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
+        if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())) { //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
             return "redirect:/dashboard";
         }
 

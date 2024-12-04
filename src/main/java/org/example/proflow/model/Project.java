@@ -1,6 +1,5 @@
 package org.example.proflow.model;
 
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -161,7 +160,7 @@ public class Project { //hvorfor ikke abstract?
     }
 
     public void setCreatedDate(LocalDate createdDate) {
-        if(createdDate == null){
+        if (createdDate == null) {
             throw new IllegalArgumentException("Created date cannot be null");
         }
         this.createdDate = createdDate;
@@ -193,7 +192,7 @@ public class Project { //hvorfor ikke abstract?
     }
 
     public void setBudget(double budget) {
-        if (budget < 0){
+        if (budget < 0) {
             throw new IllegalArgumentException("budget can not be less than 0");
         }
         this.budget = budget;
@@ -222,17 +221,17 @@ public class Project { //hvorfor ikke abstract?
         return (int) ChronoUnit.DAYS.between(startDate, endDate);
     }
 
-    public double calculateActualPriceForProject(){
+    public double calculateActualPriceForProject() {
         double actualPrice = 0;
-        for (SubProject sp : subProjects){
+        for (SubProject sp : subProjects) {
             actualPrice += sp.getActualPrice();
         }
         return actualPrice;
     }
 
-    public double calculateTotalEstHoursForProject(){
+    public double calculateTotalEstHoursForProject() {
         double totalEstHours = 0;
-        for (SubProject sp : subProjects){
+        for (SubProject sp : subProjects) {
             totalEstHours += sp.getTotalEstHours();
         }
         return totalEstHours;
@@ -241,17 +240,17 @@ public class Project { //hvorfor ikke abstract?
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return "\nProject ID: "                    + id            +
-                "\nProject name: "                 + name          +
-                "\nDescription: "                  + description   +
-                "\nCreated date: "                 + createdDate   +
-                "\nStart date: "                   + startDate     +
-                "\nEnd date="                      + endDate       +
+        return "\nProject ID: " + id +
+                "\nProject name: " + name +
+                "\nDescription: " + description +
+                "\nCreated date: " + createdDate +
+                "\nStart date: " + startDate +
+                "\nEnd date=" + endDate +
                 "\nTotal Est Hours (SubProject): " + totalEstHours +
-                "\nStatus: "                       + status        +
-                "\nBudget: "                       + budget        +
-                "\nActual Price: "                 + actualPrice   +
-                "\nProfile ID: "                   + profileId;
+                "\nStatus: " + status +
+                "\nBudget: " + budget +
+                "\nActual Price: " + actualPrice +
+                "\nProfile ID: " + profileId;
     }
 
     //***END***---------------------------------------------------------------------------------------------------------

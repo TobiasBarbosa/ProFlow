@@ -1,10 +1,11 @@
 package org.example.proflow.repository;
 
-import org.example.proflow.model.*;
+import org.example.proflow.model.Project;
+import org.example.proflow.model.Status;
+import org.example.proflow.model.SubProject;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -180,7 +181,7 @@ public class ProjectRepository {
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, projectId);
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()){
+                while (rs.next()) {
                     subProject = new SubProject();
                     subProject.setId(rs.getInt("id"));
                     subProject.setName(rs.getString("name"));
@@ -206,5 +207,5 @@ public class ProjectRepository {
     }
 }
 
-    //***END***---------------------------------------------------------------------------------------------------------
+//***END***---------------------------------------------------------------------------------------------------------
 

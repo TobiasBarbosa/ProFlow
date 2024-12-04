@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.sql.SQLException;
 
 
-
 @SpringBootApplication
 public class ProFlowApplication {
 
