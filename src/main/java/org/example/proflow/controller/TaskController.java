@@ -16,7 +16,7 @@ import java.util.List;
 //TODO TaskController: Rette exceptions til taskException
 
 @Controller
-@RequestMapping("homepage")
+@RequestMapping("dashboard/{profileId}/{projectId}")
 public class TaskController {
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final TaskService taskService;
@@ -64,18 +64,18 @@ public class TaskController {
     public String editTask(@PathVariable("taskId") int taskId, Model model) throws SQLException {
         Task task = taskService.getTaskById(taskId);
         model.addAttribute("task", task);
-        model.addAttribute("taskId", task.getId());
-        model.addAttribute("name", task.getName());
-        model.addAttribute("description", task.getDescription());
-        model.addAttribute("location", task.getLocation());
-        model.addAttribute("startDate", task.getStartDate());
-        model.addAttribute("endDate", task.getEndDate());
-        //model.addAttribute("daysUntilDone", task.getDaysUntilDone());
-        //model.addAttribute("hourlyDuration", task.getHourlyDuration());
-        model.addAttribute("status", task.getStatus());
-        model.addAttribute("subProjectId", task.getSubProjectId());
-        model.addAttribute("assignedTo", task.getAssignedTo());
-        model.addAttribute("taskPrice", task.getTaskPrice());
+//        model.addAttribute("taskId", task.getId()); //TODO slet de her? 
+//        model.addAttribute("name", task.getName());
+//        model.addAttribute("description", task.getDescription());
+//        model.addAttribute("location", task.getLocation());
+//        model.addAttribute("startDate", task.getStartDate());
+//        model.addAttribute("endDate", task.getEndDate());
+//        //model.addAttribute("daysUntilDone", task.getDaysUntilDone());
+//        //model.addAttribute("hourlyDuration", task.getHourlyDuration());
+//        model.addAttribute("status", task.getStatus());
+//        model.addAttribute("subProjectId", task.getSubProjectId());
+//        model.addAttribute("assignedTo", task.getAssignedTo());
+//        model.addAttribute("taskPrice", task.getTaskPrice());
         return "editTask";
     }
 

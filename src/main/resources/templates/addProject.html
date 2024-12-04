@@ -1,10 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>addProject</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
 </head>
+
 <body>
 
+<h1>Create new project</h1>
+<div class="add">
+    <form th:action="@{dashboard/{profileId}/saveproject}" th:object="${project}" method="post">
+        <label class="addLabel" for="name">Name</label>
+        <input class="placeholder" type="text" id="name" th:field="*{project.getName()}"> <!-- ved ikke om project.getName() er rigtigt-->
+
+        <br><label class="addLabel" for="description">Description</label>
+        <input class="placeholder" type="text" id="description" th:field="*{project.getDescription()}">
+
+        <br><label class="addLabel" for="startDate">Start date</label>
+        <input class="placeholder" type="text" id="startDate" th:field="*{project.getStartDate()}">
+
+        <br><label class="addLabel" for="endDate">End date</label>
+        <input class="placeholder" type="text" id="endDate" th:field="*{project.getEndDate()}">
+
+        <br><label class="addLabel" for="Status">Status</label>
+        <input class="placeholder" type="text" id="status" th:field="*{project.getStatus()}">
+
+        <br><label class="addLabel" for="budget">Budget</label>
+        <input class="placeholder" type="text" id="budget" th:field="*{project.getBudget()}">
+
+        <br><button class="button" method="submit">Save</button>
+        <button class="button" href="/projects">Back</button>
+    </form>
+</div>
+
 </body>
+
 </html>
