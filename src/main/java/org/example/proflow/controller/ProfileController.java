@@ -5,6 +5,7 @@ import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
 import org.example.proflow.service.ProfileService;
+import org.example.proflow.service.ProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,17 +18,20 @@ import java.util.List;
 //TODO ProfileController: Rette HTML sider
 //TODO ProfileController: Rette navne/stier på endpoints
 //TODO ProfileController: Rette exceptions til ProfileException
+//TODO ProfileController: add admin dashboard
 
 @Controller
-@RequestMapping("profile")
+@RequestMapping("homepage")
 public class ProfileController {
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final ProfileService profileService;
-    private HttpSession session;
+    private final ProjectService projectService;
+    private HttpSession session; // why not assigned?
 
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
-    public ProfileController(ProfileService profileService) {
+    public ProfileController(ProfileService profileService, ProjectService projectService) {
         this.profileService = profileService;
+        this.projectService = projectService;
     }
 
     //***LOGIN METHODS***-----------------------------------------------------------------------------------------------
@@ -52,7 +56,7 @@ public class ProfileController {
         return "login"; //TODO: HTML skal returnere noget ala "Forkerte brugeroplysninger, prøv igen"
     }
 
-    @GetMapping("/userProfile")
+    @GetMapping("/profile")
     public String showProfileDashboard(HttpSession session, Model model) throws ProfileException{
         Profile profile = (Profile) session.getAttribute("profile");
 
@@ -63,7 +67,7 @@ public class ProfileController {
         model.addAttribute("profile", profile);
         List<Project> projects = profileService.getProjectsFromProfile(profile.getId());
         model.addAttribute("projects", projects);
-        return "userProfile";
+        return "profile";
     }
 
     @GetMapping("/logout")
@@ -71,7 +75,6 @@ public class ProfileController {
         session.invalidate();
         return "redirect:/homepage";
     }
-
 
     //***CREATE PROFILE***---------------------------------------------------------------------------------------------C
     @GetMapping("/addprofile") // GetMapping henter data fra database
@@ -84,25 +87,34 @@ public class ProfileController {
     @PostMapping("/saveprofile") //PostMapping tilføjer data til database
     public String saveProfile(@ModelAttribute Profile profile) throws ProfileDataException {
         profileService.addProfile(profile);
-        return "redirect:/";
+        return "redirect:/dashboard";
     }
 
     //***READ PROFILE***-----------------------------------------------------------------------------------------------R
-    @GetMapping("/admin") //homepage til projektleder (viser alle projekter for en projektleder)
-    public String homepage(Model model, @RequestParam int profileId) throws ProfileException {
+    //***PROFILE(PM)***
+    @GetMapping("/dashboard") //dashboard til projektleder (viser alle projekter for en projektleder)
+    public String dashboard(Model model, @RequestParam int profileId) throws ProfileException {
         if(!Validator.isValid(session, profileId)) {
             return "redirect:/homepage";
         }
         List<Project> projectsFromProfile = profileService.getProjectsFromProfile(profileId);
         model.addAttribute("projectsFromProfile", projectsFromProfile);
-        return "homepage";
+        return "dashboard";
     }
 
-    @GetMapping("")
-    public String getAllProfiles(Model model) throws ProfileException {
+    //***PROFILE ADMIN)***
+    @GetMapping("/admin-dashboard")
+    public String getAllProfiles(Model model) throws ProfileException { //admin kan se alle profiler
         List<Profile> profiles = profileService.getAllProfiles();
         model.addAttribute("profiles", profiles);
-        return "allProfiles";
+        return "admin_dashboard";
+    }
+
+    @GetMapping("/admin-dashboard")
+    public String getAllProjects(Model model) throws SQLException{ //til admin til at se liste over alle projekter
+        List<Project> projects = projectService.getAllProjects();
+        model.addAttribute("Projects", projects);
+        return "admin_dashboard";
     }
 
     //***UPDATE PROFILE***---------------------------------------------------------------------------------------------U
@@ -114,27 +126,26 @@ public class ProfileController {
         }
         Profile profile = profileService.getProfileById(profileId);
         model.addAttribute("profile", profile);
-        model.addAttribute("profileName", profile.getFirstName());
-        model.addAttribute("profileLastName", profile.getLastName());
-        model.addAttribute("profileEmail", profile.getEmail());
-        model.addAttribute("profilePassword",profile.getPassword());
+//        model.addAttribute("profileName", profile.getFirstName());
+//        model.addAttribute("profileLastName", profile.getLastName());
+//        model.addAttribute("profileEmail", profile.getEmail());
+//        model.addAttribute("profilePassword",profile.getPassword());
         return "editProfile";
     }
 
-    @PostMapping("/update/{id}")
-    public String updateProfile(@PathVariable("id") int profileId, @ModelAttribute Profile profile, Model model)
+    @PostMapping("/update/{profileId}")
+    public String updateProfile(@PathVariable("profileId") int profileId, @ModelAttribute Profile profile, Model model)
             throws ProfileException {
         if(!Validator.isValid(session, profileId)) {
             return "redirect:/homepage";
         }
         model.addAttribute("profile", profile);
-        profile.setId(profileId);
         profileService.updateProfile(profile);
         return "redirect:/profile";
     }
 
     //***DELETE PROFILE***---------------------------------------------------------------------------------------------D
-    @PostMapping("/remove/{id}")
+    @PostMapping("/remove/{profileId}")
     public String deleteProfile(@PathVariable int profileId) throws ProfileException, SQLException {
         if(!Validator.isValid(session, profileId)) {
             return "redirect:/homepage";
