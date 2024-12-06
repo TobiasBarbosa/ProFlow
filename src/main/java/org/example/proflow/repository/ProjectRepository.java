@@ -1,5 +1,6 @@
 package org.example.proflow.repository;
 
+import org.example.proflow.exception.ProjectException;
 import org.example.proflow.model.Project;
 import org.example.proflow.model.Status;
 import org.example.proflow.model.SubProject;
@@ -83,7 +84,7 @@ public class ProjectRepository {
         return project;
     }
 
-    public List<Project> getAllProjects() {
+    public List<Project> getAllProjects() throws SQLException {
         List<Project> projects = new ArrayList<>();
         String query = "SELECT * FROM Project";
 
@@ -118,46 +119,6 @@ public class ProjectRepository {
         return projects;
     }
 
-    //***UPDATE PROJECT***---------------------------------------------------------------------------------------------U
-    public void updateProject(Project project) throws SQLException {
-        String updateProjectQuery = """
-                    UPDATE Project 
-                    SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, budget = ?
-                    WHERE id = ?
-                """;
-
-        try (Connection con = dataBaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(updateProjectQuery)) {
-
-            //id can not change
-            //createdDate can not change
-            //totalEstHours can not change
-            //actualPrice can not change
-            //profileId can not change
-            ps.setString(1, project.getName());
-            ps.setString(2, project.getDescription());
-            ps.setDate(3, Date.valueOf(project.getStartDate()));
-            ps.setDate(4, Date.valueOf(project.getEndDate()));
-            ps.setString(5, project.getStatus().name());
-            ps.setDouble(6, project.getBudget());
-
-            ps.executeUpdate();
-        }
-    }
-
-    //***DELETE PROJECT***---------------------------------------------------------------------------------------------D
-    public void deleteProject(int id) throws SQLException {
-        String deleteProjectQuery = "DELETE FROM Project WHERE id = ?";
-
-        try (Connection con = dataBaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(deleteProjectQuery)) {
-
-            ps.setInt(1, id);
-            ps.executeUpdate();
-        }
-    }
-
-    //***OTHER METHODS***-----------------------------------------------------------------------------------------------
 //
 //    public List<SubProject> getSubProjectsFromProject(int projectId) throws SQLException{
 //
@@ -205,6 +166,46 @@ public class ProjectRepository {
 
         return subProjectsFromProject;
     }
+
+    //***UPDATE PROJECT***---------------------------------------------------------------------------------------------U
+    public void updateProject(Project project) throws SQLException {
+        String updateProjectQuery = """
+                    UPDATE Project 
+                    SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, budget = ?
+                    WHERE id = ?
+                """;
+
+        try (Connection con = dataBaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(updateProjectQuery)) {
+
+            //id can not change
+            //createdDate can not change
+            //totalEstHours can not change
+            //actualPrice can not change
+            //profileId can not change
+            ps.setString(1, project.getName());
+            ps.setString(2, project.getDescription());
+            ps.setDate(3, Date.valueOf(project.getStartDate()));
+            ps.setDate(4, Date.valueOf(project.getEndDate()));
+            ps.setString(5, project.getStatus().name());
+            ps.setDouble(6, project.getBudget());
+
+            ps.executeUpdate();
+        }
+    }
+
+    //***DELETE PROJECT***---------------------------------------------------------------------------------------------D
+    public void deleteProject(int id) throws SQLException {
+        String deleteProjectQuery = "DELETE FROM Project WHERE id = ?";
+
+        try (Connection con = dataBaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(deleteProjectQuery)) {
+
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
+
 }
 
 //***END***---------------------------------------------------------------------------------------------------------

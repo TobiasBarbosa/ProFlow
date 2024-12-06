@@ -1,6 +1,7 @@
 package org.example.proflow.service;
 
 import org.example.proflow.model.SubProject;
+import org.example.proflow.model.Task;
 import org.example.proflow.repository.SubProjectRepository;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,10 @@ public class SubProjectService {
 
     public SubProject getSubProjectById(int id) throws SQLException {
         return subProjectRepository.getSubProjectById(id);
+    }
+
+    public List<Task> getTasksFromSubProject(int subProjectId) throws SQLException {
+        return subProjectRepository.getTasksFromSubProject(subProjectId);
     }
 
     //***UPDATE PROFILE***---------------------------------------------------------------------------------------------U

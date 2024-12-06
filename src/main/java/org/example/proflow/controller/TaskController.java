@@ -31,7 +31,7 @@ public class TaskController {
     }
 
     //***CREATE TASK METHODS***-----------------------------------------------------------------------------------------
-    @GetMapping("/{subProjectId}/add-task") //TODO lave tjek med isValid og IsProjectOwned
+    @GetMapping("/{subProjectId}/add-task")
     public String addTask(@PathVariable("subProjectId") int subProjectId, Model model, HttpSession session, int projectId) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");
         if (!Validator.isValid(session, profile.getId())) {
@@ -57,7 +57,7 @@ public class TaskController {
     }
 
     //***READ TASK METHODS***-------------------------------------------------------------------------------------------
-    @GetMapping("tasks") //TODO skal denne egentlig være en getAllTasksFromSubproject/getTasksFromSubProjectId og hvilken controller klasse skal den så ligge i?
+    @GetMapping("tasks") //TODO skal vi bruge getAllTasks?
     public String getAllTasks(Model model, HttpSession session, int projectId) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");
         if (!Validator.isValid(session, profile.getId())) {
@@ -91,7 +91,7 @@ public class TaskController {
         Task task = taskService.getTaskById(taskId);
         model.addAttribute("task", task);
         model.addAttribute("name", task.getName());
-        return "task"; //TODO Skal vi have en task html side eller hvad skal vi returnere her?
+        return "task";
     }
 
     //***UPDATE TASK METHODS***-----------------------------------------------------------------------------------------
@@ -129,7 +129,7 @@ public class TaskController {
     public String updateTask(@ModelAttribute Task task) throws SQLException {
         int taskId = task.getId();
         taskService.updateTask(task);
-        return "redirect:/subproject"; //TODO skal vi redirect til task html side her hvis vi har en?
+        return "redirect:/task";
     }
 
     //***DELETE TASK METHODS***-----------------------------------------------------------------------------------------

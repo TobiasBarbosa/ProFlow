@@ -2,6 +2,7 @@ package org.example.proflow.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.example.proflow.exception.ProfileException;
+import org.example.proflow.exception.ProjectException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
 import org.example.proflow.service.ProfileService;
@@ -109,6 +110,7 @@ public class ProfileController {
     }
 
     @GetMapping("/admin-dashboard")
+    //TODO argumentere for hvorfor den her ligger her i profileController, mens getAllSubProjects ligger i taskSubProjects og getAllTasks ligger i taskController
     public String getAllProjects(Model model) throws SQLException { //til admin til at se liste over alle projekter
         List<Project> projects = projectService.getAllProjects();
         model.addAttribute("Projects", projects);
