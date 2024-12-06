@@ -1,6 +1,7 @@
 package org.example.proflow.controller;
 
 import jakarta.servlet.http.HttpSession;
+import org.example.proflow.exception.ProjectException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
 import org.example.proflow.service.ProjectService;
@@ -42,7 +43,7 @@ public class ProjectController {
     @PostMapping("/save-project")
     public String saveProject(@PathVariable("profileId") int profileId,
                               @ModelAttribute("projectId") Project project,
-                              Model model, HttpSession session) throws SQLException { //TODO ændre exception
+                              Model model, HttpSession session) throws ProjectException, SQLException {
         project.setProfileId(profileId);
         projectService.addProject(project);
         return "redirect:/dashboard";
@@ -50,7 +51,7 @@ public class ProjectController {
 
     //***READ PROJECT METHODS***-------------------------------------------------------------------------------------
     @GetMapping("/{projectId}/{name}")
-    public String getProjectById(@PathVariable("projectId") int projectId, Model model, HttpSession session) throws SQLException {
+    public String getProjectById(@PathVariable("projectId") int projectId, Model model, HttpSession session) throws ProjectException, SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
         if (!Validator.isValid(session, profile.getId())) {
             return "redirect:/homepage";
@@ -71,7 +72,7 @@ public class ProjectController {
 
     //***UPDATE PROJECT METHODS***-----------------------------------------------------------------------------------
     @GetMapping("/project/edit/{projectId}")
-    public String editProject(@PathVariable("projectId") int projectId, Model model, HttpSession session) throws SQLException {
+    public String editProject(@PathVariable("projectId") int projectId, Model model, HttpSession session) throws ProjectException, SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
         if (!Validator.isValid(session, profile.getId())) {
             return "redirect:/homepage";
@@ -100,7 +101,7 @@ public class ProjectController {
 
 
     @PostMapping("/project/update") //TODO lave tjek med isValid og isProjectOwned (men skal det gøres på både edit og update?)
-    public String updateProject(@ModelAttribute Project project) throws SQLException {
+    public String updateProject(@ModelAttribute Project project) throws ProjectException, SQLException {
         projectService.updateProject(project);
         return "redirect:/dashboard";
     }
@@ -108,7 +109,7 @@ public class ProjectController {
 
     //***DELETE PROJECT METHODS***-----------------------------------------------------------------------------------
     @PostMapping("/project/delete/{projectId}")
-    public String deleteProject(@PathVariable("projectId") int projectId, HttpSession session) throws SQLException {
+    public String deleteProject(@PathVariable("projectId") int projectId, HttpSession session) throws ProjectException, SQLException {
 
         projectService.deleteProject(projectId);
         return "redirect:/dashboard";
