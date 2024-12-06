@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import org.example.proflow.exception.ProjectException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
+import org.example.proflow.model.SubProject;
 import org.example.proflow.service.ProjectService;
 import org.example.proflow.util.Validator;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 //TODO ProjectController: Rette endpoints og HTML sider
 //TODO ProjectController: Rette exceptions til ProjectException
@@ -68,7 +70,15 @@ public class ProjectController {
         return "dashboard";
     }
 
-    //TODO getProjectsByProfileId() - til at kunne se alle projekter for en pm
+    @GetMapping("/project/subprojects") //shows all subprojects from a project
+    public String getSubProjectsFromProject(Model model, @RequestParam int projectId, HttpSession session) throws SQLException {
+        if (!Validator.isValid(session, projectId)) {
+            return "redirect:/homepage";
+        }
+        List<SubProject> subProjectsFromProject = projectService.getSubProjectsFromProject(projectId);
+        model.addAttribute("projectsFromProfile", subProjectsFromProject);
+        return "project";
+    }
 
     //***UPDATE PROJECT METHODS***-----------------------------------------------------------------------------------
     @GetMapping("/project/edit/{projectId}")
@@ -99,13 +109,11 @@ public class ProjectController {
         return "edit_project";
     }
 
-
     @PostMapping("/project/update") //TODO lave tjek med isValid og isProjectOwned (men skal det gøres på både edit og update?)
     public String updateProject(@ModelAttribute Project project) throws ProjectException, SQLException {
         projectService.updateProject(project);
         return "redirect:/dashboard";
     }
-
 
     //***DELETE PROJECT METHODS***-----------------------------------------------------------------------------------
     @PostMapping("/project/delete/{projectId}")

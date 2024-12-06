@@ -1,6 +1,9 @@
 package org.example.proflow.service;
 
+import org.example.proflow.exception.ProfileException;
+import org.example.proflow.exception.ProjectException;
 import org.example.proflow.model.Project;
+import org.example.proflow.model.SubProject;
 import org.example.proflow.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +28,17 @@ public class ProjectService {
     }
 
     //***READ PROFILE(S)***--------------------------------------------------------------------------------------------R
-    public List<Project> getAllProjects() {
+    public List<Project> getAllProjects() throws SQLException {
         return projectRepository.getAllProjects();
     }
 
     public Project getProjectById(int id) throws SQLException {
         return projectRepository.getProjectById(id);
+    }
+
+    public List<SubProject> getSubProjectsFromProject(int projectId) throws SQLException {
+        return projectRepository.getSubProjectsFromProject(projectId);
+
     }
 
     //***UPDATE PROFILE***---------------------------------------------------------------------------------------------U

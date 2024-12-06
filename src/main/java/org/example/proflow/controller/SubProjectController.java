@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
 import org.example.proflow.model.SubProject;
+import org.example.proflow.model.Task;
 import org.example.proflow.service.ProjectService;
 import org.example.proflow.service.SubProjectService;
 import org.example.proflow.util.Validator;
@@ -59,7 +60,7 @@ public class SubProjectController {
 
 
     //***READ SUBPROJECT METHODS***-------------------------------------------------------------------------------------
-    @GetMapping("/subprojects")  //TODO skal denne egentlig være en getAllSubProjectsFromProject/getSubProjectsFromProjectId og hvilken controller klasse skal den så ligge i?
+    @GetMapping("/subprojects")  //TODO skal vi bruge en getallSubProjects
     public String getAllSubProjects(Model model, HttpSession session, int projectId) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
         if (!Validator.isValid(session, profile.getId())) {
@@ -92,6 +93,16 @@ public class SubProjectController {
         SubProject subProject = subProjectService.getSubProjectById(subprojectId);
         model.addAttribute("subprojectId", subprojectId);
         model.addAttribute("name", subProject.getName());
+        return "project";
+    }
+
+    @GetMapping("/subproject/tasks") //shows all tasks from one subproject
+    public String getTasksFromSubProject(Model model, @RequestParam int subProjectId, HttpSession session) throws SQLException {
+        if (!Validator.isValid(session, subProjectId)) {
+            return "redirect:/homepage";
+        }
+        List<Task> tasksFromSubProject = subProjectService.getTasksFromSubProject(subProjectId);
+        model.addAttribute("projectsFromProfile", tasksFromSubProject);
         return "project";
     }
 

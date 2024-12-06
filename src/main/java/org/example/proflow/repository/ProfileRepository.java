@@ -117,6 +117,40 @@ public class ProfileRepository {
         return null;
     }
 
+    public List<Project> getProjectsFromProfile(int profileId) throws ProfileException {
+        String query = "SELECT * FROM Project WHERE profile_id = ?";
+        List<Project> projectsFromProfile = new ArrayList<>();
+        Project project = null;
+
+        try (Connection con = dataBaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, profileId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    project = new Project();
+                    project.setId(rs.getInt("id"));
+                    project.setName(rs.getString("name"));
+                    project.setDescription(rs.getString("description"));
+                    project.setCreatedDate(rs.getDate("created_date").toLocalDate());
+                    project.setStartDate(rs.getDate("start_date").toLocalDate());
+                    project.setEndDate(rs.getDate("end_date").toLocalDate());
+                    project.setTotalEstHours(rs.getDouble("total_est_hours"));
+                    project.setStatus(Status.valueOf(rs.getString("status")));
+                    project.setBudget(rs.getDouble("budget"));
+                    project.setActualPrice(rs.getDouble("actual_price"));
+                    project.setProfileId(rs.getInt("profile_id"));
+
+                }
+                projectsFromProfile.add(project);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return projectsFromProfile;
+    }
+
+
     //***UPDATE***-----------------------------------------------------------------------------------------------------U
     public void updateProfile(Profile profile) {
         String updateProfileQuery = """
@@ -152,38 +186,6 @@ public class ProfileRepository {
     }
 
 
-    public List<Project> getProjectsFromProfile(int profileId) throws ProfileException {
-        String query = "SELECT * FROM Project WHERE profile_id = ?";
-        List<Project> projectsFromProfile = new ArrayList<>();
-        Project project = null;
-
-        try (Connection con = dataBaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setInt(1, profileId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    project = new Project();
-                    project.setId(rs.getInt("id"));
-                    project.setName(rs.getString("name"));
-                    project.setDescription(rs.getString("description"));
-                    project.setCreatedDate(rs.getDate("created_date").toLocalDate());
-                    project.setStartDate(rs.getDate("start_date").toLocalDate());
-                    project.setEndDate(rs.getDate("end_date").toLocalDate());
-                    project.setTotalEstHours(rs.getDouble("total_est_hours"));
-                    project.setStatus(Status.valueOf(rs.getString("status")));
-                    project.setBudget(rs.getDouble("budget"));
-                    project.setActualPrice(rs.getDouble("actual_price"));
-                    project.setProfileId(rs.getInt("profile_id"));
-
-                }
-                projectsFromProfile.add(project);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return projectsFromProfile;
-    }
 
 
     //***END***---------------------------------------------------------------------------------------------------------

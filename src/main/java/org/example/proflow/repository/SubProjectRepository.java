@@ -81,7 +81,7 @@ public class SubProjectRepository {
                 subProjects.add(subProject);
             }
             for (SubProject subProject : subProjects) {
-                subProject.setTasks(getTaskFromSubProject(subProject.getId()));
+                subProject.setTasks(getTasksFromSubProject(subProject.getId()));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -118,9 +118,45 @@ public class SubProjectRepository {
             }
 
         }
-        getTaskFromSubProject(subProject.getId());
+        getTasksFromSubProject(subProject.getId());
         return subProject;
     }
+
+    public List<Task> getTasksFromSubProject(int subProjectId) throws SQLException {
+        String query = "SELECT * FROM Task WHERE sub_project_id = ?";
+        List<Task> tasksFromSubProject = new ArrayList<>();
+        Task task = null;
+
+        try (Connection con = dataBaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, subProjectId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    task = new Task();
+                    task.setId(rs.getInt("id"));
+                    task.setName(rs.getString("name"));
+                    task.setDescription(rs.getString("description"));
+                    task.setLocation(rs.getString("location"));
+                    task.setCreatedDate(rs.getDate("created_date").toLocalDate());
+                    task.setStartDate(rs.getDate("start_date").toLocalDate());
+                    task.setEndDate(rs.getDate("end_date").toLocalDate());
+                    task.setTotalEstHours(rs.getDouble("total_est_hours"));
+                    task.setStatus(Status.valueOf(rs.getString("status")));
+                    task.setSubProjectId(rs.getInt("sub_project_id"));
+                    task.setAssignedTo(rs.getString("assigned_to"));
+                    task.setTaskPrice(rs.getDouble("price")); // Not null column
+                    tasksFromSubProject.add(task);
+                }
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return tasksFromSubProject;
+    }
+
+
 
     //***UPDATE SUBPROJECT***------------------------------------------------------------------------------------------U
     public void updateSubProject(SubProject subProject) throws SQLException {
@@ -176,40 +212,6 @@ public class SubProjectRepository {
 //            return tasks;
 //        }
 
-
-    public List<Task> getTaskFromSubProject(int subProjectId) throws SQLException {
-        String query = "SELECT * FROM Task WHERE sub_project_id = ?";
-        List<Task> tasksFromSubProject = new ArrayList<>();
-        Task task = null;
-
-        try (Connection con = dataBaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setInt(1, subProjectId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    task = new Task();
-                    task.setId(rs.getInt("id"));
-                    task.setName(rs.getString("name"));
-                    task.setDescription(rs.getString("description"));
-                    task.setLocation(rs.getString("location"));
-                    task.setCreatedDate(rs.getDate("created_date").toLocalDate());
-                    task.setStartDate(rs.getDate("start_date").toLocalDate());
-                    task.setEndDate(rs.getDate("end_date").toLocalDate());
-                    task.setTotalEstHours(rs.getDouble("total_est_hours"));
-                    task.setStatus(Status.valueOf(rs.getString("status")));
-                    task.setSubProjectId(rs.getInt("sub_project_id"));
-                    task.setAssignedTo(rs.getString("assigned_to"));
-                    task.setTaskPrice(rs.getDouble("price")); // Not null column
-                    tasksFromSubProject.add(task);
-                }
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return tasksFromSubProject;
-    }
 
 
 }
