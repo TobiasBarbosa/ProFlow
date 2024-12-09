@@ -1,5 +1,6 @@
 package org.example.proflow.repositoryTest;
 
+import org.example.proflow.exception.ProfileException;
 import org.example.proflow.exception.TaskException;
 import org.example.proflow.model.*;
 import org.example.proflow.repository.ProfileRepository;
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("h2")
 public class TaskRepositoryTest {
 
+    //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
     @Autowired
     private TaskRepository taskRepository;
     @Autowired
@@ -34,24 +36,20 @@ public class TaskRepositoryTest {
     @Autowired
     private ProfileRepository profileRepository;
 
-
-    //TODO how to move create profile, project and subproject out
-    @Test
-    void addTaskTest() throws SQLException {
-        //ARRANGE
-        //Create profile
+    //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
+    private Profile preSetProfile() throws ProfileException {
         Profile profile = new Profile();
-        profile.setId(1); // Set this to match the profile_id in the Project
-        profile.setFirstName("Test name");
-        profile.setLastName("Testsen name ");
-        profile.setEmail("test@test.dk");
-        profile.setPassword("test");
-        profileRepository.addProfile(profile);
+        profile.setFirstName("test profile firstname");
+        profile.setLastName("test profile lastname");
+        profile.setEmail("test-profile-email@test.com");
+        profile.setPassword("testProfilePassword");
+        return profile;
+    }
 
-        //Create project
+    private Project preSetProject() {
         Project project = new Project();
-        project.setName("test");
-        project.setDescription("test beskrivelse");
+        project.setName("test project name");
+        project.setDescription("test project description");
         project.setCreatedDate(LocalDate.now());
         project.setStartDate(LocalDate.of(2024, 1, 1));
         project.setEndDate(LocalDate.of(2024, 12, 31));
@@ -59,14 +57,12 @@ public class TaskRepositoryTest {
         project.setStatus(Status.ACTIVE);
         project.setBudget(2000);
         project.setActualPrice(1000);
-        project.setProfileId(1); // Reference the profile you just added
-        projectRepository.addProject(project);
-
-        //Create subproject
+        return project;
+    }
+    private SubProject preSetSubProject(){
         SubProject subProject = new SubProject();
-        //subProject.setId(1); // Set this to match the profile_id in the Project
-        subProject.setName("Test name");
-        subProject.setDescription("Tests description ");
+        subProject.setName("test subproject name");
+        subProject.setDescription("tests subproject description ");
         subProject.setCreatedDate(LocalDate.now());
         subProject.setStartDate(LocalDate.of(2024, 1, 1));
         subProject.setEndDate(LocalDate.of(2024, 12, 31));
@@ -74,23 +70,47 @@ public class TaskRepositoryTest {
         subProject.setStatus(Status.ACTIVE);
         subProject.setBudget(2000);
         subProject.setActualPrice(1000);
-        subProject.setProjectId(1);
         subProject.setAssignedTo("test employee");
+        return subProject;
+    }
+
+    private Task preSetTask(){
+        Task task = new Task();
+        task.setName("test task name");
+        task.setDescription("tests task description ");
+        task.setLocation("test location");
+        task.setCreatedDate(LocalDate.now());
+        task.setStartDate(LocalDate.of(2024, 1, 1));
+        task.setEndDate(LocalDate.of(2024, 12, 31));
+        task.setTotalEstHours(10);
+        task.setStatus(Status.ACTIVE);
+        task.setAssignedTo("test employee");
+        task.setTaskPrice(1000);
+        return task;
+    }
+
+    //TODO how to move create profile, project and subproject out
+    //***CREATE TASK***------------------------------------------------------------------------------------------------C
+    @Test
+    void addTaskTest() throws SQLException, ProfileException {
+        //ARRANGE
+        //Create profile
+        Profile profile = preSetProfile();
+        profileRepository.addProfile(profile);
+
+        //Create project
+        Project project = preSetProject();
+        project.setProfileId(profile.getId()); // Reference the profile you just added
+        projectRepository.addProject(project);
+
+        //Create subproject
+        SubProject subProject = preSetSubProject();
+        subProject.setProjectId(project.getId());
         subProjectRepository.addSubProject(subProject);
 
         //Create expected task
-        Task expectedTask = new Task();
-        expectedTask.setName("test");
-        expectedTask.setDescription("test beskrivelse");
-        expectedTask.setLocation("test location");
-        expectedTask.setCreatedDate(LocalDate.now());
-        expectedTask.setStartDate(LocalDate.of(2024, 1, 1));
-        expectedTask.setEndDate(LocalDate.of(2024, 12, 31));
-        expectedTask.setTotalEstHours(10);
-        expectedTask.setStatus(Status.ACTIVE);
-        expectedTask.setSubProjectId(1);
-        expectedTask.setAssignedTo("Test employee");
-        expectedTask.setTaskPrice(500);
+        Task expectedTask = preSetTask();
+        expectedTask.setSubProjectId(subProject.getProjectId());
 
         //ACT
         taskRepository.addTask(expectedTask);
@@ -104,73 +124,42 @@ public class TaskRepositoryTest {
 
     }
 
+    //***READ TASK***--------------------------------------------------------------------------------------------------R
     @Test
-    void getAllTasksTest() throws SQLException {
+    void getAllTasksTest() throws SQLException, ProfileException {
         //ARRANGE
         //create profile
-        Profile profile = new Profile();
-        profile.setFirstName("Test");
-        profile.setLastName("User");
-        profile.setEmail("test@example.com");
-        profile.setPassword("password");
+        Profile profile = preSetProfile();
         profileRepository.addProfile(profile);
 
         //create project
-        Project project = new Project();
-        project.setName("test");
-        project.setDescription("test beskrivelse");
-        project.setCreatedDate(LocalDate.now());
-        project.setStartDate(LocalDate.of(2024, 1, 1));
-        project.setEndDate(LocalDate.of(2024, 12, 31));
-        project.setTotalEstHours(10);
-        project.setStatus(Status.ACTIVE);
-        project.setBudget(2000);
-        project.setActualPrice(1000);
-        project.setProfileId(1); // Reference the profile you just added
+        Project project = preSetProject();
+        project.setProfileId(profile.getId()); // Reference the profile you just added
         projectRepository.addProject(project);
 
         //create subproject
-        SubProject subProject = new SubProject();
-        subProject.setName("Test name");
-        subProject.setDescription("Tests description ");
-        subProject.setCreatedDate(LocalDate.now());
-        subProject.setStartDate(LocalDate.of(2024, 1, 1));
-        subProject.setEndDate(LocalDate.of(2024, 12, 31));
-        subProject.setTotalEstHours(10);
-        subProject.setStatus(Status.ACTIVE);
-        subProject.setBudget(2000);
-        subProject.setActualPrice(1000);
-        subProject.setProjectId(1);
-        subProject.setAssignedTo("test employee");
+        SubProject subProject = preSetSubProject();
+        subProject.setProjectId(project.getId());
         subProjectRepository.addSubProject(subProject);
 
         //create first task to test
-        Task task1 = new Task();
-        task1.setName("test task 1");
-        task1.setDescription("first test task");
-        task1.setLocation("test location");
-        task1.setCreatedDate(LocalDate.now());
-        task1.setStartDate(LocalDate.of(2024, 1, 1));
-        task1.setEndDate(LocalDate.of(2024, 12, 31));
-        task1.setTotalEstHours(10);
-        task1.setStatus(Status.ACTIVE);
-        task1.setSubProjectId(1);
-        task1.setAssignedTo("Test employee");
+        Task task1 = preSetTask();
+        task1.setSubProjectId(subProject.getId());
         task1.setTaskPrice(500);
 
         //create second task to test
         Task task2 = new Task();
-        task2.setName("test task 2");
-        task2.setDescription("second test task");
-        task2.setLocation("test location");
+        task2.setName("test2 task name");
+        task2.setDescription("test2 task description");
+        task2.setLocation("test2 task location");
         task2.setCreatedDate(LocalDate.now());
         task2.setStartDate(LocalDate.of(2024, 1, 1));
         task2.setEndDate(LocalDate.of(2024, 12, 31));
         task2.setTotalEstHours(10);
         task2.setStatus(Status.ACTIVE);
-        task2.setSubProjectId(1);
-        task2.setAssignedTo("Test employee");
+        task2.setAssignedTo("Test2 task assigned to");
         task2.setTaskPrice(500);
+        task2.setSubProjectId(subProject.getId());
 
         //Add created tasks
         taskRepository.addTask(task1);
@@ -184,66 +173,33 @@ public class TaskRepositoryTest {
         assertTrue(tasks.size() >= 2, "The number of tasks should be at least two");
     }
 
+    //***UPDATE TASK***------------------------------------------------------------------------------------------------U
     @Test
-    void updateTaskTest() throws SQLException {
+    void updateTaskTest() throws SQLException, ProfileException {
         //ARRANGE
         //Create profile
-        Profile profile = new Profile();
-        profile.setFirstName("Test");
-        profile.setLastName("User");
-        profile.setEmail("test@example.com");
-        profile.setPassword("password");
+        Profile profile = preSetProfile();
         profileRepository.addProfile(profile);
 
         //create project
-        Project project = new Project();
-        project.setName("test");
-        project.setDescription("test beskrivelse");
-        project.setCreatedDate(LocalDate.now());
-        project.setStartDate(LocalDate.of(2024, 1, 1));
-        project.setEndDate(LocalDate.of(2024, 12, 31));
-        project.setTotalEstHours(10);
-        project.setStatus(Status.ACTIVE);
-        project.setBudget(2000);
-        project.setActualPrice(1000);
-        project.setProfileId(1); // Reference the profile you just added
+        Project project = preSetProject();
+        project.setProfileId(profile.getId()); // Reference the profile you just added
         projectRepository.addProject(project);
 
         //Create subproject
-        SubProject subProject = new SubProject();
-        subProject.setName("Test name");
-        subProject.setDescription("Tests description ");
-        subProject.setCreatedDate(LocalDate.now());
-        subProject.setStartDate(LocalDate.of(2024, 1, 1));
-        subProject.setEndDate(LocalDate.of(2024, 12, 31));
-        subProject.setTotalEstHours(10);
-        subProject.setStatus(Status.ACTIVE);
-        subProject.setBudget(2000);
-        subProject.setActualPrice(1000);
-        subProject.setProjectId(1);
-        subProject.setAssignedTo("test employee");
+        SubProject subProject = preSetSubProject();
+        subProject.setProjectId(project.getId());
         subProjectRepository.addSubProject(subProject);
 
         //Create task to test the update method
-        Task task = new Task();
-        task.setName("test task");
-        task.setDescription("description test task");
-        task.setLocation("test location");
-        task.setCreatedDate(LocalDate.now());
-        task.setStartDate(LocalDate.of(2024, 1, 1));
-        task.setEndDate(LocalDate.of(2024, 12, 31));
-        task.setTotalEstHours(10);
-        task.setStatus(Status.ACTIVE);
-        task.setSubProjectId(1);
-        task.setAssignedTo("Test employee");
-        task.setTaskPrice(500);
-
+        Task task = preSetTask();
+        task.setSubProjectId(subProject.getId());
         taskRepository.addTask(task);
 
         //Changes to test if task is updated
-        task.setName("new name test task");
-        task.setDescription("new description");
-        task.setLocation("new location");
+        task.setName("updated task name");
+        task.setDescription("updated task description");
+        task.setLocation("updated task location");
         task.setTaskPrice(700.0);
 
         //ACT
@@ -251,68 +207,35 @@ public class TaskRepositoryTest {
         Task updatedTask = taskRepository.getTaskById(task.getId());
 
         //ASSERT
-        assertEquals("new name test task", updatedTask.getName());
-        assertEquals("new description", updatedTask.getDescription());
-        assertEquals("new location", updatedTask.getLocation());
+        assertEquals("updated task name", updatedTask.getName());
+        assertEquals("updated task description", updatedTask.getDescription());
+        assertEquals("updated task location", updatedTask.getLocation());
         assertEquals(700, updatedTask.getTaskPrice());
-
 
     }
 
+    //***DELETE TASK***------------------------------------------------------------------------------------------------D
     @Rollback(false)
     @Test
-    void deleteTaskTest() throws SQLException{
+    void deleteTaskTest() throws SQLException, ProfileException{
         //ARRANGE
         //Create profile
-        Profile profile = new Profile();
-        profile.setFirstName("Test");
-        profile.setLastName("User");
-        profile.setEmail("test@example.com");
-        profile.setPassword("password");
+        Profile profile = preSetProfile();
         profileRepository.addProfile(profile);
 
         //create project
-        Project project = new Project();
-        project.setName("test");
-        project.setDescription("test beskrivelse");
-        project.setCreatedDate(LocalDate.now());
-        project.setStartDate(LocalDate.of(2024, 1, 1));
-        project.setEndDate(LocalDate.of(2024, 12, 31));
-        project.setTotalEstHours(10);
-        project.setStatus(Status.ACTIVE);
-        project.setBudget(2000);
-        project.setActualPrice(1000);
-        project.setProfileId(1); // Reference the profile you just added
+        Project project = preSetProject();
+        project.setProfileId(profile.getId()); // Reference the profile you just added
         projectRepository.addProject(project);
 
         //Create subproject
-        SubProject subProject = new SubProject();
-        subProject.setName("Test name");
-        subProject.setDescription("Tests description ");
-        subProject.setCreatedDate(LocalDate.now());
-        subProject.setStartDate(LocalDate.of(2024, 1, 1));
-        subProject.setEndDate(LocalDate.of(2024, 12, 31));
-        subProject.setTotalEstHours(10);
-        subProject.setStatus(Status.ACTIVE);
-        subProject.setBudget(2000);
-        subProject.setActualPrice(1000);
-        subProject.setProjectId(1);
-        subProject.setAssignedTo("test employee");
+        SubProject subProject = preSetSubProject();
+        subProject.setProjectId(project.getId());
         subProjectRepository.addSubProject(subProject);
 
         //Create task to test the delete method
-        Task task = new Task();
-        task.setName("test task");
-        task.setDescription("description test task");
-        task.setLocation("test location");
-        task.setCreatedDate(LocalDate.now());
-        task.setStartDate(LocalDate.of(2024, 1, 1));
-        task.setEndDate(LocalDate.of(2024, 12, 31));
-        task.setTotalEstHours(10);
-        task.setStatus(Status.ACTIVE);
-        task.setSubProjectId(1);
-        task.setAssignedTo("Test employee");
-        task.setTaskPrice(500);
+        Task task = preSetTask();
+        task.setSubProjectId(subProject.getId());
         taskRepository.addTask(task);
 
         //ACT
@@ -322,11 +245,7 @@ public class TaskRepositoryTest {
         //ASSERT
         Task deletedTask = taskRepository.getTaskById(task.getId());
         assertNull(deletedTask); //Asserts that the project has been deleted
-
     }
 
-
-
-
-
+    //***END***---------------------------------------------------------------------------------------------------------
 }

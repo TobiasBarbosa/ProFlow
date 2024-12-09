@@ -14,12 +14,7 @@ import java.util.List;
 @Repository
 public class ProfileRepository {
 
-    //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    private DataBaseConnection dataBaseConnection = new DataBaseConnection();
-
-    //***METHODS***-----------------------------------------------------------------------------------------------------
-    private ProjectRepository projectRepository = new ProjectRepository();
-
+    //***PROFILE METHODS***---------------------------------------------------------------------------------------------
     //***CREATE PROFILE***---------------------------------------------------------------------------------------------C
     public void addProfile(Profile profile) {
         String insertProfileQuery = """
@@ -27,7 +22,7 @@ public class ProfileRepository {
                     VALUES (?, ?, ?, ?)
                 """;
 
-        try (Connection con = dataBaseConnection.getConnection()) {
+        try (Connection con = DataBaseConnection.getConnection()) {
             //TODO:
             // Check for duplicate email
 //            for (Profile p : getAllProfiles()) {
@@ -49,17 +44,18 @@ public class ProfileRepository {
                     }
                 }
             }
+
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
     //***READ PROFILE(S)***--------------------------------------------------------------------------------------------R
-    public List<Profile> getAllProfiles() {
+    public List<Profile> getAllProfiles() throws ProfileException{
         List<Profile> profiles = new ArrayList<>();
         String query = "SELECT * FROM Profile";
 
-        try (Connection con = dataBaseConnection.getConnection();
+        try (Connection con = DataBaseConnection.getConnection();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -72,11 +68,16 @@ public class ProfileRepository {
                 profile.setPassword(rs.getString("password"));
                 profiles.add(profile);
             }
-            for (Profile profile : profiles) {
+            {
+                try {
+                    for (Profile profile : profiles)
                 profile.setProjects(getProjectsFromProfile(profile.getId()));
+                } catch (NullPointerException n){
+                    n.printStackTrace();
+                }
             }
 
-        } catch (SQLException | ProfileException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return profiles;
@@ -87,7 +88,7 @@ public class ProfileRepository {
         String query = "SELECT * FROM Profile WHERE id = ?";
         Profile profile = null;
 
-        try (Connection con = dataBaseConnection.getConnection();
+        try (Connection con = DataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setInt(1, id); // Bind the id parameter
@@ -120,9 +121,13 @@ public class ProfileRepository {
 
 
     public Profile getProfileByEmailAndPassword(String profileEmail, String profilePassword) throws ProfileException {
-        for (Profile profile : getAllProfiles()) {
-            if (profile.getEmail().equalsIgnoreCase(profileEmail) && profile.getPassword().equals(profilePassword))
-                return profile;
+        try {
+            for (Profile profile : getAllProfiles()) {
+                if (profile.getEmail().equalsIgnoreCase(profileEmail) && profile.getPassword().equals(profilePassword))
+                    return profile;
+            }
+        } catch (ProfileException p){
+            p.printStackTrace();
         }
         return null;
     }
@@ -132,7 +137,7 @@ public class ProfileRepository {
         List<Project> projectsFromProfile = new ArrayList<>();
         Project project = null;
 
-        try (Connection con = dataBaseConnection.getConnection();
+        try (Connection con = DataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, profileId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -167,7 +172,7 @@ public class ProfileRepository {
                     UPDATE Profile SET name = ?, lastName = ?, email = ?, password = ? WHERE id = ?
                 """;
 
-        try (Connection con = dataBaseConnection.getConnection();
+        try (Connection con = DataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateProfileQuery)) {
 
             ps.setString(1, profile.getFirstName());
@@ -185,7 +190,7 @@ public class ProfileRepository {
     public void deleteProfile(int id) {
         String deleteProfileQuery = "DELETE FROM Profile WHERE id = ?";
 
-        try (Connection con = dataBaseConnection.getConnection();
+        try (Connection con = DataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(deleteProfileQuery)) {
 
             ps.setInt(1, id);
@@ -195,8 +200,16 @@ public class ProfileRepository {
         }
     }
 
-
-
+    //FOR TEST PURPOSES!!
+    public void deleteAllProfiles() {
+        String query = "DELETE FROM Profile";
+        try (Connection con = DataBaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to clear profiles", e);
+        }
+    }
 
     //***END***---------------------------------------------------------------------------------------------------------
 }

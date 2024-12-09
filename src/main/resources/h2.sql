@@ -25,6 +25,8 @@ CREATE TABLE IF NOT EXISTS `Project` (
      CONSTRAINT `Project_ibfk_1`
      FOREIGN KEY (`profile_id`)
      REFERENCES `Profile` (`id`)
+     ON DELETE CASCADE
+     ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `SubProject` (
@@ -45,6 +47,8 @@ CREATE TABLE IF NOT EXISTS `SubProject` (
     CONSTRAINT `SubProject_ibfk_1`
     FOREIGN KEY (`project_id`)
     REFERENCES `Project` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `Task` (
@@ -65,6 +69,8 @@ CREATE TABLE IF NOT EXISTS `Task` (
     CONSTRAINT `Task_ibfk_1`
     FOREIGN KEY (`sub_project_id`)
     REFERENCES `SubProject` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 
 );
 

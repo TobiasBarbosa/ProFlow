@@ -3,6 +3,7 @@ package org.example.proflow.repositoryTest;
 import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.repository.ProfileRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,21 +26,30 @@ public class ProfileRepositoryTest {
     @Autowired
     private ProfileRepository profileRepository;
 
-    //***PROFILE METHODS***---------------------------------------------------------------------------------------------
+    //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
+    @BeforeEach
+    void clearProfileDatabase() {
+        profileRepository.deleteAllProfiles();
+    }
+
+    private Profile preSetProfile() throws ProfileException {
+        Profile profile = new Profile();
+        profile.setFirstName("test firstname");
+        profile.setLastName("test lastname");
+        profile.setEmail("test-email@test.com");
+        profile.setPassword("testPassword");
+        return profile;
+    }
+
+    //***PROFILE TEST METHODS***----------------------------------------------------------------------------------------
     //***CREATE METHODS***---------------------------------------------------------------------------------------------C
     @Test
     void addProfileTest() throws ProfileException {
         // ARRANGE
-        Profile expectedProfile = new Profile();
-        //expectedProfile.setId(1); // Set this to match the profile_id in the Project
-        expectedProfile.setFirstName("Test name");
-        expectedProfile.setLastName("Testsen name ");
-        expectedProfile.setEmail("test@test.dk");
-        expectedProfile.setPassword("test");
+        Profile expectedProfile = preSetProfile();
 
         //ACT
         profileRepository.addProfile(expectedProfile);
-        expectedProfile.setId(expectedProfile.getId());
         Profile actualProfile = profileRepository.getProfileById(expectedProfile.getId());
 
         //ASSERT
@@ -50,20 +60,15 @@ public class ProfileRepositoryTest {
 
     //***READ METHODS***-----------------------------------------------------------------------------------------------R
     @Test
-    void getAllProfilesTest(){
+    void getAllProfilesTest() throws ProfileException{
         // ARRANGE
-
-        Profile profile1 = new Profile();
-        profile1.setFirstName("Test name");
-        profile1.setLastName("Testsen name ");
-        profile1.setEmail("test@test.dk");
-        profile1.setPassword("test");
+        Profile profile1 = preSetProfile();
 
         Profile profile2 = new Profile();
-        profile2.setFirstName("Test2 name");
-        profile2.setLastName("Testsen2 name ");
-        profile2.setEmail("test2@test.dk");
-        profile2.setPassword("test2");
+        profile2.setFirstName("Test2 firstname");
+        profile2.setLastName("Test2 lastname");
+        profile2.setEmail("test2email@test.com");
+        profile2.setPassword("test2Password");
 
         profileRepository.addProfile(profile1);
         profileRepository.addProfile(profile2);
@@ -80,27 +85,23 @@ public class ProfileRepositoryTest {
     @Test
     void updateProfileTest() throws ProfileException{
         //ARRANGE
-        Profile profile = new Profile();
-        profile.setFirstName("Test");
-        profile.setLastName("User");
-        profile.setEmail("test@example.com");
-        profile.setPassword("password");
+        Profile profile = preSetProfile();
         profileRepository.addProfile(profile);
 
         //MODIFY CHANGES
-        profile.setFirstName("Test update");
-        profile.setLastName("User update");
-        profile.setEmail("testupdate@example.com");
+        profile.setFirstName("test firstname update");
+        profile.setLastName("test lastname update");
+        profile.setEmail("testemailupdate@test.com");
 
         //ACT
         profileRepository.updateProfile(profile);
         Profile updatedProfile = profileRepository.getProfileById(profile.getId());
 
         //ASSERT
-        assertEquals("Test update", updatedProfile.getFirstName());
-        assertEquals("User update", updatedProfile.getLastName());
-        assertEquals("testupdate@example.com", updatedProfile.getEmail());
-        assertEquals("password", updatedProfile.getPassword());
+        assertEquals("test firstname update", updatedProfile.getFirstName());
+        assertEquals("test lastname update", updatedProfile.getLastName());
+        assertEquals("testemailupdate@test.com", updatedProfile.getEmail());
+        assertEquals("testPassword", updatedProfile.getPassword());
     }
 
     //***DELETE PROFILE METHOD***--------------------------------------------------------------------------------------D
@@ -108,11 +109,7 @@ public class ProfileRepositoryTest {
     @Test
     public void deleteProjectTest() throws ProfileException{
         // ARRANGE
-        Profile profile = new Profile();
-        profile.setFirstName("Test");
-        profile.setLastName("User");
-        profile.setEmail("test@example.com");
-        profile.setPassword("password");
+        Profile profile = preSetProfile();
         profileRepository.addProfile(profile);
 
         //ASSERT

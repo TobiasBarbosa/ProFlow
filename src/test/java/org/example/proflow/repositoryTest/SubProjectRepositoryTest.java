@@ -1,5 +1,6 @@
 package org.example.proflow.repositoryTest;
 
+import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
 import org.example.proflow.model.Status;
@@ -35,22 +36,20 @@ public class SubProjectRepositoryTest {
     @Autowired
     ProfileRepository profileRepository;
 
-    //***SUBPROJECT METHODS***------------------------------------------------------------------------------------------
-    @Test
-   void addSubProject() throws SQLException{
-        //Create Profile
+    //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
+    private Profile preSetProfile() throws ProfileException {
         Profile profile = new Profile();
-        profile.setId(1); // Set this to match the profile_id in the Project
-        profile.setFirstName("Test name");
-        profile.setLastName("Testsen name ");
-        profile.setEmail("test@test.dk");
-        profile.setPassword("test");
-        profileRepository.addProfile(profile);
+        profile.setFirstName("test profile firstname");
+        profile.setLastName("test profile lastname");
+        profile.setEmail("test-profile-email@test.com");
+        profile.setPassword("testProfilePassword");
+        return profile;
+    }
 
-        //Create Project
+    private Project preSetProject() {
         Project project = new Project();
-        project.setName("test");
-        project.setDescription("test beskrivelse");
+        project.setName("test project name");
+        project.setDescription("test project description");
         project.setCreatedDate(LocalDate.now());
         project.setStartDate(LocalDate.of(2024, 1, 1));
         project.setEndDate(LocalDate.of(2024, 12, 31));
@@ -58,22 +57,39 @@ public class SubProjectRepositoryTest {
         project.setStatus(Status.ACTIVE);
         project.setBudget(2000);
         project.setActualPrice(1000);
-        project.setProfileId(1); // Reference the profile you just added
+        return project;
+    }
+    private SubProject preSetSubProject(){
+    SubProject subProject = new SubProject();
+        subProject.setName("test subproject name");
+        subProject.setDescription("tests subproject description ");
+        subProject.setCreatedDate(LocalDate.now());
+        subProject.setStartDate(LocalDate.of(2024, 1, 1));
+        subProject.setEndDate(LocalDate.of(2024, 12, 31));
+        subProject.setTotalEstHours(10);
+        subProject.setStatus(Status.ACTIVE);
+        subProject.setBudget(2000);
+        subProject.setActualPrice(1000);
+        subProject.setAssignedTo("test employee");
+        return subProject;
+    }
+
+    //***SUBPROJECT METHODS***------------------------------------------------------------------------------------------
+    //***CREATE SUBPROJECT***------------------------------------------------------------------------------------------C
+    @Test
+    void addSubProject() throws SQLException, ProfileException{
+        //Create Profile
+        Profile profile = preSetProfile();
+        profileRepository.addProfile(profile);
+
+        //Create Project
+        Project project = preSetProject();
+        project.setProfileId(profile.getId()); // Reference the profile you just added
         projectRepository.addProject(project);
 
         // Add and retrieve the SubProject
-        SubProject expectedSubProject = new SubProject();
-        expectedSubProject.setName("Test name");
-        expectedSubProject.setDescription("Tests description ");
-        expectedSubProject.setCreatedDate(LocalDate.now());
-        expectedSubProject.setStartDate(LocalDate.of(2024, 1, 1));
-        expectedSubProject.setEndDate(LocalDate.of(2024, 12, 31));
-        expectedSubProject.setTotalEstHours(10);
-        expectedSubProject.setStatus(Status.ACTIVE);
-        expectedSubProject.setBudget(2000);
-        expectedSubProject.setActualPrice(1000);
+        SubProject expectedSubProject = preSetSubProject();
         expectedSubProject.setProjectId(project.getId());
-        expectedSubProject.setAssignedTo("test employee");
 
         subProjectRepository.addSubProject(expectedSubProject);
         SubProject actualSubProject = subProjectRepository.getSubProjectById(expectedSubProject.getProjectId());
@@ -83,50 +99,27 @@ public class SubProjectRepositoryTest {
         assertEquals(expectedSubProject.getId(), actualSubProject.getId());
     }
 
+    //***READ SUBPROJECTS***-------------------------------------------------------------------------------------------R
    @Test
-    void getAllSubProjects() throws SQLException {
+    void getAllSubProjects() throws SQLException, ProfileException {
        //ARRANGE
        //Create Profile
-       Profile profile = new Profile();
-       profile.setId(1); // Set this to match the profile_id in the Project
-       profile.setFirstName("Test name");
-       profile.setLastName("Testsen name ");
-       profile.setEmail("test@test.dk");
-       profile.setPassword("test");
+       Profile profile = preSetProfile();
        profileRepository.addProfile(profile);
 
        //Create Project
-       Project project = new Project();
-       project.setName("test");
-       project.setDescription("test beskrivelse");
-       project.setCreatedDate(LocalDate.now());
-       project.setStartDate(LocalDate.of(2024, 1, 1));
-       project.setEndDate(LocalDate.of(2024, 12, 31));
-       project.setTotalEstHours(10);
-       project.setStatus(Status.ACTIVE);
-       project.setBudget(2000);
-       project.setActualPrice(1000);
-       project.setProfileId(1); // Reference the profile you just added
+       Project project = preSetProject();
+       project.setProfileId(profile.getId()); // Reference the profile you just added
        projectRepository.addProject(project);
 
        //Create first subproject to test
-       SubProject subProject1 = new SubProject();
-       subProject1.setName("Test name 1");
-       subProject1.setDescription("Tests description 1");
-       subProject1.setCreatedDate(LocalDate.now());
-       subProject1.setStartDate(LocalDate.of(2024, 1, 1));
-       subProject1.setEndDate(LocalDate.of(2024, 12, 30));
-       subProject1.setTotalEstHours(15);
-       subProject1.setStatus(Status.ACTIVE);
-       subProject1.setBudget(2000);
-       subProject1.setActualPrice(1000);
+       SubProject subProject1 = preSetSubProject();
        subProject1.setProjectId(project.getId());
-       subProject1.setAssignedTo("test employee");
 
        //Create second subproject to test
        SubProject subProject2 = new SubProject();
-       subProject2.setName("Test name 2");
-       subProject2.setDescription("Tests description 2");
+       subProject2.setName("test2 subproject name");
+       subProject2.setDescription("test2 subproject description");
        subProject2.setCreatedDate(LocalDate.now());
        subProject2.setStartDate(LocalDate.of(2024, 1, 10));
        subProject2.setEndDate(LocalDate.of(2024, 12, 31));
@@ -134,8 +127,8 @@ public class SubProjectRepositoryTest {
        subProject2.setStatus(Status.ACTIVE);
        subProject2.setBudget(2000);
        subProject2.setActualPrice(1000);
-       subProject2.setProjectId(project.getId());
        subProject2.setAssignedTo("test employee");
+       subProject2.setProjectId(project.getId());
 
        //Add created subprojects
        subProjectRepository.addSubProject(subProject1);
@@ -150,102 +143,56 @@ public class SubProjectRepositoryTest {
 
    }
 
+   //***UPDATE SUBPROJECT***-------------------------------------------------------------------------------------------U
    @Test
-    void updateSubProjectTest() throws SQLException {
+    void updateSubProjectTest() throws SQLException, ProfileException {
         //ARRANGE
        //Create Profile
-       Profile profile = new Profile();
-       profile.setId(1); // Set this to match the profile_id in the Project
-       profile.setFirstName("Test name");
-       profile.setLastName("Testsen name ");
-       profile.setEmail("test@test.dk");
-       profile.setPassword("test");
+       Profile profile = preSetProfile();
        profileRepository.addProfile(profile);
 
        //Create Project
-       Project project = new Project();
-       project.setName("test");
-       project.setDescription("test beskrivelse");
-       project.setCreatedDate(LocalDate.now());
-       project.setStartDate(LocalDate.of(2024, 1, 1));
-       project.setEndDate(LocalDate.of(2024, 12, 31));
-       project.setTotalEstHours(10);
-       project.setStatus(Status.ACTIVE);
-       project.setBudget(2000);
-       project.setActualPrice(1000);
-       project.setProfileId(1); // Reference the profile you just added
+       Project project = preSetProject();
+       project.setProfileId(profile.getId()); // Reference the profile you just added
        projectRepository.addProject(project);
 
        //Create subproject to test the update method
-       SubProject subProject = new SubProject();
-       subProject.setName("Test subproject name");
-       subProject.setDescription("Tests subproject description");
-       subProject.setCreatedDate(LocalDate.now());
-       subProject.setStartDate(LocalDate.of(2024, 1, 1));
-       subProject.setEndDate(LocalDate.of(2024, 12, 30));
-       subProject.setTotalEstHours(12);
-       subProject.setStatus(Status.ACTIVE);
-       subProject.setBudget(2000);
-       subProject.setActualPrice(1000);
+       SubProject subProject = preSetSubProject();
        subProject.setProjectId(project.getId());
-       subProject.setAssignedTo("test employee");
-
        subProjectRepository.addSubProject(subProject);
 
        //Changes to test if task is updated
-       subProject.setName("new name");
+       subProject.setName("updated name");
        subProject.setStartDate(LocalDate.of(2024, 2, 4));
-       subProject.setAssignedTo("new employee");
+       subProject.setAssignedTo("updated assigned to");
 
        //ACT
        subProjectRepository.updateSubProject(subProject);
        SubProject updatedSubProject = subProjectRepository.getSubProjectById(subProject.getId());
 
        //ASSERT
-       assertEquals("new name", updatedSubProject.getName());
+       assertEquals("updated name", updatedSubProject.getName());
        assertEquals(LocalDate.of(2024, 2, 4), updatedSubProject.getStartDate());
-       assertEquals("new employee", updatedSubProject.getAssignedTo());
+       assertEquals("updated assigned to", updatedSubProject.getAssignedTo());
    }
+
+   //***DELETE SUBPROJECT***-------------------------------------------------------------------------------------------D
     @Rollback(false)
     @Test
-    void deleteSubProjectTest() throws SQLException{
+    void deleteSubProjectTest() throws SQLException, ProfileException{
         //ARRANGE
         //Create Profile
-        Profile profile = new Profile();
-        profile.setId(1); // Set this to match the profile_id in the Project
-        profile.setFirstName("Test name");
-        profile.setLastName("Testsen name ");
-        profile.setEmail("test@test.dk");
-        profile.setPassword("test");
+        Profile profile = preSetProfile();
         profileRepository.addProfile(profile);
 
         //Create Project
-        Project project = new Project();
-        project.setName("test");
-        project.setDescription("test beskrivelse");
-        project.setCreatedDate(LocalDate.now());
-        project.setStartDate(LocalDate.of(2024, 1, 1));
-        project.setEndDate(LocalDate.of(2024, 12, 31));
-        project.setTotalEstHours(10);
-        project.setStatus(Status.ACTIVE);
-        project.setBudget(2000);
-        project.setActualPrice(1000);
-        project.setProfileId(1); // Reference the profile you just added
+        Project project = preSetProject();
+        project.setProfileId(profile.getId()); // Reference the profile you just added
         projectRepository.addProject(project);
 
         //Create subproject to test delete method
-        SubProject subProject = new SubProject();
-        subProject.setName("Test subproject name");
-        subProject.setDescription("Tests subproject description");
-        subProject.setCreatedDate(LocalDate.now());
-        subProject.setStartDate(LocalDate.of(2024, 1, 1));
-        subProject.setEndDate(LocalDate.of(2024, 12, 30));
-        subProject.setTotalEstHours(12);
-        subProject.setStatus(Status.ACTIVE);
-        subProject.setBudget(2000);
-        subProject.setActualPrice(1000);
+        SubProject subProject = preSetSubProject();
         subProject.setProjectId(project.getId());
-        subProject.setAssignedTo("test employee");
         subProjectRepository.addSubProject(subProject);
 
         //ACT
@@ -257,5 +204,5 @@ public class SubProjectRepositoryTest {
         assertNull(deletedeSubProject); //Asserts that the project has been deleted
     }
 
-
+    //***END***---------------------------------------------------------------------------------------------------------
 }

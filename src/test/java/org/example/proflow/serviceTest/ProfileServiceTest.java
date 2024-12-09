@@ -21,6 +21,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ProfileServiceTest {
 
+    //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     @Mock
     private ProfileRepository profileRepository;
 
@@ -34,6 +35,7 @@ public class ProfileServiceTest {
         profile = new Profile("FirstNameTest", "LastNameTest", "test@example.com", "testpassword");
     }
 
+    //***READ METHODS***-----------------------------------------------------------------------------------------------R
     @Test
     public void getProfileByIdTest() throws SQLException, ProfileException {
         when(profileRepository.getProfileById(1)).thenReturn(profile);

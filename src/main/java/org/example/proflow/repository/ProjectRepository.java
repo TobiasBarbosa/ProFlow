@@ -20,7 +20,6 @@ public class ProjectRepository {
     //TODO createdDate final?
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    //private DataBaseConnection dataBaseConnection;
 
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
 //    private SubProjectRepository subProjectRepository = new SubProjectRepository();
@@ -254,7 +253,16 @@ public class ProjectRepository {
         }
     }
 
-}
+    //FOR TEST PURPOSES!!
+    public void deleteAllProjects() {
+        String query = "DELETE FROM Project";
+        try (Connection con = DataBaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to clear profiles", e);
+        }
+    }
 
 //***END***---------------------------------------------------------------------------------------------------------
-
+}

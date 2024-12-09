@@ -1,15 +1,18 @@
 package org.example.proflow.repositoryTest;
 
 import org.example.proflow.ProFlowApplication;
+import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
 import org.example.proflow.model.Status;
 import org.example.proflow.model.SubProject;
 import org.example.proflow.repository.ProfileRepository;
 import org.example.proflow.repository.ProjectRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,37 +31,53 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ProjectRepositoryTest {
 
     //***ACCESS ATTRIBUTE(S)***-----------------------------------------------------------------------------------------
+    // Dependencies injected af SpringBoot
     @Autowired
     private ProjectRepository projectRepository;
     @Autowired
     private ProfileRepository profileRepository;
 
+    //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
+    @BeforeEach // Kører efter hver test to clear the database
+    void clearDatabase(){
+        projectRepository.deleteAllProjects();
+        profileRepository.deleteAllProfiles();
+    }
+
+    private Profile preSetProfile() throws ProfileException {
+        Profile profile = new Profile();
+        profile.setFirstName("test profile firstname");
+        profile.setLastName("test profile lastname");
+        profile.setEmail("test-profile-email@test.com");
+        profile.setPassword("testProfilePassword");
+        return profile;
+    }
+
+    private Project preSetProject() {
+        Project project = new Project();
+        project.setName("test project name");
+        project.setDescription("test project description");
+        project.setCreatedDate(LocalDate.now());
+        project.setStartDate(LocalDate.of(2024, 1, 1));
+        project.setEndDate(LocalDate.of(2024, 12, 31));
+        project.setTotalEstHours(10);
+        project.setStatus(Status.ACTIVE);
+        project.setBudget(2000);
+        project.setActualPrice(1000);
+        return project;
+    }
+
     //***INTEGRATION-TEST METHODS***------------------------------------------------------------------------------------
     //***CREATE PROJECT METHODS***-------------------------------------------------------------------------------------C
     @Test
-    void addProjectTest() throws SQLException {
+    void addProjectTest() throws SQLException, ProfileException {
         // ARRANGE
         // Create and save a Profile to satisfy the foreign key constraint
-        Profile profile = new Profile();
-        profile.setId(1); // Set this to match the profile_id in the Project
-        profile.setFirstName("Test name");
-        profile.setLastName("Testsen name ");
-        profile.setEmail("test@test.dk");
-        profile.setPassword("test");
+        Profile profile = preSetProfile();
         profileRepository.addProfile(profile);
 
-
-        Project expectedProject = new Project();
-        expectedProject.setName("test");
-        expectedProject.setDescription("test beskrivelse");
-        expectedProject.setCreatedDate(LocalDate.now());
-        expectedProject.setStartDate(LocalDate.of(2024, 1, 1));
-        expectedProject.setEndDate(LocalDate.of(2024, 12, 31));
-        expectedProject.setTotalEstHours(10);
-        expectedProject.setStatus(Status.ACTIVE);
-        expectedProject.setBudget(2000);
-        expectedProject.setActualPrice(1000);
-        expectedProject.setProfileId(1); // Link to the created Profile
+        Project expectedProject = preSetProject();
+        expectedProject.setProfileId(profile.getId()); // Link to the created Profile
 
         // ACT
         projectRepository.addProject(expectedProject);
@@ -73,29 +92,12 @@ public class ProjectRepositoryTest {
 
     //***READ PROJECT(S) METHODS***------------------------------------------------------------------------------------R
     @Test
-    void getProjectById(){
-    }
-
-    @Test
-    void getAllProjects() throws SQLException{
+    void getAllProjects() throws SQLException, ProfileException{
         //ARRANGE
-        Profile profile = new Profile();
-        profile.setFirstName("Test");
-        profile.setLastName("User");
-        profile.setEmail("test@example.com");
-        profile.setPassword("password");
+        Profile profile = preSetProfile();
         profileRepository.addProfile(profile);
 
-        Project project1 = new Project();
-        project1.setName("Project One");
-        project1.setDescription("First Test Project");
-        project1.setCreatedDate(LocalDate.now());
-        project1.setStartDate(LocalDate.of(2024, 1, 1));
-        project1.setEndDate(LocalDate.of(2024, 6, 30));
-        project1.setTotalEstHours(50);
-        project1.setStatus(Status.ACTIVE);
-        project1.setBudget(2000.0);
-        project1.setActualPrice(1000.0);
+        Project project1 = preSetProject();
         project1.setProfileId(profile.getId());
 
         Project project2 = new Project();
@@ -123,31 +125,15 @@ public class ProjectRepositoryTest {
 
     }
 
-//    public List<SubProject> getSubProjectsFromProjectTest(int projectId) throws SQLException {
-//    }
-
     //***UPDATE PROJECT***---------------------------------------------------------------------------------------------U
     @Test
-    public void updateProject() throws SQLException {
+    public void updateProject() throws SQLException, ProfileException {
         //ARRANGE
-        Profile profile = new Profile();
-        profile.setFirstName("Test");
-        profile.setLastName("User");
-        profile.setEmail("test@example.com");
-        profile.setPassword("password");
+        Profile profile = preSetProfile();
         profileRepository.addProfile(profile);
 
-        Project project = new Project();
-        project.setName("test");
-        project.setDescription("test beskrivelse");
-        project.setCreatedDate(LocalDate.now());
-        project.setStartDate(LocalDate.of(2024, 1, 1));
-        project.setEndDate(LocalDate.of(2024, 12, 31));
-        project.setTotalEstHours(10);
-        project.setStatus(Status.ACTIVE);
-        project.setBudget(2000);
-        project.setActualPrice(1000);
-        project.setProfileId(1);
+        Project project = preSetProject();
+        project.setProfileId(profile.getId());
         projectRepository.addProject(project);
 
         //MODIFY CHANGES
@@ -169,28 +155,15 @@ public class ProjectRepositoryTest {
     }
 
     //***DELETE PROJECT METHOD***--------------------------------------------------------------------------------------D
-    @Rollback(false)  // Prevent rollback for this test so we can verify deletion
     @Test
-    public void deleteProjectTest() throws SQLException{
+    //@Rollback(false)  // Prevent rollback for this test so we can verify deletion
+    public void deleteProjectTest() throws SQLException, ProfileException{
         // ARRANGE
-        Profile profile = new Profile();
-        profile.setFirstName("Test");
-        profile.setLastName("User");
-        profile.setEmail("test@example.com");
-        profile.setPassword("password");
+        Profile profile = preSetProfile();
         profileRepository.addProfile(profile);
 
-        Project project = new Project();
-        project.setName("test");
-        project.setDescription("test beskrivelse");
-        project.setCreatedDate(LocalDate.now());
-        project.setStartDate(LocalDate.of(2024, 1, 1));
-        project.setEndDate(LocalDate.of(2024, 12, 31));
-        project.setTotalEstHours(10);
-        project.setStatus(Status.ACTIVE);
-        project.setBudget(2000);
-        project.setActualPrice(1000);
-        project.setProfileId(1);
+        Project project = preSetProject();
+        project.setProfileId(profile.getId());
         projectRepository.addProject(project);
 
         //ASSERT
@@ -202,7 +175,6 @@ public class ProjectRepositoryTest {
         // ASSERT: Verify the project no longer exists
         Project deletedProject = projectRepository.getProjectById(project.getId());
         assertNull(deletedProject); // Assert that the project has been deleted
-
     }
 
     //***END***---------------------------------------------------------------------------------------------------------
