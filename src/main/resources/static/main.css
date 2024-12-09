@@ -1,3 +1,55 @@
+a {
+    font-weight: bold;
+}
+
+h1 {
+    color: lightgrey;
+    text-align: center;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 10px;
+    background-color: #320f46;
+    color: lightgrey;
+}
+
+footer {
+    background-color: #b8baf6;
+    color: #222222;
+    padding: 5px;
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    width: 100%;
+}
+
+footer a {
+    color: #222222;
+}
+
+footer p {
+    font-style: italic;
+    text-align: center;
+}
+
+.logo {
+    width: 350px;
+    height: 350px;
+    align-content: center;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+}
+
+.inbox{
+    color: black;
+}
 /* Modal background styling */
 #loginModal {
     z-index: 100;
@@ -24,19 +76,138 @@
     border-radius: 30px;
     width: 80%;
     max-width: 300px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 5px 15px rgb(226, 168, 241);
 }
 
 .center {
     text-align: center;
     align-content: center;
-    background: black;
+    background-color: black;
 }
 
-a {
-    font-weight: bold;
+/* Container styling */
+.container {
+    width: 75%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-h1 {
-    color: red;
+/* Grid layout for projects */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Card styling */
+.card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgb(76, 50, 103);
+}
+
+.card-img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-bottom: 1px solid #4c3267;
+}
+
+.card-body {
+    padding: 15px;
+    text-align: center;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    margin: 0 0 10px;
+    color: #222;
+}
+
+/* Buttons */
+.btn-primary, .btn-danger, .btn-success {
+    display: inline-block;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-primary {
+    background-color: #54246c;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #3e2656;
+}
+
+.btn-danger {
+    background-color: #6c5a8c;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #594973;
+}
+
+.btn-success {
+    background-color: #6c8cf9;
+    color: #fff;
+}
+
+.btn-success:hover {
+    background-color: #4f76f6;
+}
+
+/* Delete form styling */
+.delete-form {
+    margin-top: 10px;
+}
+
+/* Add project section */
+.add-project {
+    margin-top: 40px;
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.add-project h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.add-project form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.add-project input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 60%;
+    max-width: 400px;
+}
+
+.add-project button {
+    font-size: 1rem;
 }
