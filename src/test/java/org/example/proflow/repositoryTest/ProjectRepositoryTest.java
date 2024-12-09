@@ -33,8 +33,6 @@ public class ProjectRepositoryTest {
     @Autowired
     private ProfileRepository profileRepository;
 
-    //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-
     //***INTEGRATION-TEST METHODS***------------------------------------------------------------------------------------
     //***CREATE PROJECT METHODS***-------------------------------------------------------------------------------------C
     @Test
@@ -170,16 +168,42 @@ public class ProjectRepositoryTest {
 
     }
 
-//    private int id;
-//    private String name;
-//    private String description;
-//    private LocalDate createdDate;
-//    private LocalDate startDate;
-//    private LocalDate endDate;
-//    protected double totalEstHours;
-//    private Status status;
-//    private double budget;
-//    protected double actualPrice;
+    //***DELETE PROJECT METHOD***--------------------------------------------------------------------------------------D
+    @Rollback(false)  // Prevent rollback for this test so we can verify deletion
+    @Test
+    public void deleteProjectTest() throws SQLException{
+        // ARRANGE
+        Profile profile = new Profile();
+        profile.setFirstName("Test");
+        profile.setLastName("User");
+        profile.setEmail("test@example.com");
+        profile.setPassword("password");
+        profileRepository.addProfile(profile);
+
+        Project project = new Project();
+        project.setName("test");
+        project.setDescription("test beskrivelse");
+        project.setCreatedDate(LocalDate.now());
+        project.setStartDate(LocalDate.of(2024, 1, 1));
+        project.setEndDate(LocalDate.of(2024, 12, 31));
+        project.setTotalEstHours(10);
+        project.setStatus(Status.ACTIVE);
+        project.setBudget(2000);
+        project.setActualPrice(1000);
+        project.setProfileId(1);
+        projectRepository.addProject(project);
+
+        //ASSERT
+        assertTrue(project.getId() > 0); // ensure project exist
+
+        // ACT: Delete the Project
+        projectRepository.deleteProject(project.getId());
+
+        // ASSERT: Verify the project no longer exists
+        Project deletedProject = projectRepository.getProjectById(project.getId());
+        assertNull(deletedProject); // Assert that the project has been deleted
+
+    }
 
     //***END***---------------------------------------------------------------------------------------------------------
 }

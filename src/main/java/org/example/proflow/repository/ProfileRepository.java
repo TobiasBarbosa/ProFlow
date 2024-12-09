@@ -110,7 +110,11 @@ public class ProfileRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }  //TODO måske refaktorere?
-        profile.setProjects(getProjectsFromProfile(id));
+        try {
+            profile.setProjects(getProjectsFromProfile(id));
+        } catch (NullPointerException n){
+            n.printStackTrace();
+        }
         return profile; // Return the Profile object or null if not found
     }
 

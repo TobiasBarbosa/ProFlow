@@ -83,8 +83,14 @@ public class ProjectRepository {
 
                 }
             }
+            try {
+                project.setSubProjects(getSubProjectsFromProject(project.getId()));
+            } catch (NullPointerException n){
+                n.printStackTrace();
+            }
 
-            project.setSubProjects(getSubProjectsFromProject(project.getId()));
+        } catch (SQLException e){
+            e.printStackTrace();
         }
         return project;
     }
@@ -237,13 +243,13 @@ public class ProjectRepository {
     }
 
     //***DELETE PROJECT***---------------------------------------------------------------------------------------------D
-    public void deleteProject(int id) throws SQLException {
+    public void deleteProject(int projectId) throws SQLException {
         String deleteProjectQuery = "DELETE FROM Project WHERE id = ?";
 
         try (Connection con = DataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(deleteProjectQuery)) {
 
-            ps.setInt(1, id);
+            ps.setInt(1, projectId);
             ps.executeUpdate();
         }
     }

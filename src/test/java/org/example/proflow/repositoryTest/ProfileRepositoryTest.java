@@ -6,13 +6,13 @@ import org.example.proflow.repository.ProfileRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -46,6 +46,85 @@ public class ProfileRepositoryTest {
         assertEquals(expectedProfile.getFirstName(), actualProfile.getFirstName());
         assertEquals(expectedProfile.getEmail(), expectedProfile.getEmail());
         assertEquals(expectedProfile.getId(), expectedProfile.getId());
+    }
+
+    //***READ METHODS***-----------------------------------------------------------------------------------------------R
+    @Test
+    void getAllProfilesTest(){
+        // ARRANGE
+
+        Profile profile1 = new Profile();
+        profile1.setFirstName("Test name");
+        profile1.setLastName("Testsen name ");
+        profile1.setEmail("test@test.dk");
+        profile1.setPassword("test");
+
+        Profile profile2 = new Profile();
+        profile2.setFirstName("Test2 name");
+        profile2.setLastName("Testsen2 name ");
+        profile2.setEmail("test2@test.dk");
+        profile2.setPassword("test2");
+
+        profileRepository.addProfile(profile1);
+        profileRepository.addProfile(profile2);
+
+        //ACT
+        List<Profile> profiles = profileRepository.getAllProfiles();
+
+        //ASSERT
+        assertNotNull(profiles, "The list of projects should not be null");
+        assertTrue(profiles.size() >= 2, "The number of projects should be at least 2");
+    }
+
+    //***UPDATE PROFILE METHOD***--------------------------------------------------------------------------------------U
+    @Test
+    void updateProfileTest() throws ProfileException{
+        //ARRANGE
+        Profile profile = new Profile();
+        profile.setFirstName("Test");
+        profile.setLastName("User");
+        profile.setEmail("test@example.com");
+        profile.setPassword("password");
+        profileRepository.addProfile(profile);
+
+        //MODIFY CHANGES
+        profile.setFirstName("Test update");
+        profile.setLastName("User update");
+        profile.setEmail("testupdate@example.com");
+
+        //ACT
+        profileRepository.updateProfile(profile);
+        Profile updatedProfile = profileRepository.getProfileById(profile.getId());
+
+        //ASSERT
+        assertEquals("Test update", updatedProfile.getFirstName());
+        assertEquals("User update", updatedProfile.getLastName());
+        assertEquals("testupdate@example.com", updatedProfile.getEmail());
+        assertEquals("password", updatedProfile.getPassword());
+    }
+
+    //***DELETE PROFILE METHOD***--------------------------------------------------------------------------------------D
+    @Rollback(false)  // Prevent rollback for this test so we can verify deletion
+    @Test
+    public void deleteProjectTest() throws ProfileException{
+        // ARRANGE
+        Profile profile = new Profile();
+        profile.setFirstName("Test");
+        profile.setLastName("User");
+        profile.setEmail("test@example.com");
+        profile.setPassword("password");
+        profileRepository.addProfile(profile);
+
+        //ASSERT
+        assertTrue(profile.getId() > 0); // ensure project exist
+
+        // ACT: Delete the Project
+        profileRepository.deleteProfile(profile.getId());
+
+        // ASSERT: Verify the project no longer exists
+        Profile deletedProfile = profileRepository.getProfileById(profile.getId());
+        assertNull(deletedProfile); // Assert that the project has been deleted
+
     }
 
     //***END***---------------------------------------------------------------------------------------------------------
