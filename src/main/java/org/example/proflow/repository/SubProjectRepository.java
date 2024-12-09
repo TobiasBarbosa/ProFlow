@@ -123,9 +123,13 @@ public class SubProjectRepository {
 
                 }
             }
-
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        getTasksFromSubProject(subProject.getId());
+        if (subProject != null) { //Tjekker at subprojeket ikke er null, kunne også have været en try catch
+            getTasksFromSubProject(subProject.getId());
+        }
+
         return subProject;
     }
 
@@ -189,6 +193,9 @@ public class SubProjectRepository {
             ps.setString(5, subProject.getStatus().name());
             ps.setDouble(6, subProject.getBudget());
             ps.setString(7, subProject.getAssignedTo());
+
+            ps.setInt(8, subProject.getId()); // sets the id parameter (WHERE id = ? in sql script)
+
             ps.executeUpdate();
         }
     }

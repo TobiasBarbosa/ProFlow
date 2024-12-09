@@ -180,7 +180,7 @@ public class TaskRepositoryTest {
         List<Task> tasks = taskRepository.getAllTasks();
 
         //ASSERT
-        assertNotNull(tasks, "The list og tasks should not be null");
+        assertNotNull(tasks, "The list of tasks should not be null");
         assertTrue(tasks.size() >= 2, "The number of tasks should be at least two");
     }
 
@@ -224,7 +224,7 @@ public class TaskRepositoryTest {
         subProject.setAssignedTo("test employee");
         subProjectRepository.addSubProject(subProject);
 
-        //Create task to test the update methods
+        //Create task to test the update method
         Task task = new Task();
         task.setName("test task");
         task.setDescription("description test task");
@@ -244,7 +244,7 @@ public class TaskRepositoryTest {
         task.setName("new name test task");
         task.setDescription("new description");
         task.setLocation("new location");
-        //task.setTaskPrice(800);
+        task.setTaskPrice(700.0);
 
         //ACT
         taskRepository.updateTask(task);
@@ -254,11 +254,76 @@ public class TaskRepositoryTest {
         assertEquals("new name test task", updatedTask.getName());
         assertEquals("new description", updatedTask.getDescription());
         assertEquals("new location", updatedTask.getLocation());
-        //assertEquals("Updated Task price", updatedTask.getTaskPrice());
+        assertEquals(700, updatedTask.getTaskPrice());
+
 
     }
 
-    //TODO deleteTaskTest
+    @Rollback(false)
+    @Test
+    void deleteTaskTest() throws SQLException{
+        //ARRANGE
+        //Create profile
+        Profile profile = new Profile();
+        profile.setFirstName("Test");
+        profile.setLastName("User");
+        profile.setEmail("test@example.com");
+        profile.setPassword("password");
+        profileRepository.addProfile(profile);
+
+        //create project
+        Project project = new Project();
+        project.setName("test");
+        project.setDescription("test beskrivelse");
+        project.setCreatedDate(LocalDate.now());
+        project.setStartDate(LocalDate.of(2024, 1, 1));
+        project.setEndDate(LocalDate.of(2024, 12, 31));
+        project.setTotalEstHours(10);
+        project.setStatus(Status.ACTIVE);
+        project.setBudget(2000);
+        project.setActualPrice(1000);
+        project.setProfileId(1); // Reference the profile you just added
+        projectRepository.addProject(project);
+
+        //Create subproject
+        SubProject subProject = new SubProject();
+        subProject.setName("Test name");
+        subProject.setDescription("Tests description ");
+        subProject.setCreatedDate(LocalDate.now());
+        subProject.setStartDate(LocalDate.of(2024, 1, 1));
+        subProject.setEndDate(LocalDate.of(2024, 12, 31));
+        subProject.setTotalEstHours(10);
+        subProject.setStatus(Status.ACTIVE);
+        subProject.setBudget(2000);
+        subProject.setActualPrice(1000);
+        subProject.setProjectId(1);
+        subProject.setAssignedTo("test employee");
+        subProjectRepository.addSubProject(subProject);
+
+        //Create task to test the delete method
+        Task task = new Task();
+        task.setName("test task");
+        task.setDescription("description test task");
+        task.setLocation("test location");
+        task.setCreatedDate(LocalDate.now());
+        task.setStartDate(LocalDate.of(2024, 1, 1));
+        task.setEndDate(LocalDate.of(2024, 12, 31));
+        task.setTotalEstHours(10);
+        task.setStatus(Status.ACTIVE);
+        task.setSubProjectId(1);
+        task.setAssignedTo("Test employee");
+        task.setTaskPrice(500);
+        taskRepository.addTask(task);
+
+        //ACT
+        assertTrue(task.getId() > 0); //Tjekker om der er en task
+        taskRepository.deleteTask(task.getId());
+
+        //ASSERT
+        Task deletedTask = taskRepository.getTaskById(task.getId());
+        assertNull(deletedTask); //Asserts that the project has been deleted
+
+    }
 
 
 

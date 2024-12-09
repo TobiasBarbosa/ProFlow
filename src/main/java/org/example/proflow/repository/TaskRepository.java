@@ -122,7 +122,10 @@ public class TaskRepository {
 
 
                 }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
+
         }
         return task;
     }
@@ -158,13 +161,13 @@ public class TaskRepository {
     }
 
     //***DELETE TASK***------------------------------------------------------------------------------------------------D
-    public void deleteTask(int id) throws SQLException {
+    public void deleteTask(int taskId) throws SQLException {
         String deleteTaskQuery = "DELETE FROM Task WHERE id = ?";
 
         try (Connection con = DataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(deleteTaskQuery)) {
 
-            ps.setInt(1, id);
+            ps.setInt(1, taskId);
             ps.executeUpdate();
         }
     }
