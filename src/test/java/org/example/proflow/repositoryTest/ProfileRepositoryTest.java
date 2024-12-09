@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @SpringBootTest
 @Transactional
 // Når man tilføjer denne annotering på testklassen eller metoden, betyder det, at testen kører inden for en transaktion. Denne transaktion sikrer, at alle databaseoperationer i testen håndteres samlet, som om de er en del af en enkelt transaktion.
@@ -40,6 +43,9 @@ public class ProfileRepositoryTest {
         Profile actualProfile = profileRepository.getProfileById(expectedProfile.getId());
 
         //ASSERT
+        assertEquals(expectedProfile.getFirstName(), actualProfile.getFirstName());
+        assertEquals(expectedProfile.getEmail(), expectedProfile.getEmail());
+        assertEquals(expectedProfile.getId(), expectedProfile.getId());
     }
 
     //***END***---------------------------------------------------------------------------------------------------------

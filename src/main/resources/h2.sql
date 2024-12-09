@@ -21,6 +21,8 @@ CREATE TABLE IF NOT EXISTS `Project` (
      `created_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
      `status` ENUM('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
      PRIMARY KEY (`id`),
+     INDEX `profile_id` (`profile_id` ASC),
+     CONSTRAINT `Project_ibfk_1`
      FOREIGN KEY (`profile_id`)
      REFERENCES `Profile` (`id`)
 );
@@ -39,6 +41,8 @@ CREATE TABLE IF NOT EXISTS `SubProject` (
     `created_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `status` ENUM('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
     PRIMARY KEY (`id`),
+    INDEX `project_id` (`project_id` ASC),
+    CONSTRAINT `SubProject_ibfk_1`
     FOREIGN KEY (`project_id`)
     REFERENCES `Project` (`id`)
 );
@@ -57,6 +61,8 @@ CREATE TABLE IF NOT EXISTS `Task` (
     `created_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `status` ENUM('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
     PRIMARY KEY (`id`),
+    INDEX `sub_project_id` (`sub_project_id` ASC),
+    CONSTRAINT `Task_ibfk_1`
     FOREIGN KEY (`sub_project_id`)
     REFERENCES `SubProject` (`id`)
 

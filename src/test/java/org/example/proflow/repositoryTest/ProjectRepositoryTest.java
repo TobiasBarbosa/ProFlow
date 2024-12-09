@@ -70,7 +70,6 @@ public class ProjectRepositoryTest {
         assertEquals(expectedProject.getName(), actualProject.getName());
         assertEquals(expectedProject.getDescription(), actualProject.getDescription());
         assertEquals(expectedProject.getId(), actualProject.getId());
-
     }
 
     @Test
