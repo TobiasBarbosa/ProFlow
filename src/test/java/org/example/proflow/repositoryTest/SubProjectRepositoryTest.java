@@ -74,7 +74,7 @@ public class SubProjectRepositoryTest {
         return subProject;
     }
 
-    //***SUBPROJECT METHODS***------------------------------------------------------------------------------------------
+    //***SUBPROJECT TEST METHODS***-------------------------------------------------------------------------------------
     //***CREATE SUBPROJECT***------------------------------------------------------------------------------------------C
     @Test
     void addSubProject() throws SQLException, ProfileException{
@@ -99,7 +99,7 @@ public class SubProjectRepositoryTest {
         assertEquals(expectedSubProject.getId(), actualSubProject.getId());
     }
 
-    //***READ SUBPROJECTS***-------------------------------------------------------------------------------------------R
+    //***READ SUBPROJECT(S)***-----------------------------------------------------------------------------------------R
    @Test
     void getAllSubProjects() throws SQLException, ProfileException {
        //ARRANGE

@@ -112,8 +112,8 @@ public class ProfileRepositoryTest {
         Profile profile = preSetProfile();
         profileRepository.addProfile(profile);
 
-        //ASSERT
-        assertTrue(profile.getId() > 0); // ensure project exist
+        //ASSERT: make sure project exist
+        assertTrue(profile.getId() > 0); //
 
         // ACT: Delete the Project
         profileRepository.deleteProfile(profile.getId());

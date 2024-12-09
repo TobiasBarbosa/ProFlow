@@ -136,7 +136,7 @@ public class ProjectRepositoryTest {
         project.setProfileId(profile.getId());
         projectRepository.addProject(project);
 
-        //MODIFY CHANGES
+        //Modify update changes
         project.setName("Updated Project");
         project.setDescription("Updated Description");
         project.setEndDate(LocalDate.of(2024, 11, 30));
