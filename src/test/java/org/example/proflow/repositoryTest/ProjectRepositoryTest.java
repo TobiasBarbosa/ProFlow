@@ -4,6 +4,7 @@ import org.example.proflow.ProFlowApplication;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
 import org.example.proflow.model.Status;
+import org.example.proflow.model.SubProject;
 import org.example.proflow.repository.ProfileRepository;
 import org.example.proflow.repository.ProjectRepository;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ public class ProjectRepositoryTest {
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
 
     //***INTEGRATION-TEST METHODS***------------------------------------------------------------------------------------
-    //***READ PROJECT METHODS***----------------------------------------------------------------------------------------
+    //***CREATE PROJECT METHODS***-------------------------------------------------------------------------------------C
     @Test
     void addProjectTest() throws SQLException {
         // ARRANGE
@@ -72,13 +73,14 @@ public class ProjectRepositoryTest {
         assertEquals(expectedProject.getId(), actualProject.getId());
     }
 
+    //***READ PROJECT(S) METHODS***------------------------------------------------------------------------------------R
     @Test
     void getProjectById(){
     }
 
     @Test
     void getAllProjects() throws SQLException{
-        // ARRANGE
+        //ARRANGE
         Profile profile = new Profile();
         profile.setFirstName("Test");
         profile.setLastName("User");
@@ -114,12 +116,57 @@ public class ProjectRepositoryTest {
         projectRepository.addProject(project1);
         projectRepository.addProject(project2);
 
-        // ACT
+        //ACT
         List<Project> projects = projectRepository.getAllProjects();
 
-        // ASSERT
+        //ASSERT
         assertNotNull(projects, "The list of projects should not be null");
         assertTrue(projects.size() >= 2, "The number of projects should be at least 2");
+
+    }
+
+//    public List<SubProject> getSubProjectsFromProjectTest(int projectId) throws SQLException {
+//    }
+
+    //***UPDATE PROJECT***---------------------------------------------------------------------------------------------U
+    @Test
+    public void updateProject() throws SQLException {
+        //ARRANGE
+        Profile profile = new Profile();
+        profile.setFirstName("Test");
+        profile.setLastName("User");
+        profile.setEmail("test@example.com");
+        profile.setPassword("password");
+        profileRepository.addProfile(profile);
+
+        Project project = new Project();
+        project.setName("test");
+        project.setDescription("test beskrivelse");
+        project.setCreatedDate(LocalDate.now());
+        project.setStartDate(LocalDate.of(2024, 1, 1));
+        project.setEndDate(LocalDate.of(2024, 12, 31));
+        project.setTotalEstHours(10);
+        project.setStatus(Status.ACTIVE);
+        project.setBudget(2000);
+        project.setActualPrice(1000);
+        project.setProfileId(1);
+        projectRepository.addProject(project);
+
+        //MODIFY CHANGES
+        project.setName("Updated Project");
+        project.setDescription("Updated Description");
+        project.setEndDate(LocalDate.of(2024, 11, 30));
+        project.setBudget(5500.0);
+
+        //ACT
+        projectRepository.updateProject(project);
+        Project updatedProject = projectRepository.getProjectById(project.getId());
+
+        //ASSERT
+        assertEquals("Updated Project", updatedProject.getName());
+        assertEquals("Updated Description", updatedProject.getDescription());
+        assertEquals(LocalDate.of(2024, 11, 30), updatedProject.getEndDate());
+        assertEquals(5500.0, updatedProject.getBudget());
 
     }
 

@@ -230,6 +230,8 @@ public class ProjectRepository {
             ps.setString(5, project.getStatus().name());
             ps.setDouble(6, project.getBudget());
 
+            ps.setInt(7, project.getId()); // sets the id parameter (WHERE id = ? in sql script)
+
             ps.executeUpdate();
         }
     }
