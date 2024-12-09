@@ -19,7 +19,6 @@ footer {
     background-color: #b8baf6;
     color: #222222;
     padding: 5px;
-    overflow: hidden;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -37,9 +36,36 @@ footer p {
     text-align: center;
 }
 
+.header {
+    align-content: center;
+    overflow: hidden;
+    padding: 20px 10px;
+    color: white;
+}
+
+.header a {
+    float: left;
+    color: #eae1f5;
+    text-align: center;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 25px;
+    border-radius: 4px;
+}
+
+.header a.logo {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.header-right {
+    float: right;
+}
+
 .logo {
-    width: 350px;
-    height: 350px;
+    width: 250px;
+    height: 250px;
     align-content: center;
     display: flex;
     justify-content: center;
