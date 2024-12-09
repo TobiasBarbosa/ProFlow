@@ -36,17 +36,23 @@ public class ProfileRepository {
 //                }
 //            }
 
-            try (PreparedStatement ps = con.prepareStatement(insertProfileQuery)) {
+            try (PreparedStatement ps = con.prepareStatement(insertProfileQuery, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1, profile.getFirstName());
                 ps.setString(2, profile.getLastName());
                 ps.setString(3, profile.getEmail());
                 ps.setString(4, profile.getPassword());
                 ps.executeUpdate();
+
+                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        profile.setId(generatedKeys.getInt(1)); // Set the generated ID to the project object
+                    }
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    } //hej
+    }
 
     //***READ PROFILE(S)***--------------------------------------------------------------------------------------------R
     public List<Profile> getAllProfiles() {
@@ -67,9 +73,9 @@ public class ProfileRepository {
                 profiles.add(profile);
             }
             for (Profile profile : profiles) {
-
                 profile.setProjects(getProjectsFromProfile(profile.getId()));
             }
+
         } catch (SQLException | ProfileException e) {
             e.printStackTrace();
         }
