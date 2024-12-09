@@ -25,12 +25,12 @@ public class TaskRepository {
     //***CREATE TASK***------------------------------------------------------------------------------------------------C
     public void addTask(Task task) throws SQLException {
         String insertTaskQuery = """
-                    INSERT INTO Task (name, description, location, created_date, start_date, end_date, total_est_hours, status, sub_project_id, assigned_to, price)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO Task (name, description, location, start_date, end_date, total_est_hours, status, sub_project_id, assigned_to, price)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (Connection con = dataBaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(insertTaskQuery)) {
+             PreparedStatement ps = con.prepareStatement(insertTaskQuery, Statement.RETURN_GENERATED_KEYS)) {
 
             //Id oprettes i database
             // Calculate days until done håndteres i class
@@ -39,15 +39,21 @@ public class TaskRepository {
             ps.setString(3, task.getLocation());
             //Created date automatically add in DB
 //            ps.setDate(4, Date.valueOf(task.getCreatedDate()));
-            ps.setDate(5, Date.valueOf(task.getStartDate()));
-            ps.setDate(6, Date.valueOf(task.getEndDate()));
-            ps.setDouble(7, task.getTotalEstHours());
-            ps.setString(8, task.getStatus().name());
-            ps.setInt(9, task.getSubProjectId());
-            ps.setString(10, task.getAssignedTo());
-            ps.setDouble(11, task.getTaskPrice());
+            ps.setDate(4, Date.valueOf(task.getStartDate()));
+            ps.setDate(5, Date.valueOf(task.getEndDate()));
+            ps.setDouble(6, task.getTotalEstHours());
+            ps.setString(7, task.getStatus().name());
+            ps.setInt(8, task.getSubProjectId());
+            ps.setString(9, task.getAssignedTo());
+            ps.setDouble(10, task.getTaskPrice());
 
             ps.executeUpdate();
+
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    task.setId(generatedKeys.getInt(1)); // Set the generated ID to the project object
+                }
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
