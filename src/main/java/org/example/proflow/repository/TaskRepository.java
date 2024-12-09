@@ -19,17 +19,17 @@ public class TaskRepository {
     //TODO updateTask hvilke værdier skal være med (se noter i metode)
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    private DataBaseConnection dataBaseConnection = new DataBaseConnection();
+    //private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE TASK***------------------------------------------------------------------------------------------------C
     public void addTask(Task task) throws SQLException {
         String insertTaskQuery = """
-                    INSERT INTO Task (name, description, location, start_date, end_date, total_est_hours, status, sub_project_id, assigned_to, price)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO Task (name, description, location, created_date, start_date, end_date, total_est_hours, status, sub_project_id, assigned_to, price)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
-        try (Connection con = dataBaseConnection.getConnection();
+        try (Connection con = DataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(insertTaskQuery, Statement.RETURN_GENERATED_KEYS)) {
 
             //Id oprettes i database
@@ -38,14 +38,14 @@ public class TaskRepository {
             ps.setString(2, task.getDescription());
             ps.setString(3, task.getLocation());
             //Created date automatically add in DB
-//            ps.setDate(4, Date.valueOf(task.getCreatedDate()));
-            ps.setDate(4, Date.valueOf(task.getStartDate()));
-            ps.setDate(5, Date.valueOf(task.getEndDate()));
-            ps.setDouble(6, task.getTotalEstHours());
-            ps.setString(7, task.getStatus().name());
-            ps.setInt(8, task.getSubProjectId());
-            ps.setString(9, task.getAssignedTo());
-            ps.setDouble(10, task.getTaskPrice());
+            ps.setDate(4, Date.valueOf(task.getCreatedDate()));
+            ps.setDate(5, Date.valueOf(task.getStartDate()));
+            ps.setDate(6, Date.valueOf(task.getEndDate()));
+            ps.setDouble(7, task.getTotalEstHours());
+            ps.setString(8, task.getStatus().name());
+            ps.setInt(9, task.getSubProjectId());
+            ps.setString(10, task.getAssignedTo());
+            ps.setDouble(11, task.getTaskPrice());
 
             ps.executeUpdate();
 
@@ -65,7 +65,7 @@ public class TaskRepository {
         List<Task> tasks = new ArrayList<>();
         String query = "SELECT * FROM Task";
 
-        try (Connection con = dataBaseConnection.getConnection();
+        try (Connection con = DataBaseConnection.getConnection();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -99,7 +99,7 @@ public class TaskRepository {
         String query = "SELECT * FROM Task WHERE id = ?";
         Task task = null;
 
-        try (Connection con = dataBaseConnection.getConnection();
+        try (Connection con = DataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setInt(1, id);
@@ -135,7 +135,7 @@ public class TaskRepository {
                     WHERE id = ?
                 """;
 
-        try (Connection con = dataBaseConnection.getConnection();
+        try (Connection con = DataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateTaskQuery)) {
 
             //id can not change
@@ -158,7 +158,7 @@ public class TaskRepository {
     public void deleteTask(int id) throws SQLException {
         String deleteTaskQuery = "DELETE FROM Task WHERE id = ?";
 
-        try (Connection con = dataBaseConnection.getConnection();
+        try (Connection con = DataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(deleteTaskQuery)) {
 
             ps.setInt(1, id);

@@ -29,13 +29,25 @@ public class TaskRepositoryTest {
     private TaskRepository taskRepository;
     @Autowired
     private SubProjectRepository subProjectRepository;
+    @Autowired
+    private ProfileRepository profileRepository;
 
     @Test
     void addTaskTest() throws SQLException {
         //ARRANGE
         // Create and save a Project to satisfy the foreign key constraint
+        // Insert a profile entry
+        Profile profile = new Profile();
+        profile.setId(1); // Set this to match the profile_id in the Project
+        profile.setFirstName("Test name");
+        profile.setLastName("Testsen name ");
+        profile.setEmail("test@test.dk");
+        profile.setPassword("test");
+        profileRepository.addProfile(profile);
+
+
         SubProject subProject = new SubProject();
-        subProject.setId(1); // Set this to match the profile_id in the Project
+        //subProject.setId(1); // Set this to match the profile_id in the Project
         subProject.setName("Test name");
         subProject.setDescription("Tests description ");
         subProject.setCreatedDate(LocalDate.now());
