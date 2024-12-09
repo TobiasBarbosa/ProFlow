@@ -131,7 +131,7 @@ public class TaskRepository {
     public void updateTask(Task task) throws SQLException {
         String updateTaskQuery = """
                     UPDATE Task 
-                    SET name = ?, description = ?, location = ?, start_date = ?, end_date = ?, total_est_hours, status = ?, assigned_to = ?, price = ? 
+                    SET name = ?, description = ?, location = ?, start_date = ?, end_date = ?, total_est_hours = ?, status = ?, assigned_to = ?, price = ? 
                     WHERE id = ?
                 """;
 
@@ -150,6 +150,9 @@ public class TaskRepository {
             ps.setString(7, task.getStatus().name());
             ps.setString(8, task.getAssignedTo());
             ps.setDouble(9, task.getTaskPrice());
+
+            ps.setInt(10, task.getId()); // sets the id parameter (WHERE id = ? in sql script)
+
             ps.executeUpdate();
         }
     }
