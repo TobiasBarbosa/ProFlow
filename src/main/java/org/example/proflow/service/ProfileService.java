@@ -34,7 +34,7 @@ public class ProfileService {
     }
 
     //***READ PROFILE(S)***--------------------------------------------------------------------------------------------R
-    public List<Profile> getAllProfiles() {
+    public List<Profile> getAllProfiles() throws ProfileException {
         return profileRepository.getAllProfiles();
     }
 

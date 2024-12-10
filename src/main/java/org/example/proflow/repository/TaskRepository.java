@@ -19,7 +19,7 @@ public class TaskRepository {
     //TODO updateTask hvilke værdier skal være med (se noter i metode)
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    private DataBaseConnection dataBaseConnection = new DataBaseConnection();
+    //private DataBaseConnection dataBaseConnection = new DataBaseConnection();
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE TASK***------------------------------------------------------------------------------------------------C
@@ -29,8 +29,8 @@ public class TaskRepository {
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
-        try (Connection con = dataBaseConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(insertTaskQuery)) {
+        try (Connection con = DataBaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(insertTaskQuery, Statement.RETURN_GENERATED_KEYS)) {
 
             //Id oprettes i database
             // Calculate days until done håndteres i class
@@ -38,7 +38,7 @@ public class TaskRepository {
             ps.setString(2, task.getDescription());
             ps.setString(3, task.getLocation());
             //Created date automatically add in DB
-//            ps.setDate(4, Date.valueOf(task.getCreatedDate()));
+            ps.setDate(4, Date.valueOf(task.getCreatedDate()));
             ps.setDate(5, Date.valueOf(task.getStartDate()));
             ps.setDate(6, Date.valueOf(task.getEndDate()));
             ps.setDouble(7, task.getTotalEstHours());
@@ -48,6 +48,12 @@ public class TaskRepository {
             ps.setDouble(11, task.getTaskPrice());
 
             ps.executeUpdate();
+
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    task.setId(generatedKeys.getInt(1)); // Set the generated ID to the project object
+                }
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,7 +65,7 @@ public class TaskRepository {
         List<Task> tasks = new ArrayList<>();
         String query = "SELECT * FROM Task";
 
-        try (Connection con = dataBaseConnection.getConnection();
+        try (Connection con = DataBaseConnection.getConnection();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -93,7 +99,7 @@ public class TaskRepository {
         String query = "SELECT * FROM Task WHERE id = ?";
         Task task = null;
 
-        try (Connection con = dataBaseConnection.getConnection();
+        try (Connection con = DataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setInt(1, id);
@@ -116,7 +122,10 @@ public class TaskRepository {
 
 
                 }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
+
         }
         return task;
     }
@@ -125,11 +134,11 @@ public class TaskRepository {
     public void updateTask(Task task) throws SQLException {
         String updateTaskQuery = """
                     UPDATE Task 
-                    SET name = ?, description = ?, location = ?, start_date = ?, end_date = ?, total_est_hours, status = ?, assigned_to = ?, price = ? 
+                    SET name = ?, description = ?, location = ?, start_date = ?, end_date = ?, total_est_hours = ?, status = ?, assigned_to = ?, price = ? 
                     WHERE id = ?
                 """;
 
-        try (Connection con = dataBaseConnection.getConnection();
+        try (Connection con = DataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateTaskQuery)) {
 
             //id can not change
@@ -144,19 +153,33 @@ public class TaskRepository {
             ps.setString(7, task.getStatus().name());
             ps.setString(8, task.getAssignedTo());
             ps.setDouble(9, task.getTaskPrice());
+
+            ps.setInt(10, task.getId()); // sets the id parameter (WHERE id = ? in sql script)
+
             ps.executeUpdate();
         }
     }
 
     //***DELETE TASK***------------------------------------------------------------------------------------------------D
-    public void deleteTask(int id) throws SQLException {
+    public void deleteTask(int taskId) throws SQLException {
         String deleteTaskQuery = "DELETE FROM Task WHERE id = ?";
 
-        try (Connection con = dataBaseConnection.getConnection();
+        try (Connection con = DataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(deleteTaskQuery)) {
 
-            ps.setInt(1, id);
+            ps.setInt(1, taskId);
             ps.executeUpdate();
+        }
+    }
+
+    //FOR TEST PURPOSES!! -- rigtigt måde at håndtere?
+    public void deleteAllTasks() {
+        String query = "DELETE FROM Task";
+        try (Connection con = DataBaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to clear tasks", e);
         }
     }
 
