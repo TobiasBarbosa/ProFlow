@@ -200,7 +200,7 @@ public class ProfileRepository {
         }
     }
 
-    //FOR TEST PURPOSES!!
+    //***FOR TEST PURPOSES ONLY!!***------------------------------------------------------------------------------------
     public void deleteAllProfiles() {
         String query = "DELETE FROM Profile";
         try (Connection con = DataBaseConnection.getConnection();
