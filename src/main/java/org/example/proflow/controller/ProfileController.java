@@ -109,7 +109,7 @@ public class ProfileController {
         return "admin_dashboard";
     }
 
-    @GetMapping("/admin-dashboard")
+    @GetMapping("/admin-dashboard/profiles")
     //TODO argumentere for hvorfor den her ligger her i profileController, mens getAllSubProjects ligger i taskSubProjects og getAllTasks ligger i taskController
     public String getAllProjects(Model model) throws SQLException { //til admin til at se liste over alle projekter
         List<Project> projects = projectService.getAllProjects();
