@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -20,7 +21,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 // Når man tilføjer denne annotering på testklassen eller metoden, betyder det, at testen kører inden for en transaktion. Denne transaktion sikrer, at alle databaseoperationer i testen håndteres samlet, som om de er en del af en enkelt transaktion.
 //@Rollback(true) // Ruller tilbage efter testen / skal bruges på databasen / ikke h2
+
 @ActiveProfiles("h2")
+// NB Tests fail if the following line is not included as the h2 database is not reset between tests
+//@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:h2.sql") //TODO virker ikke, derofr bruger vi @AfterEAch, som er en dårlige metode, men virker. Bør ændres på alle repTest klasser
+
 public class ProfileRepositoryTest {
 
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------

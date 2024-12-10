@@ -45,6 +45,7 @@ public class TaskRepositoryTest {
     //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
     @BeforeEach
     //Kører før hver test og sætter en profil, et project, et subproject og en task op
+    //TODO RAPPORT: Fordele og ulemper ved test rep metode. Spcifikt dummydata i testklassen i stedet for i SQL h2
     void setUp(){
         profile = new Profile();
         profile.setFirstName("test profile firstname");
