@@ -40,7 +40,7 @@ public class ProfileServiceTest {
     public void getProfileByIdTest() throws SQLException, ProfileException {
         when(profileRepository.getProfileById(1)).thenReturn(profile);
 
-        //act
+        //ACT
         Profile result = profileService.getProfileById(1);
 
         //assert
