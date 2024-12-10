@@ -25,7 +25,7 @@ public class ProfileRepository {
         try (Connection con = DataBaseConnection.getConnection()) {
             //TODO:
             // Check for duplicate email
-//            for (Profile p : getAllProfiles()) {
+//            for (Profile p : getAllProfiles())  {
 //                if (profile.getEmail().equalsIgnoreCase(p.getEmail())) {
 //                    throw new ProfileException("Profile with this email already exists");
 //                }
@@ -200,7 +200,7 @@ public class ProfileRepository {
         }
     }
 
-    //FOR TEST PURPOSES!!
+    //***FOR TEST PURPOSES ONLY!!***------------------------------------------------------------------------------------
     public void deleteAllProfiles() {
         String query = "DELETE FROM Profile";
         try (Connection con = DataBaseConnection.getConnection();
