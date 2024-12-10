@@ -31,8 +31,10 @@ public class ProfileServiceTest {
     @InjectMocks
     private ProfileService profileService;
 
+    //***OBJECT ATTRIBUTES***-------------------------------------------------------------------------------------------
     private Profile profile;
 
+    //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
     @Before //arrange
     public void setUp() {
         profile = new Profile();
@@ -47,7 +49,19 @@ public class ProfileServiceTest {
         profileRepository.deleteAllProfiles();
     }
 
-    //***READ METHODS***-----------------------------------------------------------------------------------------------R
+    //***TEST PROFILE METHODS***----------------------------------------------------------------------------------------
+    //***CREATE PROFILE TEST***----------------------------------------------------------------------------------------C
+    @Test
+    public void addProfileVerifyTest(){
+        //Tester om addProfile kalder addProfile i repository
+        //Act
+        profileService.addProfile(profile);
+
+        //Assert
+        verify(profileRepository).addProfile(profile);
+    }
+
+    //***READ PROFILE TEST***------------------------------------------------------------------------------------------R
     @Test
     public void getProfileByIdTest() throws SQLException, ProfileException {
         when(profileRepository.getProfileById(profile.getId())).thenReturn(profile);
@@ -63,16 +77,7 @@ public class ProfileServiceTest {
         assertEquals("testPassword", result.getPassword());
     }
 
-    @Test
-    public void addProfileVerifyTest(){
-        //Tester om addProfile kalder addProfile i repository
-        //Act
-        profileService.addProfile(profile);
-
-        //Assert
-        verify(profileRepository).addProfile(profile);
-    }
-
+    //***UPDATE PROFILE TEST***----------------------------------------------------------------------------------------U
     @Test
     public void updateProfileVerifyTest(){
         //Tester om updateProfile kalder updateProfile i repository
@@ -83,6 +88,7 @@ public class ProfileServiceTest {
         verify(profileRepository).updateProfile(profile);
     }
 
+    //***DELETE PROFILE TEST***----------------------------------------------------------------------------------------D
     @Test
     public void deleteProfileVerifyTest() throws ProfileException {
         //Tester om updateProfile kalder updateProfile i repository
@@ -93,5 +99,5 @@ public class ProfileServiceTest {
         verify(profileRepository).deleteProfile(profile.getId());
     }
 
-
+    //------------------------------------------------------------------------------------------------------------------
 }
