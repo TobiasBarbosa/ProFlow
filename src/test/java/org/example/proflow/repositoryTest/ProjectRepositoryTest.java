@@ -38,8 +38,10 @@ public class ProjectRepositoryTest {
     @Autowired
     private ProfileRepository profileRepository;
 
+    //***OBJECT(S) ATTRIBUTES***----------------------------------------------------------------------------------------
     private Profile profile;
     private Project project;
+
     //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
     @BeforeEach
     //Kører før hver test og sætter en profil og et project op

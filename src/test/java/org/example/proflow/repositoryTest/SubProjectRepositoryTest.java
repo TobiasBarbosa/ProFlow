@@ -35,6 +35,7 @@ public class SubProjectRepositoryTest {
     @Autowired
     ProfileRepository profileRepository;
 
+    //***OBJECT(S) ATTRIBUTES***----------------------------------------------------------------------------------------
     private Profile profile;
     private Project project;
     private SubProject subProject;

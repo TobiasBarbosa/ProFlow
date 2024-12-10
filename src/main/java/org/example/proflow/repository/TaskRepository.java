@@ -172,8 +172,8 @@ public class TaskRepository {
         }
     }
 
-    //FOR TEST PURPOSES!!
-    public void deleteAllSubProjects() {
+    //FOR TEST PURPOSES!! -- rigtigt måde at håndtere?
+    public void deleteAllTasks() {
         String query = "DELETE FROM Task";
         try (Connection con = DataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {

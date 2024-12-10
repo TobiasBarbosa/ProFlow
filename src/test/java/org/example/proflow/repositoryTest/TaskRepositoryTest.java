@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,13 +21,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
-//@Rollback(true)
-@ActiveProfiles("h2")
+@Transactional //forklar lige hvorfor
+//@Rollback(true) // Ruller tilbage efter testen / skal bruges på databasen / ikke h2
+@ActiveProfiles("h2") // skal vi teste flere profiler?
 public class TaskRepositoryTest {
 
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
-    @Autowired
+    @Autowired //  bruges @Autowired-annotationen til automatisk at injicere afhængigheder i din applikation. Dette er en nøglefunktion inden for Spring Framework, som hjælper med at håndtere afhængighedsinjektion (DI) på en nem og effektiv måde.
     private TaskRepository taskRepository;
     @Autowired
     private SubProjectRepository subProjectRepository;
@@ -37,11 +36,11 @@ public class TaskRepositoryTest {
     @Autowired
     private ProfileRepository profileRepository;
 
+    //***OBJECT(S) ATTRIBUTES***----------------------------------------------------------------------------------------
     private Profile profile;
     private Project project;
     private SubProject subProject;
     private Task task;
-
 
     //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
     @BeforeEach
@@ -90,9 +89,9 @@ public class TaskRepositoryTest {
     }
 
     @AfterEach
-    void tearDown() throws SQLException {
+    void tearDown() {
         // Kører efter hver test to clear the database
-        taskRepository.deleteAllSubProjects();
+        taskRepository.deleteAllTasks();
         subProjectRepository.deleteAllSubProjects();
         projectRepository.deleteAllProjects();
         profileRepository.deleteAllProfiles();
@@ -102,14 +101,15 @@ public class TaskRepositoryTest {
     @Test
     void addTaskTest() throws SQLException, ProfileException {
         //ARRANGE
+        //Profile
         profileRepository.addProfile(profile);
-
+        //Project
         project.setProfileId(profile.getId()); // Reference the profile you just added
         projectRepository.addProject(project);
-
+        //SubProject
         subProject.setProjectId(project.getId());
         subProjectRepository.addSubProject(subProject);
-
+        //Task
         task.setSubProjectId(subProject.getProjectId());
 
         //ACT
@@ -137,7 +137,6 @@ public class TaskRepositoryTest {
         subProjectRepository.addSubProject(subProject);
 
         task.setSubProjectId(subProject.getId());
-        task.setTaskPrice(500);
 
         //create second task to test
         Task task2 = new Task();
@@ -188,7 +187,7 @@ public class TaskRepositoryTest {
 
         //ACT
         taskRepository.updateTask(task);
-        Task updatedTask = taskRepository.getTaskById(task.getId());
+        Task updatedTask = taskRepository.getTaskById(task.getId()); // vi assigner til ny variabel for at sikre at data vi sammenligner kommer fra db
 
         //ASSERT
         assertEquals("updated task name", updatedTask.getName());

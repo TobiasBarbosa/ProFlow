@@ -27,7 +27,9 @@ public class ProfileRepositoryTest {
     @Autowired
     private ProfileRepository profileRepository;
 
+    //***OBJECT(S) ATTRIBUTES***----------------------------------------------------------------------------------------
     private Profile profile;
+
     //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
     @BeforeEach
     //Kører før hver test og sætter en profil op
