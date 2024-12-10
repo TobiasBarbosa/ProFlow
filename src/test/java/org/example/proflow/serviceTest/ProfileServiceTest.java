@@ -52,15 +52,15 @@ public class ProfileServiceTest {
     }
 
 
-//    @Test //TODO fra pdf, men det giver ikke mening fordi vi ikke har saveProfile i rep?
-//    public void testAddProfileCallsSaveProfile(){
-//        //Act
-//        profileService.addProfile(profile);
-//
-//        //Assert
-//        verify(profileRepository).saveProfile(profile);
-//
-//    }
+    @Test
+    public void testAddProfileCallsSaveProfile(){
+        //Act
+        profileService.addProfile(profile);
+
+        //Assert
+        verify(profileRepository).addProfile(profile);
+
+    }
 
 
 }

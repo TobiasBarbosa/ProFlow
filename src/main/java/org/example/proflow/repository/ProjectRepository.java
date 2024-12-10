@@ -260,7 +260,7 @@ public class ProjectRepository {
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to clear profiles", e);
+            throw new RuntimeException("Failed to clear projects", e);
         }
     }
 

@@ -212,6 +212,17 @@ public class SubProjectRepository {
         }
     }
 
+    //FOR TEST PURPOSES!!
+    public void deleteAllSubProjects() {
+        String query = "DELETE FROM SubProject";
+        try (Connection con = DataBaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to clear subprojects", e);
+        }
+    }
+
     //***OTHER METHODS***-----------------------------------------------------------------------------------------------
 //    public List<Task> getTaskFromSubProject(int subProjectId) throws SQLException{
 //

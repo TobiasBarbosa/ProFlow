@@ -3,6 +3,7 @@ package org.example.proflow.repositoryTest;
 import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.repository.ProfileRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,51 +27,51 @@ public class ProfileRepositoryTest {
     @Autowired
     private ProfileRepository profileRepository;
 
+    private Profile profile;
     //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
     @BeforeEach
-    void clearProfileDatabase() {
-        profileRepository.deleteAllProfiles();
-    }
-
-    private Profile preSetProfile() throws ProfileException {
-        Profile profile = new Profile();
+    //Kører før hver test og sætter en profil op
+    void setUp(){
+        profile = new Profile();
         profile.setFirstName("test firstname");
         profile.setLastName("test lastname");
         profile.setEmail("test-email@test.com");
         profile.setPassword("testPassword");
-        return profile;
+    }
+
+    @AfterEach
+    // Kører efter hver test to clear the database
+    void clearProfileDatabase() {
+        profileRepository.deleteAllProfiles();
     }
 
     //***PROFILE TEST METHODS***----------------------------------------------------------------------------------------
     //***CREATE METHODS***---------------------------------------------------------------------------------------------C
     @Test
     void addProfileTest() throws ProfileException {
-        // ARRANGE
-        Profile expectedProfile = preSetProfile();
+        // ARRANGE done in setUp
 
         //ACT
-        profileRepository.addProfile(expectedProfile);
-        Profile actualProfile = profileRepository.getProfileById(expectedProfile.getId());
+        profileRepository.addProfile(profile);
+        Profile actualProfile = profileRepository.getProfileById(profile.getId());
 
         //ASSERT
-        assertEquals(expectedProfile.getFirstName(), actualProfile.getFirstName());
-        assertEquals(expectedProfile.getEmail(), expectedProfile.getEmail());
-        assertEquals(expectedProfile.getId(), expectedProfile.getId());
+        assertEquals(profile.getFirstName(), actualProfile.getFirstName());
+        assertEquals(profile.getEmail(), profile.getEmail());
+        assertEquals(profile.getId(), profile.getId());
     }
 
     //***READ METHODS***-----------------------------------------------------------------------------------------------R
     @Test
     void getAllProfilesTest() throws ProfileException{
         // ARRANGE
-        Profile profile1 = preSetProfile();
-
         Profile profile2 = new Profile();
         profile2.setFirstName("Test2 firstname");
         profile2.setLastName("Test2 lastname");
         profile2.setEmail("test2email@test.com");
         profile2.setPassword("test2Password");
 
-        profileRepository.addProfile(profile1);
+        profileRepository.addProfile(profile);
         profileRepository.addProfile(profile2);
 
         //ACT
@@ -85,7 +86,6 @@ public class ProfileRepositoryTest {
     @Test
     void updateProfileTest() throws ProfileException{
         //ARRANGE
-        Profile profile = preSetProfile();
         profileRepository.addProfile(profile);
 
         //MODIFY CHANGES
@@ -105,11 +105,9 @@ public class ProfileRepositoryTest {
     }
 
     //***DELETE PROFILE METHOD***--------------------------------------------------------------------------------------D
-    @Rollback(false)  // Prevent rollback for this test so we can verify deletion
     @Test
     public void deleteProjectTest() throws ProfileException{
         // ARRANGE
-        Profile profile = preSetProfile();
         profileRepository.addProfile(profile);
 
         //ASSERT: make sure project exist

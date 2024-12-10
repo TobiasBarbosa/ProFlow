@@ -5,6 +5,7 @@ import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
 import org.example.proflow.model.SubProject;
 import org.example.proflow.model.Task;
+import org.example.proflow.repository.DataBaseConnection;
 import org.example.proflow.service.ProjectService;
 import org.example.proflow.service.SubProjectService;
 import org.example.proflow.util.Validator;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -171,6 +174,7 @@ public class SubProjectController {
         subProjectService.deleteSubProject(subProjectId);
         return "redirect:/dashboard";
     }
+
 
     //***END***---------------------------------------------------------------------------------------------------------
 

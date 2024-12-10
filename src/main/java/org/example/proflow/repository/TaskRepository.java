@@ -172,6 +172,17 @@ public class TaskRepository {
         }
     }
 
+    //FOR TEST PURPOSES!!
+    public void deleteAllSubProjects() {
+        String query = "DELETE FROM Task";
+        try (Connection con = DataBaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to clear tasks", e);
+        }
+    }
+
     //***END***---------------------------------------------------------------------------------------------------------
 }
 
