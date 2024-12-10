@@ -26,6 +26,7 @@ public class TaskServiceTest {
 
     //***TO DO***-------------------------------------------------------------------------------------------------------
     //TODO: skriv i rapport: hvorfor vi ikke har lavet integrationstest i serviceklasserne?
+    //virker det?????
 
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
     @Mock
