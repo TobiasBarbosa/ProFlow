@@ -22,6 +22,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SubProjectServiceTest {
+
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     @Mock
     private SubProjectRepository subProjectRepository;
@@ -29,8 +30,10 @@ public class SubProjectServiceTest {
     @InjectMocks
     protected SubProjectService subProjectService;
 
+    //***OBJECT ATTRIBUTES***-------------------------------------------------------------------------------------------
     private SubProject subProject;
 
+    //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
     //arrange
     @Before
     public void setUp() {
@@ -52,7 +55,19 @@ public class SubProjectServiceTest {
         subProjectRepository.deleteAllSubProjects();
     }
 
-    //***READ METHODS***-----------------------------------------------------------------------------------------------R
+    //***TEST SUBPROJECT METHODS***-------------------------------------------------------------------------------------
+    //***CREATE SUBPROJECT TEST***-------------------------------------------------------------------------------------C
+    @Test
+    public void addSubProjectVerifyTest() throws SQLException {
+        //Tester om addSubProject kalder addSubProject i repository
+        //Act
+        subProjectService.addSubProject(subProject);
+
+        //Assert
+        verify(subProjectRepository).addSubProject(subProject);
+    }
+
+    //***READ SUBPROJECT TEST***---------------------------------------------------------------------------------------R
     @Test
     public void getSubProjectByIdTest() throws SQLException, SubProjectException {
         when(subProjectRepository.getSubProjectById(subProject.getId())).thenReturn(subProject);
@@ -75,17 +90,7 @@ public class SubProjectServiceTest {
 
     }
 
-
-    @Test
-    public void addSubProjectVerifyTest() throws SQLException {
-        //Tester om addSubProject kalder addSubProject i repository
-        //Act
-        subProjectService.addSubProject(subProject);
-
-        //Assert
-        verify(subProjectRepository).addSubProject(subProject);
-    }
-
+    //***UPDATE SUBPROJECT TEST***-------------------------------------------------------------------------------------U
     @Test
     public void updateSubProjectVerifyTest() throws SQLException {
         //Tester om updateSubProject kalder updateSubProject i repository
@@ -96,6 +101,7 @@ public class SubProjectServiceTest {
         verify(subProjectRepository).updateSubProject(subProject);
     }
 
+    //***DELETE SUBPROJECT TEST***-------------------------------------------------------------------------------------D
     @Test
     public void deleteSubProjectVerifyTest() throws SubProjectException, SQLException {
         //Tester om updateSubProject kalder updateSubProject i repository
@@ -106,4 +112,5 @@ public class SubProjectServiceTest {
         verify(subProjectRepository).deleteSubProject(subProject.getId());
     }
 
+    //***END***---------------------------------------------------------------------------------------------------------
 }

@@ -90,7 +90,7 @@ public class TaskServiceTest {
 
     //***UPDATE TASK TEST***-------------------------------------------------------------------------------------------U
     @Test
-    public void updateProfileVerifyTest() throws SQLException{
+    public void updateTaskVerifyTest() throws SQLException{
         //Tester om updateProfile kalder updateProfile i repository
         //ACT
         taskService.updateTask(task);
@@ -101,7 +101,7 @@ public class TaskServiceTest {
 
     //***DELETE TASK METHODS***----------------------------------------------------------------------------------------D
     @Test
-    public void deleteProfileVerifyTest() throws SQLException {
+    public void deleteTaskVerifyTest() throws SQLException {
         //Tester om updateProfile kalder updateProfile i repository
         //ACT
         taskService.deleteTask(task.getId());

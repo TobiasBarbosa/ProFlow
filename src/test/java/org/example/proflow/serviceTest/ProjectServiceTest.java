@@ -14,7 +14,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
@@ -22,6 +21,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProjectServiceTest {
+
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     @Mock
     private ProjectRepository projectRepository;
@@ -29,8 +29,10 @@ public class ProjectServiceTest {
     @InjectMocks
     protected ProjectService projectService;
 
+    //***OBJECT ATTRIBUTES***-------------------------------------------------------------------------------------------
     private Project project;
 
+    //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
     //arrange
     @Before
     public void setUp() {
@@ -51,7 +53,18 @@ public class ProjectServiceTest {
         projectRepository.deleteAllProjects();
     }
 
-    //***READ METHODS***-----------------------------------------------------------------------------------------------R
+    //***CREATE PROJECT TEST***----------------------------------------------------------------------------------------C
+    @Test
+    public void addProjectVerifyTest() throws SQLException {
+        //Tester om addProject kalder addProject i repository
+        //Act
+        projectService.addProject(project);
+
+        //Assert
+        verify(projectRepository).addProject(project);
+    }
+
+    //***READ PROJECT TEST***------------------------------------------------------------------------------------------R
     @Test
     public void getProjectByIdTest() throws SQLException, ProjectException {
         when(projectRepository.getProjectById(project.getId())).thenReturn(project);
@@ -72,17 +85,7 @@ public class ProjectServiceTest {
         assertEquals(1000, result.getActualPrice());
 
     }
-
-    @Test
-    public void addProjectVerifyTest() throws SQLException {
-        //Tester om addProject kalder addProject i repository
-        //Act
-        projectService.addProject(project);
-
-        //Assert
-        verify(projectRepository).addProject(project);
-    }
-
+    //***UPDATE PROJECT TEST***----------------------------------------------------------------------------------------U
     @Test
     public void updateProjectVerifyTest() throws SQLException {
         //Tester om updateProject kalder updateProject i repository
@@ -93,6 +96,7 @@ public class ProjectServiceTest {
         verify(projectRepository).updateProject(project);
     }
 
+    //***DELETE PROJECT TEST***----------------------------------------------------------------------------------------D
     @Test
     public void deleteProjectVerifyTest() throws ProjectException, SQLException {
         //Tester om updateProject kalder updateProject i repository
@@ -103,4 +107,5 @@ public class ProjectServiceTest {
         verify(projectRepository).deleteProject(project.getId());
     }
 
+    //***END***---------------------------------------------------------------------------------------------------------
 }
