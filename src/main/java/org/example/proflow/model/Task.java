@@ -18,6 +18,7 @@ public class Task {
     //TODO lav createdDate attribute final!
     //TODO slet unødvendige constructors
     //TODO lav implementer interface?
+    //TODO calculateDaysUntilDone() - ryk til service?
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private int id;                 // Task ID, unique identifier for the task.

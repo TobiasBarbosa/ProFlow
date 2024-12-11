@@ -1,5 +1,6 @@
 package org.example.proflow.repository;
 
+import org.example.proflow.config.DataBaseConnection;
 import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
@@ -14,6 +15,15 @@ import java.util.List;
 @Repository
 public class ProfileRepository {
 
+    //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
+    private final DataBaseConnection dataBaseConnection;
+
+    //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
+    // Constructor-based injection
+    public ProfileRepository(DataBaseConnection dataBaseConnection) {
+        this.dataBaseConnection = dataBaseConnection;
+    }
+
     //***PROFILE METHODS***---------------------------------------------------------------------------------------------
     //***CREATE PROFILE***---------------------------------------------------------------------------------------------C
     public void addProfile(Profile profile) {
@@ -22,7 +32,7 @@ public class ProfileRepository {
                     VALUES (?, ?, ?, ?)
                 """;
 
-        try (Connection con = DataBaseConnection.getConnection()) {
+        try (Connection con = dataBaseConnection.getConnection()) {
             //TODO:
             // Check for duplicate email
 //            for (Profile p : getAllProfiles())  {
@@ -55,7 +65,7 @@ public class ProfileRepository {
         List<Profile> profiles = new ArrayList<>();
         String query = "SELECT * FROM Profile";
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -88,7 +98,7 @@ public class ProfileRepository {
         String query = "SELECT * FROM Profile WHERE id = ?";
         Profile profile = null;
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setInt(1, id); // Bind the id parameter
@@ -137,7 +147,7 @@ public class ProfileRepository {
         List<Project> projectsFromProfile = new ArrayList<>();
         Project project = null;
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, profileId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -172,7 +182,7 @@ public class ProfileRepository {
                     UPDATE Profile SET name = ?, lastName = ?, email = ?, password = ? WHERE id = ?
                 """;
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateProfileQuery)) {
 
             ps.setString(1, profile.getFirstName());
@@ -190,7 +200,7 @@ public class ProfileRepository {
     public void deleteProfile(int id) {
         String deleteProfileQuery = "DELETE FROM Profile WHERE id = ?";
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(deleteProfileQuery)) {
 
             ps.setInt(1, id);
@@ -203,7 +213,7 @@ public class ProfileRepository {
     //***FOR TEST PURPOSES ONLY!!***------------------------------------------------------------------------------------
     public void deleteAllProfiles() {
         String query = "DELETE FROM Profile";
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.executeUpdate();
         } catch (SQLException e) {

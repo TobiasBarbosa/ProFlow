@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class Project { //hvorfor ikke abstract?
+public class Project {
 
     //^^^EXAM QUESTIONS^^^----------------------------------------------------------------------------------------------
     //Hvorfor er den her klasse ikke abstract?
@@ -17,6 +17,9 @@ public class Project { //hvorfor ikke abstract?
     //TODO slet unødvendige constructors
     //TODO lav createdDate final
     //TODO lav default value 0 - på dem som skal have det?
+    //TODO calculateDaysUntilDone() - ryk til service?
+    //TODO calculateTotalEstHours() - ryk til service?
+    //TODO calculateActualPrice() - ryk til service?
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private int id;                       // Project ID
