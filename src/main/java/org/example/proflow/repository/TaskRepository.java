@@ -1,5 +1,6 @@
 package org.example.proflow.repository;
 
+import org.example.proflow.config.DataBaseConnection;
 import org.example.proflow.model.Status;
 import org.example.proflow.model.Task;
 import org.springframework.stereotype.Repository;
@@ -19,7 +20,13 @@ public class TaskRepository {
     //TODO updateTask hvilke værdier skal være med (se noter i metode)
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    //private DataBaseConnection dataBaseConnection = new DataBaseConnection();
+    private final DataBaseConnection dataBaseConnection;
+
+    //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
+    // Constructor-based injection
+    public TaskRepository(DataBaseConnection dataBaseConnection) {
+        this.dataBaseConnection = dataBaseConnection;
+    }
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE TASK***------------------------------------------------------------------------------------------------C
@@ -29,7 +36,7 @@ public class TaskRepository {
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(insertTaskQuery, Statement.RETURN_GENERATED_KEYS)) {
 
             //Id oprettes i database
@@ -65,7 +72,7 @@ public class TaskRepository {
         List<Task> tasks = new ArrayList<>();
         String query = "SELECT * FROM Task";
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -99,7 +106,7 @@ public class TaskRepository {
         String query = "SELECT * FROM Task WHERE id = ?";
         Task task = null;
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setInt(1, id);
@@ -138,7 +145,7 @@ public class TaskRepository {
                     WHERE id = ?
                 """;
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateTaskQuery)) {
 
             //id can not change
@@ -164,7 +171,7 @@ public class TaskRepository {
     public void deleteTask(int taskId) throws SQLException {
         String deleteTaskQuery = "DELETE FROM Task WHERE id = ?";
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(deleteTaskQuery)) {
 
             ps.setInt(1, taskId);
@@ -175,7 +182,7 @@ public class TaskRepository {
     //FOR TEST PURPOSES!! -- rigtigt måde at håndtere?
     public void deleteAllTasks() {
         String query = "DELETE FROM Task";
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.executeUpdate();
         } catch (SQLException e) {

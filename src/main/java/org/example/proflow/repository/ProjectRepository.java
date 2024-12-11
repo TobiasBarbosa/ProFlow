@@ -1,6 +1,6 @@
 package org.example.proflow.repository;
 
-import org.example.proflow.exception.ProjectException;
+import org.example.proflow.config.DataBaseConnection;
 import org.example.proflow.model.Project;
 import org.example.proflow.model.Status;
 import org.example.proflow.model.SubProject;
@@ -20,9 +20,12 @@ public class ProjectRepository {
     //TODO createdDate final?
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
+    private final DataBaseConnection dataBaseConnection;
 
-    //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
-//    private SubProjectRepository subProjectRepository = new SubProjectRepository();
+    //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
+    public ProjectRepository(DataBaseConnection dataBaseConnection){
+        this.dataBaseConnection = dataBaseConnection;
+    }
 
     //***CREATE PROJECT***---------------------------------------------------------------------------------------------C
     public void addProject(Project project) throws SQLException {
@@ -31,7 +34,7 @@ public class ProjectRepository {
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(insertProjectQuery, Statement.RETURN_GENERATED_KEYS)) {
 
             //Database setter Id
@@ -61,7 +64,7 @@ public class ProjectRepository {
         String query = "SELECT * FROM Project WHERE id = ?"; //Project ID?
         Project project = null;
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setInt(1, id);
@@ -98,7 +101,7 @@ public class ProjectRepository {
         List<Project> projects = new ArrayList<>();
         String query = "SELECT * FROM Project";
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -133,7 +136,7 @@ public class ProjectRepository {
         List<Project> projects = new ArrayList<>();
         String query = "SELECT * FROM Project WHERE profile_id = ?";
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -183,7 +186,7 @@ public class ProjectRepository {
         List<SubProject> subProjectsFromProject = new ArrayList<>();
         SubProject subProject = null;
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, projectId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -220,7 +223,7 @@ public class ProjectRepository {
                     WHERE id = ?
                 """;
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateProjectQuery)) {
 
             //id can not change
@@ -245,7 +248,7 @@ public class ProjectRepository {
     public void deleteProject(int projectId) throws SQLException {
         String deleteProjectQuery = "DELETE FROM Project WHERE id = ?";
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(deleteProjectQuery)) {
 
             ps.setInt(1, projectId);
@@ -256,7 +259,7 @@ public class ProjectRepository {
     //FOR TEST PURPOSES!!
     public void deleteAllProjects() {
         String query = "DELETE FROM Project";
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.executeUpdate();
         } catch (SQLException e) {

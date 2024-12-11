@@ -17,6 +17,9 @@ public class SubProject extends Project {
 
     //***TO DO***-------------------------------------------------------------------------------------------------------
     //TODO slet unødvendige constructors
+    //TODO calculateDaysUntilDone() - ryk til service?
+    //TODO calculateTotalEstHours() - ryk til service?
+    //TODO calculateActualPrice() - ryk til service?
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private int projectId;        // Parent project ID
