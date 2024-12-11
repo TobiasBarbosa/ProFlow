@@ -165,11 +165,11 @@ public class SubProjectController {
         Project project = projectService.getProjectById(projectId); //Henter projektet fra databasen
 
         if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())){ //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
-            return "redirect:/dashboard";
+            return "redirect:/dashboard_stub";
         }
         SubProject subProject = subProjectService.getSubProjectById(subProjectId);
         subProjectService.deleteSubProject(subProjectId);
-        return "redirect:/dashboard";
+        return "redirect:/dashboard_stub";
     }
 
 

@@ -2,7 +2,6 @@ package org.example.proflow.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.example.proflow.exception.ProfileException;
-import org.example.proflow.exception.ProjectException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
 import org.example.proflow.service.ProfileService;
@@ -76,14 +75,14 @@ public class ProfileController {
     }
 
     //***CREATE PROFILE***---------------------------------------------------------------------------------------------C
-    @GetMapping("/addprofile") // GetMapping henter data fra database
+    @GetMapping("/add-profile") // GetMapping henter data fra database
     public String addProfile(Model model) {
         Profile profile = new Profile();
         model.addAttribute("profile", profile);
         return "signup"; //TODO har vi denne eller skal den bare hedde signup?
     }
 
-    @PostMapping("/saveprofile") //PostMapping tilføjer data til database
+    @PostMapping("/save-profile") //PostMapping tilføjer data til database
     public String saveProfile(@ModelAttribute Profile profile) throws ProfileDataException {
         profileService.addProfile(profile);
         return "redirect:/dashboard";

@@ -59,7 +59,7 @@ public class ProfileControllerTest {
 
     @Test
     public void testAddProfile() throws Exception {
-        mockMvc.perform(get("/homepage/addprofile"))
+        mockMvc.perform(get("/homepage/add-profile"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("signup"))
                 .andExpect(model().attributeExists("profile"));
