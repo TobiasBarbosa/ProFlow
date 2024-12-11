@@ -1,5 +1,6 @@
 package org.example.proflow.repository;
 
+import org.example.proflow.config.DataBaseConnection;
 import org.example.proflow.model.Status;
 import org.example.proflow.model.SubProject;
 import org.example.proflow.model.Task;
@@ -19,11 +20,14 @@ public class SubProjectRepository {
     //TODO createdDate final?
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    //private DataBaseConnection dataBaseConnection = new DataBaseConnection();
+    private final DataBaseConnection dataBaseConnection;
+    //private TaskRepository taskRepository = new TaskRepository();
 
-
-    //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
-    private TaskRepository taskRepository = new TaskRepository();
+    //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
+    // Constructor-based injection
+    public SubProjectRepository(DataBaseConnection dataBaseConnection) {
+        this.dataBaseConnection = dataBaseConnection;
+    }
 
     //***METHODS***-----------------------------------------------------------------------------------------------------
     //***CREATE SUBPROJECT***------------------------------------------------------------------------------------------C
@@ -33,7 +37,7 @@ public class SubProjectRepository {
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(insertSubProjectQuery, Statement.RETURN_GENERATED_KEYS)) {
 
             //Database setter SubProjectId
@@ -66,7 +70,7 @@ public class SubProjectRepository {
         List<SubProject> subProjects = new ArrayList<>();
         String query = "SELECT * FROM SubProject";
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -101,7 +105,7 @@ public class SubProjectRepository {
         String query = "SELECT * FROM SubProject WHERE id = ?";
         SubProject subProject = null;
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setInt(1, id);
@@ -138,7 +142,7 @@ public class SubProjectRepository {
         List<Task> tasksFromSubProject = new ArrayList<>();
         Task task = null;
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, subProjectId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -177,7 +181,7 @@ public class SubProjectRepository {
                     WHERE id = ?
                 """;
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(updateSubProjectQuery)) {
 
             //id is already set
@@ -204,7 +208,7 @@ public class SubProjectRepository {
     public void deleteSubProject(int id) throws SQLException {
         String deleteSubProjectQuery = "DELETE FROM SubProject WHERE id = ?";
 
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(deleteSubProjectQuery)) {
 
             ps.setInt(1, id);
@@ -215,7 +219,7 @@ public class SubProjectRepository {
     //FOR TEST PURPOSES!!
     public void deleteAllSubProjects() {
         String query = "DELETE FROM SubProject";
-        try (Connection con = DataBaseConnection.getConnection();
+        try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.executeUpdate();
         } catch (SQLException e) {
