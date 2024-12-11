@@ -2,6 +2,7 @@ package org.example.proflow.service;
 
 import org.example.proflow.model.Task;
 import org.example.proflow.repository.TaskRepository;
+import org.example.proflow.util.interfaces.TaskRepositoryInterface;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -11,10 +12,10 @@ import java.util.List;
 public class TaskService {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    private final TaskRepository taskRepository;
+    private final TaskRepositoryInterface taskRepository;
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepositoryInterface taskRepository) {
         this.taskRepository = taskRepository;
     }
 

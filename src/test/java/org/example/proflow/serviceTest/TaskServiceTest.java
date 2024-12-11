@@ -5,6 +5,7 @@ import org.example.proflow.model.Status;
 import org.example.proflow.model.Task;
 import org.example.proflow.repository.TaskRepository;
 import org.example.proflow.service.TaskService;
+import org.example.proflow.util.interfaces.TaskRepositoryInterface;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
@@ -29,7 +30,7 @@ public class TaskServiceTest {
 
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
     @Mock
-    private TaskRepository taskRepository;
+    private TaskRepositoryInterface taskRepository;
 
     @InjectMocks
     private TaskService taskService;

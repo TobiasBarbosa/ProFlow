@@ -5,6 +5,7 @@ import org.example.proflow.exception.ProjectException;
 import org.example.proflow.model.Project;
 import org.example.proflow.model.SubProject;
 import org.example.proflow.repository.ProjectRepository;
+import org.example.proflow.util.interfaces.ProjectRepositoryInterface;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -14,10 +15,10 @@ import java.util.List;
 public class ProjectService {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    private final ProjectRepository projectRepository;
+    private final ProjectRepositoryInterface projectRepository;
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectService(ProjectRepositoryInterface projectRepository) {
         this.projectRepository = projectRepository;
     }
 

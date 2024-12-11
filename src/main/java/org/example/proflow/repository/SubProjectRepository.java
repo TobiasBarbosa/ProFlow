@@ -4,6 +4,7 @@ import org.example.proflow.config.DataBaseConnection;
 import org.example.proflow.model.Status;
 import org.example.proflow.model.SubProject;
 import org.example.proflow.model.Task;
+import org.example.proflow.util.interfaces.SubProjectRepositoryInterface;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class SubProjectRepository {
+public class SubProjectRepository implements SubProjectRepositoryInterface {
 
     //***EXAM QUESTIONS***----------------------------------------------------------------------------------------------
     // Kunne man have lavet en mere effektiv kode, eller mindre kode. eks.vis jdbc template??

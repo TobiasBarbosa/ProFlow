@@ -3,6 +3,7 @@ package org.example.proflow.repositoryTest;
 import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.repository.ProfileRepository;
+import org.example.proflow.util.interfaces.ProfileRepositoryInterface;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ public class ProfileRepositoryTest {
 
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
     @Autowired
-    private ProfileRepository profileRepository;
+    private ProfileRepositoryInterface profileRepository;
 
     //***OBJECT(S) ATTRIBUTES***----------------------------------------------------------------------------------------
     private Profile profile;

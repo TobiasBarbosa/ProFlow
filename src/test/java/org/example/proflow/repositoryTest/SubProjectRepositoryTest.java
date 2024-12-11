@@ -5,6 +5,9 @@ import org.example.proflow.model.*;
 import org.example.proflow.repository.ProfileRepository;
 import org.example.proflow.repository.ProjectRepository;
 import org.example.proflow.repository.SubProjectRepository;
+import org.example.proflow.util.interfaces.ProfileRepositoryInterface;
+import org.example.proflow.util.interfaces.ProjectRepositoryInterface;
+import org.example.proflow.util.interfaces.SubProjectRepositoryInterface;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,11 +32,11 @@ public class SubProjectRepositoryTest {
 
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
     @Autowired
-    private SubProjectRepository subProjectRepository;
+    private SubProjectRepositoryInterface subProjectRepository;
     @Autowired
-    private ProjectRepository projectRepository;
+    private ProjectRepositoryInterface projectRepository;
     @Autowired
-    ProfileRepository profileRepository;
+    ProfileRepositoryInterface profileRepository;
 
     //***OBJECT(S) ATTRIBUTES***----------------------------------------------------------------------------------------
     private Profile profile;

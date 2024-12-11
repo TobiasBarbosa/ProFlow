@@ -4,6 +4,7 @@ import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.repository.ProfileRepository;
 import org.example.proflow.service.ProfileService;
+import org.example.proflow.util.interfaces.ProfileRepositoryInterface;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
@@ -26,7 +27,7 @@ public class ProfileServiceTest {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     @Mock
-    private ProfileRepository profileRepository;
+    private ProfileRepositoryInterface profileRepository;
 
     @InjectMocks
     private ProfileService profileService;

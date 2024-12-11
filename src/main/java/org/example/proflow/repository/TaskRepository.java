@@ -3,6 +3,7 @@ package org.example.proflow.repository;
 import org.example.proflow.config.DataBaseConnection;
 import org.example.proflow.model.Status;
 import org.example.proflow.model.Task;
+import org.example.proflow.util.interfaces.TaskRepositoryInterface;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class TaskRepository {
+public class TaskRepository implements TaskRepositoryInterface {
 
     //***EXAM QUESTIONS***----------------------------------------------------------------------------------------------
     //what?

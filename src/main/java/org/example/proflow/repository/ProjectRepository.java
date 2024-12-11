@@ -4,6 +4,7 @@ import org.example.proflow.config.DataBaseConnection;
 import org.example.proflow.model.Project;
 import org.example.proflow.model.Status;
 import org.example.proflow.model.SubProject;
+import org.example.proflow.util.interfaces.ProjectRepositoryInterface;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class ProjectRepository {
+public class ProjectRepository implements ProjectRepositoryInterface {
 
     //***TO DO***-------------------------------------------------------------------------------------------------------
     //TODO fix duration in database & methods
