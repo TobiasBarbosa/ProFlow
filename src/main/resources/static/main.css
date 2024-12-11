@@ -1,3 +1,13 @@
+.flex-container {
+    display: flex;
+    /*grid-template-rows: repeat(4, 100px);
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));*/
+}
+
+.flex-item-2 {
+    flex-grow: 2;
+}
+
 a {
     font-weight: bold;
     font-style: oblique;
@@ -14,6 +24,7 @@ body {
     padding: 10px;
     background-color: #320f46;
     color: lightgrey;
+    width: auto;
 }
 
 footer {
@@ -65,19 +76,20 @@ footer p {
 }
 
 .logo {
-    width: 250px;
-    height: 250px;
-    align-content: center;
+    width: 200px;
+    height: 200px;
+    /*align-content: center;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    position: relative;
+    position: relative;*/
 }
+
 
 .inbox{
     color: black;
 }
-/* Modal background styling */
+/* Modal background styling
 #loginModal {
     z-index: 100;
     display: none;
@@ -91,12 +103,12 @@ footer p {
     align-items: center;
 }
 
-/* Modal visibility using :target pseudo-class */
+/* Modal visibility using :target pseudo-class
 #loginModal:target {
     display: flex;
 }
 
-/* Modal content styling */
+/* Modal content styling
 .modal-content {
     background-color: white;
     padding: 100px;
@@ -104,12 +116,11 @@ footer p {
     width: 80%;
     max-width: 300px;
     box-shadow: 0 5px 15px rgb(226, 168, 241);
-}
+} */
 
 .center {
     text-align: center;
     align-content: center;
-    background-color: black;
 }
 
 /* Container styling */
@@ -237,4 +248,76 @@ footer p {
 
 .add-project button {
     font-size: 1rem;
+}
+
+/*login*/
+
+
+.login-box {
+    width: 300px;
+    padding: 20px;
+    background: #eeeef5;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    align-content: center;
+    justify-content: center;
+}
+
+.login-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.login-box label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.login-text {
+    color: #222222;
+}
+
+.login-box input[type="email"],
+.login-box input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #4c3267;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.login-box button {
+    width: 100%;
+    padding: 10px;
+    background-color: #6c8cf9;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.login-box button:hover {
+    background-color: #3c63de;
+}
+
+.login-box .links {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.login-box .links a {
+    display: block;
+    color: #4c3267;
+    text-decoration: none;
+    margin: 5px 0;
+}
+
+.login-box .links a:hover {
+    text-decoration: underline;
+    color: black;
 }

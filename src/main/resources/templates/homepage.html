@@ -4,19 +4,48 @@
     <meta charset="UTF-8">
     <title>Homepage</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/main.css}">
-
+    <link rel="stylesheet" href="/static/main.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
 </head>
 <body>
+<div class="flex-container">
+    <div class="flex-item-1">
+        <img class="logo" src="/images/logo.png" alt="logo">
+    </div>
+    <div class="flex-item-2"></div>
+    <div class="flex-item-3"> <a th:object="${session.profile}" th:href="@{/profile/edit/{profileId}(profileId=${session.profile.getProfileId()})}" class="btn btn-outline-secondary mr-2">Edit Profile</a>
+        <a th:href="@{/homepage/logout}" class="btn btn-danger">Logout</a>
+    </div>
+</div>
 <div class="center">
 <h1>ProFlow</h1>
 <h5>Project Management System</h5><br>
 </div>
 
-<div class="container login-container">
+<div class="login-box">
+    <h2>Login</h2>
+    <form th:action="@{/login}" method="post">
+        <label class="login-text" for="email">E-mail</label>
+        <input type="email" id="email" name="email" th:value="${email}" required>
+
+        <label class="login-text" for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Login</button>
+    </form>
+    <div class="links">
+        <a th:href="@{/forgot-password}">Forgot email or username?</a>
+        <a th:href="@{/register}">Sign up</a>
+    </div>
+</div>
+
+
+
+
+<!--<div class="container login-container">
     <div class="login-card bg-light">
         <h3 class="text-center">Login</h3>
-        <!-- Login form with email and password fields -->
+       Login form with email and password fields
         <form th:action="@{/homepage/login}" method="post">
             <div class="form-group">
                 <label for="profileEmail">Email</label>
@@ -34,7 +63,7 @@
         </form>
     </div>
 </div>
-
+-->
 <!--
 <ul>
     <li th:each="project : ${projects}" th:text="${project.getName()}"></li>

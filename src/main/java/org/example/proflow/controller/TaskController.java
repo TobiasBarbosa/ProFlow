@@ -16,6 +16,7 @@ import java.util.List;
 
 //TODO TaskController: Rette endpoints og html sider
 //TODO TaskController: Rette exceptions til taskException
+
 @Controller
 @RequestMapping("dashboard/{profileId}/{projectId}")
 public class TaskController {
