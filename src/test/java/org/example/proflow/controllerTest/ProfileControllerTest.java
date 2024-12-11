@@ -4,18 +4,21 @@ import org.example.proflow.controller.ProfileController;
 import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.service.ProfileService;
+import org.example.proflow.service.ProjectService;
+import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -23,33 +26,48 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ProfileController.class)
+@RunWith(SpringRunner.class)
 
 public class ProfileControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
 
-    @InjectMocks
+    @MockitoBean
     private ProfileService profileService;
 
+    @MockitoBean
+    private ProjectService projectService;
+
     private Profile profile;
-
     @BeforeEach
-    public void setUp() {
-        profile = new Profile(1, "Test FirstName", "Test LastName", "test@mail.dk", "testpassword");
+    public void setUp() throws SQLException, ProfileException {
+        profile = new Profile();
+        profile.setFirstName("Test firstname");
+        profile.setLastName("Test lastname");
+        profile.setEmail("test@email.com");
+        profile.setPassword("testpassword");
     }
 
+    @AfterEach
+    public void tearDown(){
 
-    //TODO lav getProfileById i ProfileController
+    }
+
     @Test
-    public void getProfileByIdTest() throws Exception { //skal vi have den her, vi har jo ikke rigtig getProfileById i controller?
-        when(profileService.getProfileById(1)).thenReturn(profile);
-
-        mockMvc.perform(get("")) //sætte endpoint ind
+    public void showLoginTest() throws Exception{
+        mockMvc.perform(get("/homepage/login"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("")) //sætte HTML side ind
-                .andExpect(model().attributeExists("profile"))
-                .andExpect(model().attribute("profile", profile));
-
+                .andExpect(view().name("login"));
     }
+
+    @Test
+    public void testAddProfile() throws Exception {
+        mockMvc.perform(get("/homepage/addprofile"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("signup"))
+                .andExpect(model().attributeExists("profile"));
+    }
+
 
 }
