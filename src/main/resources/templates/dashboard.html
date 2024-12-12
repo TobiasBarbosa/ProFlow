@@ -1,3 +1,6 @@
+<!--TODO: indsæt aktiv/inaktiv i project cardet  -->
+<!--TODO: få edit profile til at være en knap -->
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -36,7 +39,7 @@
     <!-- Hvis listen er tom -->
     <p th:if="${#lists.isEmpty(projectsFromProfile)}">You have no projects yet.</p>
 
-    <!-- Iterér gennem wishlist-objekter -->
+    <!-- Iterér gennem projects -->
     <div class="project-grid">
         <div class="card" th:each="project : ${projectsFromProfile}">
             <img class="card-img" src="https://images.pexels.com/photos/3109807/pexels-photo-3109807.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Purple Image">
