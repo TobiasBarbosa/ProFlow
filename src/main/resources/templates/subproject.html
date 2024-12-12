@@ -1,12 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subproject</title>
+    <link rel="stylesheet" href="/static/main.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
 </head>
+
 <body>
+<div class="flex-container">
+    <div class="flex-item-1">
+        <img class="logo" src="/images/logo.png" alt="logo">
+    </div>
+    <div class="flex-item-2"></div>
+    <div class="flex-item-3"> <a th:object="${session.profile}" th:href="@{/profile/edit/{profileId}(profileId=${session.profile.getProfileId()})}" class="btn btn-outline-secondary mr-2">Edit Profile</a>
+        <a th:href="@{/homepage/logout}" class="btn btn-danger">Logout</a>
+    </div>
+</div>
 
-<!-- den her side skal vise listen af alle tasks, som et subproject har-->
+<div class="header">
 
+    <div class="header-right">
+
+    </div>
+</div>
+
+<div class="container">
+    <!-- Hvis listen er tom -->
+    <p th:if="${#lists.isEmpty(projectsFromProfile)}">Your subproject has no tasks yet.</p>
+
+    <!-- Tabel af tasks-->
+    <h1>Overview of all tasks</h1>
+    <table class="table" border="1">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Assigned To</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="task : ${tasks}">
+            <td>
+                <a th:href="@{/task/{taskId}(taskId=${task.id})}" th:text="${task.name}">Name</a>
+            </td>
+            <td th:text="${task.description}">Description</td>
+            <td th:text="${task.status.displayStatus}">Status</td>
+            <td th:text="${task.assignedTo}">Assigned To</td>
+            <td><a th:href="@{/task/edit/{taskId}(taskId=${task.id})}" class="btn-danger">Edit</a></td>
+            <td>
+            <form th:action="@{/task/delete/{taskId}(taskId=${task.id})}" method="post" class="delete-form">
+                <button type="submit" class="btn-danger">Delete task</button>
+            </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <div class="project-grid">
+        <div class="card" th:each="project : ${projectsFromProfile}">
+            <img class="card-img" src="https://images.pexels.com/photos/3109807/pexels-photo-3109807.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Purple Image">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${project.name}">Project title</h5>
+                <a th:href="@{/homepage/project/{id}(id=${project.projectId})}" class="btn-primary">See project</a>
+
+                <!-- Form til sletning -->
+                <form th:action="@{/homepage/project/remove/{id}(id=${project.projectId})}" method="post" class="delete-form">
+                    <button type="submit" class="btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tilføj ny task
+    <div class="add-task">
+        <h2 class="inbox">Create new task</h2>
+        <form th:action="@{/{subProjectId}/add-task}" method="post">
+            <input type="text" name="taskName" placeholder="Enter task name" required>
+            <button type="submit" class="btn-success">Create task</button>
+        </form>
+    </div>
+    -->
+</div>
+
+<footer>
+    <p>ProFlow - Project Management Tool by Alpha Solutions</p>
+    <p></p>
+    <p><a href="mailto:proflowteam@alpha-solutions.com">proflowteam@alpha-solutions.com</a></p>
+</footer>
 </body>
 </html>
