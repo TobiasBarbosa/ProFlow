@@ -8,6 +8,8 @@ import org.example.proflow.model.Status;
 import org.example.proflow.model.SubProject;
 import org.example.proflow.repository.ProfileRepository;
 import org.example.proflow.repository.ProjectRepository;
+import org.example.proflow.util.interfaces.ProfileRepositoryInterface;
+import org.example.proflow.util.interfaces.ProjectRepositoryInterface;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,9 +36,9 @@ public class ProjectRepositoryTest {
     //***ACCESS ATTRIBUTE(S)***-----------------------------------------------------------------------------------------
     // Dependencies injected af SpringBoot
     @Autowired
-    private ProjectRepository projectRepository;
+    private ProjectRepositoryInterface projectRepository;
     @Autowired
-    private ProfileRepository profileRepository;
+    private ProfileRepositoryInterface profileRepository;
 
     //***OBJECT(S) ATTRIBUTES***----------------------------------------------------------------------------------------
     private Profile profile;

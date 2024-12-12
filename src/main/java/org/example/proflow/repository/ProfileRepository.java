@@ -5,6 +5,7 @@ import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
 import org.example.proflow.model.Status;
+import org.example.proflow.util.interfaces.ProfileRepositoryInterface;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -13,7 +14,7 @@ import java.util.List;
 
 //TODO: add exceptions
 @Repository
-public class ProfileRepository {
+public class ProfileRepository implements ProfileRepositoryInterface {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final DataBaseConnection dataBaseConnection;

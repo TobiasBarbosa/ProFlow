@@ -4,6 +4,7 @@ import org.example.proflow.model.Status;
 import org.example.proflow.model.SubProject;
 import org.example.proflow.repository.SubProjectRepository;
 import org.example.proflow.service.SubProjectService;
+import org.example.proflow.util.interfaces.SubProjectRepositoryInterface;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
@@ -25,7 +26,7 @@ public class SubProjectServiceTest {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     @Mock
-    private SubProjectRepository subProjectRepository;
+    private SubProjectRepositoryInterface subProjectRepository;
 
     @InjectMocks
     protected SubProjectService subProjectService;

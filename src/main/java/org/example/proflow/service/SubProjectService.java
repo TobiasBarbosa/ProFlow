@@ -3,6 +3,7 @@ package org.example.proflow.service;
 import org.example.proflow.model.SubProject;
 import org.example.proflow.model.Task;
 import org.example.proflow.repository.SubProjectRepository;
+import org.example.proflow.util.interfaces.SubProjectRepositoryInterface;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -12,10 +13,10 @@ import java.util.List;
 public class SubProjectService {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    private final SubProjectRepository subProjectRepository;
+    private final SubProjectRepositoryInterface subProjectRepository;
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
-    public SubProjectService(SubProjectRepository subProjectRepository) {
+    public SubProjectService(SubProjectRepositoryInterface subProjectRepository) {
         this.subProjectRepository = subProjectRepository;
     }
 

@@ -4,6 +4,7 @@ import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
 import org.example.proflow.repository.ProfileRepository;
+import org.example.proflow.util.interfaces.ProfileRepositoryInterface;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -12,11 +13,12 @@ import java.util.List;
 @Service
 public class ProfileService {
 
+
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    private final ProfileRepository profileRepository;
+    private final ProfileRepositoryInterface profileRepository;
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
-    public ProfileService(ProfileRepository profileRepository) {
+    public ProfileService(ProfileRepositoryInterface profileRepository) {
         this.profileRepository = profileRepository;
     }
 

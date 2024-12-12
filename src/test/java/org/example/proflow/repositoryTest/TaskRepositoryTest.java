@@ -6,6 +6,10 @@ import org.example.proflow.repository.ProfileRepository;
 import org.example.proflow.repository.ProjectRepository;
 import org.example.proflow.repository.SubProjectRepository;
 import org.example.proflow.repository.TaskRepository;
+import org.example.proflow.util.interfaces.ProfileRepositoryInterface;
+import org.example.proflow.util.interfaces.ProjectRepositoryInterface;
+import org.example.proflow.util.interfaces.SubProjectRepositoryInterface;
+import org.example.proflow.util.interfaces.TaskRepositoryInterface;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,13 +32,13 @@ public class TaskRepositoryTest {
 
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
     @Autowired //  bruges @Autowired-annotationen til automatisk at injicere afhængigheder i din applikation. Dette er en nøglefunktion inden for Spring Framework, som hjælper med at håndtere afhængighedsinjektion (DI) på en nem og effektiv måde.
-    private TaskRepository taskRepository;
+    private TaskRepositoryInterface taskRepository;
     @Autowired
-    private SubProjectRepository subProjectRepository;
+    private SubProjectRepositoryInterface subProjectRepository;
     @Autowired
-    private ProjectRepository projectRepository;
+    private ProjectRepositoryInterface projectRepository;
     @Autowired
-    private ProfileRepository profileRepository;
+    private ProfileRepositoryInterface profileRepository;
 
     //***OBJECT(S) ATTRIBUTES***----------------------------------------------------------------------------------------
     private Profile profile;
