@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="/static/main.css">
+    <link rel="stylesheet" th:href="@{/main.css}">
     <link rel="icon" type="image/x-icon" href="/images/favicon.png">
 </head>
 
@@ -17,7 +17,7 @@
         <img class="logo" src="/images/logo.png" alt="logo">
     </div>
     <div class="flex-item-2"></div>
-    <div class="flex-item-3"> <a th:object="${session.profile}" th:href="@{/profile/edit/{profileId}(profileId=${session.profile.getProfileId()})}" class="btn btn-outline-secondary mr-2">Edit Profile</a>
+    <div class="flex-item-3"> <a th:object="${session.profile}" th:href="@{/homepage/edit/{profileId}(profileId=${session.profile.getId()})}" class="btn btn-outline-secondary mr-2">Edit Profile</a>
         <a th:href="@{/homepage/logout}" class="btn btn-danger">Logout</a>
         </div>
 </div>
@@ -45,10 +45,13 @@
             <img class="card-img" src="https://images.pexels.com/photos/3109807/pexels-photo-3109807.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Purple Image">
             <div class="card-body">
                 <h5 class="card-title" th:text="${project.name}">Project title</h5>
+                <!-- throw error because of wrong end point
                 <a th:href="@{/homepage/project/{id}(id=${project.projectId})}" class="btn-primary">See project</a>
 
-                <!-- Form til sletning -->
+                  -->
+                <!-- Form til sletning
                 <form th:action="@{/homepage/project/remove/{id}(id=${project.projectId})}" method="post" class="delete-form">
+                 -->
                     <button type="submit" class="btn-danger">Delete</button>
                 </form>
             </div>
@@ -58,7 +61,7 @@
     <!-- Tilføj et nyt projekt -->
     <div class="add-project">
         <h2 class="inbox">Create new project</h2>
-        <form th:action="@{/homepage/project/add}" method="post">
+        <form th:action="@{/homepage/add-project}" method="post">
             <input type="text" name="projectName" placeholder="Enter project name" required>
             <button type="submit" class="btn-success">Create project</button>
         </form>
