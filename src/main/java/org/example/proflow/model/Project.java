@@ -147,7 +147,7 @@ public class Project {
 
     public List<SubProject> getSubProjects() {
         return subProjects;
-    } //TODO slet? bruges ikke (vi kan få liste i repo)
+    }
 
     //***SETTER METHODS***----------------------------------------------------------------------------------------------
     public void setId(int id) {
@@ -238,6 +238,14 @@ public class Project {
             totalEstHours += sp.getTotalEstHours();
         }
         return totalEstHours;
+    }
+
+    public void addSubProjects(SubProject subProject){
+        subProjects.add(subProject);
+    }
+
+    public void removeSubProjects(SubProject subProject){
+        subProjects.remove(subProject);
     }
 
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------

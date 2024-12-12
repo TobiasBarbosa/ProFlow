@@ -105,6 +105,14 @@ public class SubProject extends Project {
         return totalEstHours;
     }
 
+    public void add(Task task) {
+        tasks.add(task);
+    }
+
+    public void remove(Task task) {
+        tasks.remove(task);
+    }
+
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
     @Override
     public String toString() {

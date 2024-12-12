@@ -18,6 +18,7 @@ public class Profile {
     private String email;
     private String password;
 
+
     private List<Project> projects = new ArrayList<>();
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
@@ -65,6 +66,11 @@ public class Profile {
         return password;
     }
 
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
     //***SETTER METHODS***----------------------------------------------------------------------------------------------
     public void setId(int id) {
         this.id = id;
@@ -91,6 +97,14 @@ public class Profile {
 
     public void setProjects(List<Project> projects) {
         this.projects = projects;
+    }
+
+    public void addProject(Project project) {
+        this.projects.add(project);
+    }
+
+    public void removeProject(Project project) {
+        this.projects.remove(project);
     }
 
     //***TO STRING METHOD***--------------------------------------------------------------------------------------------
