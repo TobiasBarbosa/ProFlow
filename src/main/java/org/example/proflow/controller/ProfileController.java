@@ -32,6 +32,13 @@ public class ProfileController {
         this.projectService = projectService;
     }
 
+    //***GetMapping***-----------------------------------------------------------------------------------------------
+    @GetMapping("")
+    public String homepage(){
+        return "homepage";
+    }
+
+
     //***LOGIN METHODS***-----------------------------------------------------------------------------------------------
     @GetMapping("/login")
     public String showLogin() {
@@ -47,26 +54,26 @@ public class ProfileController {
             Profile profileToCheck = profileService.getProfileByEmailAndPassword(profileEmail, profilePassword);
             session.setAttribute("profile", profileToCheck);
             session.setMaxInactiveInterval(300);
-            return "redirect:/homepage/userProfile";
+            return "redirect:/homepage/dashboard";
         }
         //wrong credentials
         model.addAttribute("wrongCredentials", true);
         return "login"; //TODO: HTML skal returnere noget ala "Forkerte brugeroplysninger, prøv igen"
     }
 
-    @GetMapping("/profile")
-    public String showProfileDashboard(HttpSession session, Model model) throws ProfileException {
-        Profile profile = (Profile) session.getAttribute("profile");
-
-        if (profile == null) {
-            return "redirect:/login";
-        }
-
-        model.addAttribute("profile", profile);
-        List<Project> projects = profileService.getProjectsFromProfile(profile.getId());
-        model.addAttribute("projects", projects);
-        return "profile";
-    }
+//    @GetMapping("/dashboard")
+//    public String showProfileDashboard(HttpSession session, Model model) throws ProfileException {
+//        Profile profile = (Profile) session.getAttribute("profile");
+//
+//        if (profile == null) {
+//            return "redirect:/login";
+//        }
+//
+//        model.addAttribute("profile", profile);
+//        List<Project> projects = profileService.getProjectsFromProfile(profile.getId());
+//        model.addAttribute("projects", projects);
+//        return "dashboard";
+//    }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
@@ -89,14 +96,19 @@ public class ProfileController {
     }
 
     //***READ PROFILE***-----------------------------------------------------------------------------------------------R
-    //***PROFILE(PM)***
+//    ***PROFILE(PM)***
     @GetMapping("/dashboard") //dashboard til projektleder (viser alle projekter for en projektleder)
-    public String dashboard(Model model, @RequestParam int profileId) throws ProfileException {
+    public String dashboard(HttpSession session, Model model) throws ProfileException, SQLException {
+        Profile profile = (Profile) session.getAttribute("profile");
+        int profileId = profile.getId();
         if (!Validator.isValid(session, profileId)) {
             return "redirect:/homepage";
         }
+//        Profile profile = profileService.getProfileById(profileId);
+
         List<Project> projectsFromProfile = profileService.getProjectsFromProfile(profileId);
         model.addAttribute("projectsFromProfile", projectsFromProfile);
+        model.addAttribute("profile", profile);
         return "dashboard";
     }
 
@@ -140,7 +152,7 @@ public class ProfileController {
         }
         model.addAttribute("profile", profile);
         profileService.updateProfile(profile);
-        return "redirect:/profile";
+        return "redirect:/homepage/dashboard";
     }
 
     //***DELETE PROFILE***---------------------------------------------------------------------------------------------D
@@ -151,7 +163,7 @@ public class ProfileController {
         }
         Profile profile = profileService.getProfileById(profileId);
         profileService.deleteProfile(profile.getId());
-        return "redirect:/profile";
+        return "redirect:/homepage";
     }
 
     //***EXCEPTION HANDLING***------------------------------------------------------------------------------------------
