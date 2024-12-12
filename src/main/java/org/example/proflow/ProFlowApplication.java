@@ -12,6 +12,8 @@ public class ProFlowApplication {
 
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(ProFlowApplication.class, args);
+
+
     }
 
 }

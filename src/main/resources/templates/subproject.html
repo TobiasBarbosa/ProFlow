@@ -1,12 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subproject</title>
+    <link rel="stylesheet" href="/static/main.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
 </head>
+
 <body>
+<div class="flex-container">
+    <div class="flex-item-1">
+        <img class="logo" src="/images/logo.png" alt="logo">
+    </div>
+    <div class="flex-item-2"></div>
+    <div class="flex-item-3"> <a th:object="${session.profile}" th:href="@{/profile/edit/{profileId}(profileId=${session.profile.getProfileId()})}" class="btn btn-outline-secondary mr-2">Edit Profile</a>
+        <a th:href="@{/homepage/logout}" class="btn btn-danger">Logout</a>
+    </div>
+</div>
 
-<!-- den her side skal vise listen af alle tasks, som et subproject har-->
+<div class="header">
 
+    <div class="header-right">
+
+    </div>
+</div>
+
+<header>
+
+</header>
+
+<div class="container">
+    <h1>Welcome to your Subprojects, <span th:text="${profile.firstName}"></span>!</h1>
+
+    <!-- Hvis listen er tom -->
+    <p th:if="${#lists.isEmpty(subProjectsFromProfile)}">You have no subprojects yet.</p>
+
+    <!-- Iterér gennem wishlist-objekter -->
+    <div class="project-grid">
+        <div class="card" th:each="subProject : ${subProjectsFromProject}">
+            <img class="card-img" src="https://images.pexels.com/photos/3109807/pexels-photo-3109807.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Purple Image">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${subProject.name}">Project title</h5>
+                <a th:href="@{/homepage/subproject/{id}(id=${subProject.id})}" class="btn-primary">See Subproject</a>
+
+                <!-- Form til sletning -->
+                <form th:action="@{/homepage/subproject/remove/{id}(id=${subProject.subProjectId})}" method="post" class="delete-form">
+                    <button type="submit" class="btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tilføj et nyt subprojekt -->
+    <div class="add-project">
+        <h2 class="inbox">Create new subproject</h2>
+        <form th:action="@{/homepage/subproject/add}" method="post">
+            <input type="text" name="subProjectName" placeholder="Enter Subproject name" required>
+            <button type="submit" class="btn-success">Create Subproject</button>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <p>ProFlow - Project Management Tool by Alpha Solutions</p>
+    <p></p>
+    <p><a href="mailto:proflowteam@alpha-solutions.com">proflowteam@alpha-solutions.com</a></p>
+</footer>
 </body>
 </html>

@@ -64,17 +64,16 @@ public class ProjectController {
         if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())) { //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
             return "redirect:/homepage";
         }
-
-        model.addAttribute("projectId", projectId);
-        model.addAttribute("name", project.getName());
+        model.addAttribute("Project", project);
         return "dashboard";
     }
 
-    @GetMapping("/project/subprojects") //shows all subprojects from a project
+    @GetMapping("") //shows all subprojects from a project //TODO skal være tom?
     public String getSubProjectsFromProject(Model model, @RequestParam int projectId, HttpSession session) throws SQLException {
         if (!Validator.isValid(session, projectId)) {
             return "redirect:/homepage";
         }
+
         List<SubProject> subProjectsFromProject = projectService.getSubProjectsFromProject(projectId);
         model.addAttribute("projectsFromProfile", subProjectsFromProject);
         return "project";

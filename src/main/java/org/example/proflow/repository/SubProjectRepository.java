@@ -137,6 +137,41 @@ public class SubProjectRepository {
         return subProject;
     }
 
+    //GET SUB PROJECT BY ID
+    public List<SubProject> getSubProjectsFromProjectId(int projectId) throws SQLException {
+        String query = "SELECT * FROM SubProject WHERE project_id = ?";
+        SubProject subProject = null;
+        List<SubProject> subProjects = new ArrayList<>();
+
+        try (Connection con = dataBaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setInt(1, projectId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    subProject = new SubProject();
+                    subProject.setId(rs.getInt("id"));
+                    subProject.setName(rs.getString("name"));
+                    subProject.setDescription(rs.getString("description"));
+                    subProject.setCreatedDate(rs.getDate("created_date").toLocalDate());
+                    subProject.setStartDate(rs.getDate("start_date").toLocalDate());
+                    subProject.setEndDate(rs.getDate("end_date").toLocalDate());
+                    subProject.setStatus(Status.valueOf(rs.getString("status")));
+                    subProject.setBudget(rs.getDouble("budget"));
+                    subProject.setProjectId(rs.getInt("project_id"));
+                    subProject.setAssignedTo(rs.getString("assigned_to"));
+                    subProject.setTotalEstHours(rs.getDouble("total_est_hours"));
+                    subProject.setActualPrice(rs.getDouble("actual_price"));
+                    subProjects.add(subProject);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return subProjects;
+    }
+
     public List<Task> getTasksFromSubProject(int subProjectId) throws SQLException {
         String query = "SELECT * FROM Task WHERE sub_project_id = ?";
         List<Task> tasksFromSubProject = new ArrayList<>();

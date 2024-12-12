@@ -14,8 +14,8 @@
         <img class="logo" src="/images/logo.png" alt="logo">
     </div>
     <div class="flex-item-2"></div>
-    <div class="flex-item-3"> <a th:object="${session.profile}" th:href="@{/profile/edit/{profileId}(profileId=${session.profile.getProfileId()})}" class="btn btn-outline-secondary mr-2">Edit Profile</a>
-        <a th:href="@{/homepage/logout}" class="btn btn-danger">Logout</a>
+    <!--<div class="flex-item-3"> <a th:object="${session.profile}" th:href="@{/profile/edit/{profileId}(profileId=${session.profile.getProfileId()})}" class="btn btn-outline-secondary mr-2">Edit Profile</a>
+        <a th:href="@{/homepage/logout}" class="btn btn-danger">Logout</a> -->
         </div>
 </div>
 
@@ -34,6 +34,8 @@
     <h1>Welcome to your profile, <span th:text="${profile.firstName}"></span>!</h1>
 
     <!-- Hvis listen er tom -->
+    <!-- todo: change attribute after merging Vahab´s PR add profile.getprojects()  -->
+
     <p th:if="${#lists.isEmpty(projectsFromProfile)}">You have no projects yet.</p>
 
     <!-- Iterér gennem wishlist-objekter -->
@@ -42,7 +44,7 @@
             <img class="card-img" src="https://images.pexels.com/photos/3109807/pexels-photo-3109807.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Purple Image">
             <div class="card-body">
                 <h5 class="card-title" th:text="${project.name}">Project title</h5>
-                <a th:href="@{/homepage/project/{id}(id=${project.projectId})}" class="btn-primary">See project</a>
+                <a th:href="@{/dashboard/project/{id}(id=${project.projectId})}" class="btn-primary">See project</a>
 
                 <!-- Form til sletning -->
                 <form th:action="@{/homepage/project/remove/{id}(id=${project.projectId})}" method="post" class="delete-form">

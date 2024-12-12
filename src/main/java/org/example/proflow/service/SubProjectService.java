@@ -34,6 +34,10 @@ public class SubProjectService {
         return subProjectRepository.getSubProjectById(id);
     }
 
+    public List<SubProject> getSubProjectsFromProjectId(int projectId) throws SQLException{
+        return subProjectRepository.getSubProjectsFromProjectId(projectId);
+    }
+
     public List<Task> getTasksFromSubProject(int subProjectId) throws SQLException {
         return subProjectRepository.getTasksFromSubProject(subProjectId);
     }

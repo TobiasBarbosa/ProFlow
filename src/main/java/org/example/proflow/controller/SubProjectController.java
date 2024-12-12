@@ -60,7 +60,7 @@ public class SubProjectController {
 
 
     //***READ SUBPROJECT METHODS***-------------------------------------------------------------------------------------
-    @GetMapping("/subprojects")  //TODO skal vi bruge en getallSubProjects
+    @GetMapping("/subprojects")  //TODO skal vi bruge en getallSubProjects - ja til admin?
     public String getAllSubProjects(Model model, HttpSession session, int projectId) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
         if (!Validator.isValid(session, profile.getId())) {
@@ -72,7 +72,7 @@ public class SubProjectController {
         if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())){ //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
             return "redirect:/dashboard";
         }
-        List<SubProject> subProjects = subProjectService.getAllSubProjects();
+        List<SubProject> subProjects = subProjectService.getSubProjectsFromProjectId(projectId);
         model.addAttribute("SubProjects", subProjects);
         return "project";
     }
