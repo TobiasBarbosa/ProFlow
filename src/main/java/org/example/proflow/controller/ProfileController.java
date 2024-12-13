@@ -7,6 +7,7 @@ import org.example.proflow.model.Project;
 import org.example.proflow.service.ProfileService;
 import org.example.proflow.service.ProjectService;
 import org.example.proflow.util.Validator;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +25,14 @@ public class ProfileController {
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final ProfileService profileService;
     private final ProjectService projectService;
+    private final Project project;
 //    private HttpSession session; // why not assigned?
 
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
-    public ProfileController(ProfileService profileService, ProjectService projectService) {
+    public ProfileController(ProfileService profileService, ProjectService projectService, @Qualifier("project") Project project) {
         this.profileService = profileService;
         this.projectService = projectService;
+        this.project = project;
     }
 
     //***GetMapping***-----------------------------------------------------------------------------------------------
@@ -120,7 +123,7 @@ public class ProfileController {
         }
 //        Profile profile = profileService.getProfileById(profileId);
 
-        List<Project> projectsFromProfile = profileService.getProjectsFromProfile(profileId);
+        List<Project> projectsFromProfile = profile.getProjects();
         model.addAttribute("projectsFromProfile", projectsFromProfile);
         model.addAttribute("profile", profile);
         return "dashboard";

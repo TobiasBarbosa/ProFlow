@@ -10,7 +10,7 @@
 
 <h1>Create new project</h1>
 <div class="add">
-    <form th:action="@{dashboard/{profileId}/saveproject}" th:object="${project}" method="post">
+    <form th:action="@{dashboard/save-project/{profileId}(profileId=${session.profile.getId()})}" th:object="${project}" method="post">
         <label class="addLabel" for="name">Name</label>
         <input class="placeholder" type="text" id="name" th:field="*{project.getName()}"> <!-- ved ikke om project.getName() er rigtigt-->
 

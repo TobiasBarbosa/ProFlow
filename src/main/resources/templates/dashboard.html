@@ -46,7 +46,7 @@
             <div class="card-body">
                 <h5 class="card-title" th:text="${project.name}">Project title</h5>
                 <!-- throw error because of wrong end point
-                <a th:href="@{/æproject/{id}(id=${project.projectId})}" class="btn-primary">See project</a>
+                <a th:href="@{/project/{id}(id=${project.projectId})}" class="btn-primary">See project</a>
 
                   -->
                 <!-- Form til sletning
@@ -61,7 +61,7 @@
     <!-- Tilføj et nyt projekt -->
     <div class="add-project">
         <h2 class="inbox">Create new project</h2>
-        <form th:action="@{/add-project}" method="post">
+        <form th:action="@{/dashboard/add-project/{profileId}(profileId=${session.profile.getId()})}" method="get">
             <input type="text" name="projectName" placeholder="Enter project name" required>
             <button type="submit" class="btn-success">Create project</button>
         </form>

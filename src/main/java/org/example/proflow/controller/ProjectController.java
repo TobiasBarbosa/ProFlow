@@ -42,7 +42,7 @@ public class ProjectController {
         return "add_project";
     }
 
-    @PostMapping("/save-project")
+    @PostMapping("/save-project/{profileId}")
     public String saveProject(@PathVariable("profileId") int profileId,
                               @ModelAttribute("projectId") Project project,
                               Model model, HttpSession session) throws ProjectException, SQLException {
@@ -50,6 +50,7 @@ public class ProjectController {
         projectService.addProject(project);
         return "redirect:/dashboard";
     }
+
 
     //***READ PROJECT METHODS***-------------------------------------------------------------------------------------
     @GetMapping("/{projectId}/{name}")
