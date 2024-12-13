@@ -4,7 +4,7 @@
 ## Table of contents
 - [About ProFlow](#About-ProFlow)
 - [Built with](#Built-with)
-- [Using the application](#Using.the-application)
+- [Using the application](#Using-the-application)
 - [Contributers](#Contributers)
 
 ### About ProFlow
