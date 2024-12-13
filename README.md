@@ -24,14 +24,17 @@ The application is built with
 - mySQL
 - H2
 - Azure
-- github -actions
-- Quadana
-- ??
+- git
+- github actions
+- Qodana
 
   Tilføje versionsnumre på teknologierne 
 
 ### Using the application
 Jeres README.md skal som minimum indeholde en kort beskrivelse af de softwaremæssige forudsætninger for at kunne anvende applikationen
+(Beskrivelse af hvad der skal til for atdet kan køre det lokalt)
+
+
 
 ### Contributers
 @TobiasBarbosa
