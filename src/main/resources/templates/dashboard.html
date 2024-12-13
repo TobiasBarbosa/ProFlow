@@ -84,9 +84,20 @@
 
                  Form til sletning
                 <form th:action="@{/project/remove/{id}(id=${project.projectId})}" method="post" class="delete-form">
-                    -->
-                    <button type="submit" class="btn-danger">Delete</button>
+
+                    <button type="submit" class="btn-danger">Delete</button>-->
+                <!-- Edit project form-->
+                <form th:action="@{/project/edit/{projectId}}" name="projectId"
+                      th:value="${project.getId()}" method="get" style="display:inline;">
+
+                    <button type="submit" class="btn-danger">Edit</button>
                 </form>
+                <!-- Slet project form
+                <form th:action="@{/homepage/wish/remove/{id}(id=${wish.getWishId()})}" method="post" style="display:inline;">
+                    <input type="hidden" name="wishId" th:value="${wish.getWishId()}" />
+                    <button type="submit" class="btn-danger">Delete</button>
+                </form>-->
+
             </div>
         </div>
     </div>

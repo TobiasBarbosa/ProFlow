@@ -38,7 +38,6 @@ public class ProfileController {
         return "homepage";
     }
 
-
     //***LOGIN METHODS***-----------------------------------------------------------------------------------------------
     @GetMapping("/login")
     public String showLogin() {
@@ -58,7 +57,7 @@ public class ProfileController {
         }
         //wrong credentials
         model.addAttribute("wrongCredentials", true);
-        return "login"; //TODO: HTML skal returnere noget ala "Forkerte brugeroplysninger, prøv igen"
+        return "redirect:/"; //TODO: HTML skal returnere noget ala "Forkerte brugeroplysninger, prøv igen"
     }
 
 //    @GetMapping("/dashboard")
@@ -120,7 +119,8 @@ public class ProfileController {
         }
 //        Profile profile = profileService.getProfileById(profileId);
 
-        List<Project> projectsFromProfile = profileService.getProjectsFromProfile(profileId);
+//        List<Project> projectsFromProfile = profileService.getProjectsFromProfile(profileId);
+        List<Project> projectsFromProfile =profile.getProjects();
         model.addAttribute("projectsFromProfile", projectsFromProfile);
         model.addAttribute("profile", profile);
         return "dashboard";
