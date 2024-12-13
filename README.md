@@ -8,7 +8,8 @@
 - [Contributers](#Contributers)
 
 ### About ProFlow
-ProFlow is a project calculation tool made for Alpha Solutions. It made to give the project managers an overview over projects, their subprojects and tasks and be able to calcute the price of a project. 
+ProFlow is a project calculation tool made for Alpha Solutions. The program is made for project managers to give them a better overview over the projects they are managing and break down the projects into smaller parts. They can add subprojects to the projects and tasks to the subprojects.
+The program can also calcute the price of a project. 
 
 ### Built with
 The application is built with 
