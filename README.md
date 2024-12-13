@@ -25,7 +25,10 @@ The application is built with
 Jeres README.md skal som minimum indeholde en kort beskrivelse af de softwaremæssige forudsætninger for at kunne anvende applikationen
 
 ### Contributers
-@TobiasBarbosa 
+@TobiasBarbosa
+
 @Vahablotfi 
+
 @MonirMooghen 
+
 @JosefineChristine 
