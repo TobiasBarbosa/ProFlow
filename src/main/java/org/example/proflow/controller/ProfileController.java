@@ -19,12 +19,12 @@ import java.util.List;
 //TODO ProfileController: Rette exceptions til ProfileException
 
 @Controller
-@RequestMapping("homepage")
+@RequestMapping("")
 public class ProfileController {
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final ProfileService profileService;
     private final ProjectService projectService;
-    private HttpSession session; // why not assigned?
+//    private HttpSession session; // why not assigned?
 
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
     public ProfileController(ProfileService profileService, ProjectService projectService) {
@@ -54,7 +54,7 @@ public class ProfileController {
             Profile profileToCheck = profileService.getProfileByEmailAndPassword(profileEmail, profilePassword);
             session.setAttribute("profile", profileToCheck);
             session.setMaxInactiveInterval(300);
-            return "redirect:/homepage/dashboard";
+            return "redirect:/dashboard";
         }
         //wrong credentials
         model.addAttribute("wrongCredentials", true);
@@ -78,7 +78,7 @@ public class ProfileController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/homepage";
+        return "redirect:/";
     }
 
     //***CREATE PROFILE***---------------------------------------------------------------------------------------------C
@@ -102,7 +102,7 @@ public class ProfileController {
         Profile profile = (Profile) session.getAttribute("profile");
         int profileId = profile.getId();
         if (!Validator.isValid(session, profileId)) {
-            return "redirect:/homepage";
+            return "redirect:/";
         }
 //        Profile profile = profileService.getProfileById(profileId);
 
@@ -133,7 +133,7 @@ public class ProfileController {
     public String editProfile(@PathVariable("profileId") int profileId, Model model, HttpSession session)
             throws ProfileException, SQLException {
         if (!Validator.isValid(session, profileId)) {
-            return "redirect:/homepage";
+            return "redirect:/";
         }
         Profile profile = profileService.getProfileById(profileId);
         model.addAttribute("profile", profile);
@@ -145,25 +145,34 @@ public class ProfileController {
     }
 
     @PostMapping("/update/{profileId}")
-    public String updateProfile(@PathVariable("profileId") int profileId, @ModelAttribute Profile profile, Model model)
-            throws ProfileException {
+    public String updateProfile(@PathVariable("profileId") int profileId, @ModelAttribute Profile profile, Model model, HttpSession session)
+            throws ProfileException, SQLException {
         if (!Validator.isValid(session, profileId)) {
-            return "redirect:/homepage";
+            return "redirect:/";
         }
-        model.addAttribute("profile", profile);
+//        model.addAttribute("profile", profile);
+
+        Profile loggedInProfile = profileService.getProfileById(profileId);
+
+        // Behold det gamle password, hvis feltet er tomt
+        if (profile.getPassword() == null || profile.getPassword().isEmpty()) {
+            profile.setPassword(loggedInProfile.getPassword());
+        }
+
+        profile.setId(profileId);
         profileService.updateProfile(profile);
-        return "redirect:/homepage/dashboard";
+        return "redirect:/dashboard";
     }
 
     //***DELETE PROFILE***---------------------------------------------------------------------------------------------D
     @PostMapping("/remove/{profileId}")
-    public String deleteProfile(@PathVariable int profileId) throws ProfileException, SQLException {
+    public String deleteProfile(@PathVariable int profileId, HttpSession session) throws ProfileException, SQLException {
         if (!Validator.isValid(session, profileId)) {
-            return "redirect:/homepage";
+            return "redirect:/";
         }
         Profile profile = profileService.getProfileById(profileId);
         profileService.deleteProfile(profile.getId());
-        return "redirect:/homepage";
+        return "redirect:/";
     }
 
     //***EXCEPTION HANDLING***------------------------------------------------------------------------------------------
