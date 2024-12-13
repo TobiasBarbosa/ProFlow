@@ -2,11 +2,13 @@
 Thank you for contributing to the project! Please read this guide before contributing! :-)
 
 ### Content
-How to Contribute
-- [Ask a question(Ask-a-question)
-- [Creating new issues](Creating-a-new-issue)
-- [Issue Lifecycle](Issue-Lifecycle)
-- [Submit a Pull Request](Submit-a-Pull-Request)
+- How to Contribute
+  - [Ask a question]
+  - [Creating new issues]
+  - [Issue Lifecycle]
+  - [Submit a Pull Request]
+
+## How To Contribute
 
 ### Ask a question
 If you have questions you can ask 
