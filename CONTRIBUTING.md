@@ -1,7 +1,7 @@
 # Contributing to ProFlow
 Thank you for contributing to the project! Please read this guide before contributing! :-)
 
-### Content
+### Table of content
 - [How to Contribute](#How-To-Contribute)
   - [Ask a question](#Ask-a-question)
   - [Creating new issues](#Creating-a-new-issue)
