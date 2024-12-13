@@ -12,10 +12,11 @@ ProFlow is a project calculation tool made for Alpha Solutions. It made to give 
 
 ### Built with
 The application is built with 
+- intelliJ
 - Java
 - Maven
 - Spring Boot
-- JDBC
+- jdbc
 - Thymeleaf
 - HTML
 - CSS
@@ -25,6 +26,8 @@ The application is built with
 - github -actions
 - Quadana
 - ??
+
+  Tilføje versionsnumre på teknologierne 
 
 ### Using the application
 Jeres README.md skal som minimum indeholde en kort beskrivelse af de softwaremæssige forudsætninger for at kunne anvende applikationen
