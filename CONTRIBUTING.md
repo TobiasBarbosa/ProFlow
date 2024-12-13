@@ -3,7 +3,7 @@ Thank you for contributing to the project! Please read this guide before contrib
 
 ### Content
 - How to Contribute
-  - [Ask a question]
+  - [Ask a question](#Ask-a-question)
   - [Creating new issues]
   - [Issue Lifecycle]
   - [Submit a Pull Request]
