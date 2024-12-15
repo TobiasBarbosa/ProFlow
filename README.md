@@ -28,7 +28,6 @@ The application is built with
 - github actions
 - Qodana
 
-  Tilføje versionsnumre på teknologierne 
 
 ### Using the application
 Jeres README.md skal som minimum indeholde en kort beskrivelse af de softwaremæssige forudsætninger for at kunne anvende applikationen
