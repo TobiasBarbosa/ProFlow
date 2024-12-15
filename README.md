@@ -13,8 +13,8 @@ The program can also calcute the price of a project.
 
 ### Built with
 The application is built with 
-- intelliJ
-- Java
+- intelliJ 2023.3.4
+- Java 22.0.2
 - Maven
 - Spring Boot
 - jdbc
