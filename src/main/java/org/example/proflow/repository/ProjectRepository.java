@@ -257,6 +257,7 @@ public class ProjectRepository implements ProjectRepositoryInterface {
         }
     }
 
+    //***TEST METHODS***------------------------------------------------------------------------------------------------
     //FOR TEST PURPOSES!!
     public void clearProjectsForTesting() {
         String query = "DELETE FROM Project";
@@ -268,7 +269,7 @@ public class ProjectRepository implements ProjectRepositoryInterface {
         }
     }
 
-//***END***---------------------------------------------------------------------------------------------------------
+    //***END***---------------------------------------------------------------------------------------------------------
 }
 
 

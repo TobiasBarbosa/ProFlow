@@ -34,4 +34,3 @@ jobs:
         PROD_DB_USER: ${{secrets.PROD_DB_USER}}
         PROD_DB_PASSWORD: ${{secrets.PROD_DB_PASSWORD}}
       run: mvn -B test
-

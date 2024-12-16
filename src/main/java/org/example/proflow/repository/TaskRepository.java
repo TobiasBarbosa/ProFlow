@@ -53,7 +53,7 @@ public class TaskRepository implements TaskRepositoryInterface {
             ps.setString(8, task.getStatus().name());
             ps.setInt(9, task.getSubProjectId());
             ps.setString(10, task.getAssignedTo());
-            ps.setDouble(11, task.getTaskPrice());
+            ps.setDouble(11, task.getActualPrice());
 
             ps.executeUpdate();
 
@@ -91,7 +91,7 @@ public class TaskRepository implements TaskRepositoryInterface {
                 task.setStatus(Status.valueOf(rs.getString("status")));
                 task.setSubProjectId(rs.getInt("sub_project_id"));
                 task.setAssignedTo(rs.getString("assigned_to"));
-                task.setTaskPrice(rs.getDouble("price"));
+                task.setActualPrice(rs.getDouble("price"));
 
 
                 tasks.add(task);
@@ -126,7 +126,7 @@ public class TaskRepository implements TaskRepositoryInterface {
                     task.setStatus(Status.valueOf(rs.getString("status")));
                     task.setSubProjectId(rs.getInt("sub_project_id"));
                     task.setAssignedTo(rs.getString("assigned_to"));
-                    task.setTaskPrice(rs.getDouble("price")); // Not null column
+                    task.setActualPrice(rs.getDouble("price")); // Not null column
 
 
                 }
@@ -160,7 +160,7 @@ public class TaskRepository implements TaskRepositoryInterface {
             ps.setDouble(6, task.getTotalEstHours());
             ps.setString(7, task.getStatus().name());
             ps.setString(8, task.getAssignedTo());
-            ps.setDouble(9, task.getTaskPrice());
+            ps.setDouble(9, task.getActualPrice());
 
             ps.setInt(10, task.getId()); // sets the id parameter (WHERE id = ? in sql script)
 
