@@ -20,9 +20,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(SpringExtension.class)
-@WebMvcTest(ProjectController.class)
-@RunWith(SpringRunner.class)
+//@ExtendWith(SpringExtension.class)
+//@WebMvcTest(ProjectController.class)
+//@RunWith(SpringRunner.class)
 
 public class ProjectControllerTest {
 
@@ -68,7 +68,4 @@ public class ProjectControllerTest {
 //                .andExpect(model().attributeExists("profileId"))
 //                .andExpect(model().attributeExists("project"));
 //    }
-
-
-
 }

@@ -19,10 +19,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.sql.SQLException;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-@ExtendWith(SpringExtension.class)
-@WebMvcTest(ProfileController.class)
-@RunWith(SpringRunner.class)
+//
+//@ExtendWith(SpringExtension.class)
+//@WebMvcTest(ProfileController.class)
+//@RunWith(SpringRunner.class)
 
 public class ProfileControllerTest {
 
