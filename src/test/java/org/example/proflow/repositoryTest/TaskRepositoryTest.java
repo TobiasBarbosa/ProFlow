@@ -88,7 +88,7 @@ public class TaskRepositoryTest {
         task.setTotalEstHours(10);
         task.setStatus(Status.ACTIVE);
         task.setAssignedTo("test employee");
-        task.setTaskPrice(1000);
+        task.setActualPrice(1000);
     }
 
     @AfterEach
@@ -152,7 +152,7 @@ public class TaskRepositoryTest {
         task2.setTotalEstHours(10);
         task2.setStatus(Status.ACTIVE);
         task2.setAssignedTo("Test2 task assigned to");
-        task2.setTaskPrice(500);
+        task2.setActualPrice(500);
         task2.setSubProjectId(subProject.getId());
 
         //Add created tasks
@@ -186,7 +186,7 @@ public class TaskRepositoryTest {
         task.setName("updated task name");
         task.setDescription("updated task description");
         task.setLocation("updated task location");
-        task.setTaskPrice(700.0);
+        task.setActualPrice(700.0);
 
         //ACT
         taskRepository.updateTask(task);
@@ -196,7 +196,7 @@ public class TaskRepositoryTest {
         assertEquals("updated task name", updatedTask.getName());
         assertEquals("updated task description", updatedTask.getDescription());
         assertEquals("updated task location", updatedTask.getLocation());
-        assertEquals(700, updatedTask.getTaskPrice());
+        assertEquals(700, updatedTask.getActualPrice());
 
     }
 

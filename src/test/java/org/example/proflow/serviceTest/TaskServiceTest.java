@@ -48,7 +48,7 @@ public class TaskServiceTest {
         task.setTotalEstHours(100.0);
         task.setStatus(Status.ACTIVE);
         task.setAssignedTo("test task assigned to");
-        task.setTaskPrice(100.0);
+        task.setActualPrice(100.0);
         task.setSubProjectId(1);
     }
 
