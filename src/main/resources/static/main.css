@@ -148,6 +148,21 @@ footer p {
     color: #222;
 }
 
+.card-status {
+    font-size: 1.1rem;
+    margin: 0 0 10px;
+
+    .text-success {
+        color: seagreen;
+    }
+    .text-danger {
+        color: darkred;
+    }
+}
+
+
+
+
 /* Buttons */
 .btn-primary, .btn-danger, .btn-success {
     display: inline-block;
@@ -185,6 +200,18 @@ footer p {
 
 .btn-success:hover {
     background-color: #4f76f6;
+}
+
+.btn_2 {
+    color: #6c8cf9;
+    font-style: normal;
+}
+
+.btn_2:hover {
+   color: white;
+    text-decoration: underline;
+
+
 }
 
 /* Delete form styling */

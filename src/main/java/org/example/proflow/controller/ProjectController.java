@@ -32,7 +32,7 @@ public class ProjectController {
     }
 
     //***CREATE PROJECT METHODS***-----------------------------------------------------------------------------------
-    @GetMapping("/add-project/{profileId}")
+    @GetMapping("/add-project/")
     public String addProject(@PathVariable("profileId") int profileId, Model model, HttpSession session) {
         if (!Validator.isValid(session, profileId)) {
             return "redirect:/";
