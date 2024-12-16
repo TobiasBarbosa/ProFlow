@@ -7,7 +7,6 @@ import org.example.proflow.model.Project;
 import org.example.proflow.service.ProfileService;
 import org.example.proflow.service.ProjectService;
 import org.example.proflow.util.Validator;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,14 +24,12 @@ public class ProfileController {
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final ProfileService profileService;
     private final ProjectService projectService;
-    private final Project project;
 //    private HttpSession session; // why not assigned?
 
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
-    public ProfileController(ProfileService profileService, ProjectService projectService, @Qualifier("project") Project project) {
+    public ProfileController(ProfileService profileService, ProjectService projectService) {
         this.profileService = profileService;
         this.projectService = projectService;
-        this.project = project;
     }
 
     //***GetMapping***-----------------------------------------------------------------------------------------------
@@ -40,7 +37,6 @@ public class ProfileController {
     public String homepage(){
         return "homepage";
     }
-
 
     //***LOGIN METHODS***-----------------------------------------------------------------------------------------------
     @GetMapping("/login")
@@ -61,7 +57,7 @@ public class ProfileController {
         }
         //wrong credentials
         model.addAttribute("wrongCredentials", true);
-        return "login"; //TODO: HTML skal returnere noget ala "Forkerte brugeroplysninger, prøv igen"
+        return "redirect:/"; //TODO: HTML skal returnere noget ala "Forkerte brugeroplysninger, prøv igen"
     }
 
 //    @GetMapping("/dashboard")
@@ -89,28 +85,28 @@ public class ProfileController {
     public String addProfile(Model model) {
         Profile profile = new Profile();
         model.addAttribute("profile", profile);
-        return "signup"; //TODO har vi denne eller skal den bare hedde signup?
+        return "signup";
     }
 
-//    @PostMapping("/save-profile")
-//    public String saveProfile(@ModelAttribute Profile profile, Model model) {
-//        try {
-//            profileService.addProfile(profile); // Forsøger at tilføje profilen
-//            return "redirect:/dashboard";      // Redirect til dashboard ved succes
-//        } catch (ProfileException e) {
-//            // Hvis e-mailen allerede findes, returner til signup-siden med en fejlmeddelelse
-//            model.addAttribute("errorMessage", "Email is already in use. Please try another one.");
-//            model.addAttribute("profile", profile); // Bevar indtastede data
-//            return "signup";
-//        }
-//    }
-
-
-    @PostMapping("/save-profile") //PostMapping tilføjer data til database
-    public String saveProfile(@ModelAttribute Profile profile) throws ProfileDataException {
+    @PostMapping("/save-profile")
+    public String saveProfile(@ModelAttribute Profile profile, HttpSession session) throws ProfileDataException {
+        // Tilføjer profilen til databasen
         profileService.addProfile(profile);
+
+        // Log den nyoprettede profil ind ved at bruge det eksisterende profile-objekt
+        session.setAttribute("profile", profile);
+
+        session.setMaxInactiveInterval(300);
+
         return "redirect:/dashboard";
     }
+
+
+//    @PostMapping("/save-profile") //PostMapping tilføjer data til database
+//    public String saveProfile(@ModelAttribute Profile profile) throws ProfileDataException {
+//        profileService.addProfile(profile);
+//        return "redirect:/dashboard";
+//    }
 
     //***READ PROFILE***-----------------------------------------------------------------------------------------------R
 //    ***PROFILE(PM)***
@@ -123,7 +119,8 @@ public class ProfileController {
         }
 //        Profile profile = profileService.getProfileById(profileId);
 
-        List<Project> projectsFromProfile = profile.getProjects();
+//        List<Project> projectsFromProfile = profileService.getProjectsFromProfile(profileId);
+        List<Project> projectsFromProfile =profile.getProjects();
         model.addAttribute("projectsFromProfile", projectsFromProfile);
         model.addAttribute("profile", profile);
         return "dashboard";

@@ -32,7 +32,7 @@ public class ProjectController {
     }
 
     //***CREATE PROJECT METHODS***-----------------------------------------------------------------------------------
-    @GetMapping("/add-project/{profileId}")
+    @GetMapping("/add-project/")
     public String addProject(@PathVariable("profileId") int profileId, Model model, HttpSession session) {
         if (!Validator.isValid(session, profileId)) {
             return "redirect:/";
@@ -96,7 +96,7 @@ public class ProjectController {
         }
 
         model.addAttribute("project", project);
-//        model.addAttribute("projectId", project.getId());
+        model.addAttribute("projectId", project.getId());
 //        model.addAttribute("name", project.getName());
 //        model.addAttribute("description", project.getDescription());
 //        model.addAttribute("startDate", project.getStartDate());
@@ -110,7 +110,7 @@ public class ProjectController {
         return "edit_project";
     }
 
-    @PostMapping("/project/update") //TODO lave tjek med isValid og isProjectOwned (men skal det gøres på både edit og update?)
+    @PostMapping("/update/{projectId}")
     public String updateProject(@ModelAttribute Project project) throws ProjectException, SQLException {
         projectService.updateProject(project);
         return "redirect:/dashboard";
