@@ -29,6 +29,4 @@ public interface ProfileRepositoryInterface {
     // Delete a profile by its ID
     void deleteProfile(int id);
 
-    // Delete all profiles (for testing purposes only)
-    void clearProfilesForTesting();
 }
