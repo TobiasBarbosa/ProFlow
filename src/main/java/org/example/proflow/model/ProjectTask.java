@@ -33,8 +33,8 @@ public abstract class ProjectTask {
         setEndDate(endDate);
         calculateDaysUntilDone(startDate,endDate);
         this.status = status;
-        this.totalEstHours = totalEstHours;
-        this.actualPrice = actualPrice;
+        this.totalEstHours = totalEstHours; // skal laves om til calculateTotalHours?
+        this.actualPrice = actualPrice;     // skal laves om til calculateActualPrice?
     }
 
     //Constructor with no totalEstHours, actualPrice
@@ -103,7 +103,6 @@ public abstract class ProjectTask {
     }
 
     //***SETTER METHODS***----------------------------------------------------------------------------------------------
-
     public void setId(int id) {
         this.id = id;
     }
