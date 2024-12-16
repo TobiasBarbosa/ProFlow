@@ -180,8 +180,8 @@ public class TaskRepository implements TaskRepositoryInterface {
         }
     }
 
-    //FOR TEST PURPOSES!! -- rigtigt måde at håndtere?
-    public void deleteAllTasks() {
+    //FOR TEST PURPOSES!!
+    public void clearTasksForTesting() {
         String query = "DELETE FROM Task";
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
@@ -193,4 +193,3 @@ public class TaskRepository implements TaskRepositoryInterface {
 
     //***END***---------------------------------------------------------------------------------------------------------
 }
-

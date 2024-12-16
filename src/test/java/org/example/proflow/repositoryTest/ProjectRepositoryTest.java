@@ -1,13 +1,9 @@
 package org.example.proflow.repositoryTest;
 
-import org.example.proflow.ProFlowApplication;
 import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
 import org.example.proflow.model.Status;
-import org.example.proflow.model.SubProject;
-import org.example.proflow.repository.ProfileRepository;
-import org.example.proflow.repository.ProjectRepository;
 import org.example.proflow.util.interfaces.ProfileRepositoryInterface;
 import org.example.proflow.util.interfaces.ProjectRepositoryInterface;
 import org.junit.jupiter.api.AfterEach;
@@ -15,12 +11,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -31,6 +24,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional // Når man tilføjer denne annotering på testklassen eller metoden, betyder det, at testen kører inden for en transaktion. Denne transaktion sikrer, at alle databaseoperationer i testen håndteres samlet, som om de er en del af en enkelt transaktion.
 //@Rollback(true) // Ruller tilbage efter testen / skal bruges på databasen / ikke h2
 @ActiveProfiles("h2")
+//TODO @clear-metoder i tearDown skal skiftes ud med @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:h2.sql")
+//@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:h2.sql")
 public class ProjectRepositoryTest {
 
     //***ACCESS ATTRIBUTE(S)***-----------------------------------------------------------------------------------------
@@ -48,6 +43,7 @@ public class ProjectRepositoryTest {
     @BeforeEach
     //Kører før hver test og sætter en profil og et project op
     void setUp(){
+        //arrange
         profile = new Profile();
         profile.setFirstName("test profile firstname");
         profile.setLastName("test profile lastname");
@@ -68,9 +64,10 @@ public class ProjectRepositoryTest {
 
     @AfterEach
     // Kører efter hver test to clear the database
-    void clearDatabase(){
-        projectRepository.deleteAllProjects();
-        profileRepository.deleteAllProfiles();
+    void tearDown(){
+        projectRepository.clearProjectsForTesting();
+        profileRepository.clearProfilesForTesting();
+
     }
 
     //***INTEGRATION-TEST METHODS***------------------------------------------------------------------------------------

@@ -22,5 +22,5 @@ public interface TaskRepositoryInterface {
     void deleteTask(int taskId) throws SQLException;
 
     // Delete all tasks (for testing purposes)
-    void deleteAllTasks();
+    void clearTasksForTesting();
 }

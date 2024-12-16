@@ -2,7 +2,6 @@ package org.example.proflow.serviceTest;
 import org.example.proflow.exception.ProjectException;
 import org.example.proflow.model.Project;
 import org.example.proflow.model.Status;
-import org.example.proflow.repository.ProjectRepository;
 import org.example.proflow.service.ProjectService;
 import org.example.proflow.util.interfaces.ProjectRepositoryInterface;
 import org.junit.Before;
@@ -34,9 +33,9 @@ public class ProjectServiceTest {
     private Project project;
 
     //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
-    //arrange
     @Before
     public void setUp() {
+        //arrange
         project = new Project();
         project.setName("test project name");
         project.setDescription("test project description");
@@ -51,7 +50,7 @@ public class ProjectServiceTest {
 
     @AfterEach
     public void tearDown(){
-        projectRepository.deleteAllProjects();
+        projectRepository.clearProjectsForTesting();
     }
 
     //***CREATE PROJECT TEST***----------------------------------------------------------------------------------------C

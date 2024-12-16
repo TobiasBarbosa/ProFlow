@@ -34,7 +34,7 @@ public class Project {
     protected double actualPrice;         // Actual price spent (protected so SubProject kan tilgå variable i underklasse)
 
     //***UNIQUE ATTRIBUTES***-------------------------------------------------------------------------------------------
-    private int profileId;                // Profile ID associated with the project
+    public int profileId;                // Profile ID associated with the project
     private List<SubProject> subProjects = new ArrayList<>(); // List of associated sub-projects
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
