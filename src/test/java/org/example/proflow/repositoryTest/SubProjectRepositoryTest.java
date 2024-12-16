@@ -2,9 +2,6 @@ package org.example.proflow.repositoryTest;
 
 import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.*;
-import org.example.proflow.repository.ProfileRepository;
-import org.example.proflow.repository.ProjectRepository;
-import org.example.proflow.repository.SubProjectRepository;
 import org.example.proflow.util.interfaces.ProfileRepositoryInterface;
 import org.example.proflow.util.interfaces.ProjectRepositoryInterface;
 import org.example.proflow.util.interfaces.SubProjectRepositoryInterface;
@@ -13,8 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
@@ -28,6 +25,8 @@ import static org.junit.jupiter.api.Assertions.*;
 // Når man tilføjer denne annotering på testklassen eller metoden, betyder det, at testen kører inden for en transaktion. Denne transaktion sikrer, at alle databaseoperationer i testen håndteres samlet, som om de er en del af en enkelt transaktion.
 //@Rollback(true) // Ruller tilbage efter testen / skal bruges på databasen / ikke h2
 @ActiveProfiles("h2")
+//TODO @clear-metoder i tearDown skal skiftes ud med @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:h2.sql")
+//@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:h2.sql")
 public class SubProjectRepositoryTest {
 
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
@@ -47,6 +46,7 @@ public class SubProjectRepositoryTest {
     @BeforeEach
     //Kører før hver test og sætter en profil, et project og et subproject op
     void setUp() throws SQLException {
+        //arrange
         profile = new Profile();
         profile.setFirstName("test profile firstname");
         profile.setLastName("test profile lastname");
@@ -80,9 +80,9 @@ public class SubProjectRepositoryTest {
     @AfterEach
     void tearDown() throws SQLException {
         // Kører efter hver test to clear the database
-        subProjectRepository.deleteAllSubProjects();
-        projectRepository.deleteAllProjects();
-        profileRepository.deleteAllProfiles();
+        subProjectRepository.clearSubProjectsForTesting();
+        projectRepository.clearProjectsForTesting();
+        profileRepository.clearProfilesForTesting();
     }
 
         //***SUBPROJECT TEST METHODS***---------------------------------------------------------------------------------

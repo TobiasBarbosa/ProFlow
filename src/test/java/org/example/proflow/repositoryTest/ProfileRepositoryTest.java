@@ -2,16 +2,13 @@ package org.example.proflow.repositoryTest;
 
 import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
-import org.example.proflow.repository.ProfileRepository;
 import org.example.proflow.util.interfaces.ProfileRepositoryInterface;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -24,9 +21,9 @@ import static org.junit.jupiter.api.Assertions.*;
 //@Rollback(true) // Ruller tilbage efter testen / skal bruges på databasen / ikke h2
 
 @ActiveProfiles("h2")
-// NB Tests fail if the following line is not included as the h2 database is not reset between tests
-//@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:h2.sql") //TODO virker ikke, derofr bruger vi @AfterEAch, som er en dårlige metode, men virker. Bør ændres på alle repTest klasser
-
+// NB Tests fail if the following line is not included as the h2 database is not reset between tests //TODO hvad betyder den her linje tobias?
+//TODO @clear-metoder i tearDown skal skiftes ud med @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:h2.sql")
+//@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:h2.sql")
 public class ProfileRepositoryTest {
 
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
@@ -40,6 +37,7 @@ public class ProfileRepositoryTest {
     @BeforeEach
     //Kører før hver test og sætter en profil op
     void setUp(){
+        //arrange
         profile = new Profile();
         profile.setFirstName("test firstname");
         profile.setLastName("test lastname");
@@ -49,16 +47,14 @@ public class ProfileRepositoryTest {
 
     @AfterEach
     // Kører efter hver test to clear the database
-    void clearProfileDatabase() {
-        profileRepository.deleteAllProfiles();
+    void tearDown() {
+        profileRepository.clearProfilesForTesting();
     }
 
     //***PROFILE TEST METHODS***----------------------------------------------------------------------------------------
     //***CREATE METHODS***---------------------------------------------------------------------------------------------C
     @Test
     void addProfileTest() throws ProfileException {
-        // ARRANGE done in setUp
-
         //ACT
         profileRepository.addProfile(profile);
         Profile actualProfile = profileRepository.getProfileById(profile.getId());

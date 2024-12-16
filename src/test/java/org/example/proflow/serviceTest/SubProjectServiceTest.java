@@ -2,7 +2,6 @@ package org.example.proflow.serviceTest;
 import org.example.proflow.exception.SubProjectException;
 import org.example.proflow.model.Status;
 import org.example.proflow.model.SubProject;
-import org.example.proflow.repository.SubProjectRepository;
 import org.example.proflow.service.SubProjectService;
 import org.example.proflow.util.interfaces.SubProjectRepositoryInterface;
 import org.junit.Before;
@@ -35,9 +34,9 @@ public class SubProjectServiceTest {
     private SubProject subProject;
 
     //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
-    //arrange
     @Before
     public void setUp() {
+        //arrange
         subProject = new SubProject();
         subProject.setName("test subproject name");
         subProject.setDescription("test subproject description");
@@ -53,7 +52,7 @@ public class SubProjectServiceTest {
 
     @AfterEach
     public void tearDown(){
-        subProjectRepository.deleteAllSubProjects();
+        subProjectRepository.clearSubProjectsForTesting();
     }
 
     //***TEST SUBPROJECT METHODS***-------------------------------------------------------------------------------------
