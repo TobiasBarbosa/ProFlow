@@ -27,5 +27,5 @@ public interface SubProjectRepositoryInterface {
     void deleteSubProject(int id) throws SQLException;
 
     // Delete all subprojects (for testing purposes)
-    void deleteAllSubProjects();
+    void clearSubProjectsForTesting();
 }

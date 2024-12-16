@@ -30,5 +30,5 @@ public interface ProjectRepositoryInterface {
     void deleteProject(int projectId) throws SQLException;
 
     // Delete all projects (for testing purposes only)
-    void deleteAllProjects();
+    void clearProjectsForTesting();
 }

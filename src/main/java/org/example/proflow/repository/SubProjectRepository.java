@@ -218,7 +218,7 @@ public class SubProjectRepository implements SubProjectRepositoryInterface {
     }
 
     //FOR TEST PURPOSES!!
-    public void deleteAllSubProjects() {
+    public void clearSubProjectsForTesting() {
         String query = "DELETE FROM SubProject";
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {

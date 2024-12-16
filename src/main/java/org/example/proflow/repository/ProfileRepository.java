@@ -212,7 +212,7 @@ public class ProfileRepository implements ProfileRepositoryInterface {
     }
 
     //***FOR TEST PURPOSES ONLY!!***------------------------------------------------------------------------------------
-    public void deleteAllProfiles() {
+    public void clearProfilesForTesting() {
         String query = "DELETE FROM Profile";
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {

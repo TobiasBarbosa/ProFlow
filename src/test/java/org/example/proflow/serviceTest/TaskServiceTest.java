@@ -3,7 +3,6 @@ package org.example.proflow.serviceTest;
 import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Status;
 import org.example.proflow.model.Task;
-import org.example.proflow.repository.TaskRepository;
 import org.example.proflow.service.TaskService;
 import org.example.proflow.util.interfaces.TaskRepositoryInterface;
 import org.junit.Before;
@@ -25,9 +24,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class TaskServiceTest {
 
-    //***TO DO***-------------------------------------------------------------------------------------------------------
-    //TODO: skriv i rapport: hvorfor vi ikke har lavet integrationstest i serviceklasserne?
-
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
     @Mock
     private TaskRepositoryInterface taskRepository;
@@ -41,6 +37,7 @@ public class TaskServiceTest {
     //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
     @Before
     public void setUp(){
+        //arrange
         task = new Task();
         task.setName("test task name");
         task.setDescription("test task description");
@@ -57,7 +54,7 @@ public class TaskServiceTest {
 
     @AfterEach
     public void tearDown(){
-        taskRepository.deleteAllTasks();
+        taskRepository.clearTasksForTesting();
     }
 
     //***TEST TASK METHODS***-------------------------------------------------------------------------------------------

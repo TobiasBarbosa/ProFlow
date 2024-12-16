@@ -258,7 +258,7 @@ public class ProjectRepository implements ProjectRepositoryInterface {
     }
 
     //FOR TEST PURPOSES!!
-    public void deleteAllProjects() {
+    public void clearProjectsForTesting() {
         String query = "DELETE FROM Project";
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
@@ -270,3 +270,25 @@ public class ProjectRepository implements ProjectRepositoryInterface {
 
 //***END***---------------------------------------------------------------------------------------------------------
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

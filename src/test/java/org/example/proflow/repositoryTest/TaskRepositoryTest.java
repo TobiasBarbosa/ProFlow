@@ -2,10 +2,6 @@ package org.example.proflow.repositoryTest;
 
 import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.*;
-import org.example.proflow.repository.ProfileRepository;
-import org.example.proflow.repository.ProjectRepository;
-import org.example.proflow.repository.SubProjectRepository;
-import org.example.proflow.repository.TaskRepository;
 import org.example.proflow.util.interfaces.ProfileRepositoryInterface;
 import org.example.proflow.util.interfaces.ProjectRepositoryInterface;
 import org.example.proflow.util.interfaces.SubProjectRepositoryInterface;
@@ -28,6 +24,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional //forklar lige hvorfor
 //@Rollback(true) // Ruller tilbage efter testen / skal bruges på databasen / ikke h2
 @ActiveProfiles("h2") // skal vi teste flere profiler?
+//TODO @clear-metoder i tearDown skal skiftes ud med @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:h2.sql")
+//@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:h2.sql")
 public class TaskRepositoryTest {
 
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
@@ -49,8 +47,8 @@ public class TaskRepositoryTest {
     //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
     @BeforeEach
     //Kører før hver test og sætter en profil, et project, et subproject og en task op
-    //TODO RAPPORT: Fordele og ulemper ved test rep metode. Spcifikt dummydata i testklassen i stedet for i SQL h2
     void setUp(){
+        //arrange
         profile = new Profile();
         profile.setFirstName("test profile firstname");
         profile.setLastName("test profile lastname");
@@ -96,10 +94,10 @@ public class TaskRepositoryTest {
     @AfterEach
     void tearDown() {
         // Kører efter hver test to clear the database
-        taskRepository.deleteAllTasks();
-        subProjectRepository.deleteAllSubProjects();
-        projectRepository.deleteAllProjects();
-        profileRepository.deleteAllProfiles();
+        taskRepository.clearTasksForTesting();
+        subProjectRepository.clearSubProjectsForTesting();
+        projectRepository.clearProjectsForTesting();
+        profileRepository.clearProfilesForTesting();
     }
 
     //***CREATE TASK***------------------------------------------------------------------------------------------------C

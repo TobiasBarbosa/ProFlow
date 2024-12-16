@@ -2,7 +2,6 @@ package org.example.proflow.serviceTest;
 
 import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.Profile;
-import org.example.proflow.repository.ProfileRepository;
 import org.example.proflow.service.ProfileService;
 import org.example.proflow.util.interfaces.ProfileRepositoryInterface;
 import org.junit.Before;
@@ -12,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.sql.SQLException;
 
@@ -21,8 +21,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-//TODO undersøge hvor metoder skal være public i serviceTest laget
-//Svar: Alle dine testmetoder skal være public, da testmetoderne ellers ikke vil blive opdaget af test runneren. Så sørg for, at dine metoder er offentlige, hvilket du allerede har gjort i dine testmetoder.
 public class ProfileServiceTest {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
@@ -36,8 +34,9 @@ public class ProfileServiceTest {
     private Profile profile;
 
     //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
-    @Before //arrange
+    @Before
     public void setUp() {
+        //arrange
         profile = new Profile();
         profile.setFirstName("test firstname");
         profile.setLastName("test lastname");
@@ -47,7 +46,7 @@ public class ProfileServiceTest {
 
     @AfterEach
     public void tearDown(){
-        profileRepository.deleteAllProfiles();
+        profileRepository.clearProfilesForTesting();
     }
 
     //***TEST PROFILE METHODS***----------------------------------------------------------------------------------------
@@ -55,6 +54,7 @@ public class ProfileServiceTest {
     @Test
     public void addProfileVerifyTest(){
         //Tester om addProfile kalder addProfile i repository
+
         //Act
         profileService.addProfile(profile);
 
@@ -66,9 +66,12 @@ public class ProfileServiceTest {
     @Test
     public void getProfileByIdTest() throws SQLException, ProfileException {
         when(profileRepository.getProfileById(profile.getId())).thenReturn(profile);
+        //Vi fortæller Mockito, at når profileRepository.getProfileById(profile.getId()) bliver kaldt, skal den returnere en bestemt værdi.
+        //thenReturn(profile) betyder, at når den overordnede metode getProfileById kaldes med det specifikke profile.getId(), vil mock-objektet returnere den profile som er oprettet i setUp().
 
         //ACT
         Profile result = profileService.getProfileById(profile.getId());
+        //Her kalder vi den faktiske metode på profileService-objektet for at hente en profil ved at bruge profile.getId(). Resultatet af kaldet bliver gemt i result.
 
         //ASSERT
         assertNotNull(result);
