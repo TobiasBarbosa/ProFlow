@@ -160,7 +160,7 @@ public class SubProjectRepository implements SubProjectRepositoryInterface {
                     task.setStatus(Status.valueOf(rs.getString("status")));
                     task.setSubProjectId(rs.getInt("sub_project_id"));
                     task.setAssignedTo(rs.getString("assigned_to"));
-                    task.setTaskPrice(rs.getDouble("price")); // Not null column
+                    task.setActualPrice(rs.getDouble("price")); // Not null column
                     tasksFromSubProject.add(task);
                 }
 
