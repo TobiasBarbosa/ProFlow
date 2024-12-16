@@ -2,8 +2,6 @@ package org.example.proflow.model;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class ProjectTask {
 
@@ -59,6 +57,8 @@ public abstract class ProjectTask {
         setEndDate(endDate);
         calculateDaysUntilDone(startDate,endDate);
         this.status = status;
+        this.totalEstHours = totalEstHours;
+        this.actualPrice = actualPrice;
     }
 
     //Constructor default
