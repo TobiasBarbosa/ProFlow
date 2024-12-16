@@ -29,4 +29,6 @@ public interface ProjectRepositoryInterface {
     // Delete a project by its ID
     void deleteProject(int projectId) throws SQLException;
 
+    void clearProjectsForTesting();
+
 }
