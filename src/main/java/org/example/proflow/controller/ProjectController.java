@@ -32,10 +32,10 @@ public class ProjectController {
     }
 
     //***CREATE PROJECT METHODS***-----------------------------------------------------------------------------------
-    @GetMapping("/add-project/{profileId}")
+    @GetMapping("/add-project/")
     public String addProject(@PathVariable("profileId") int profileId, Model model, HttpSession session) {
         if (!Validator.isValid(session, profileId)) {
-            return "redirect:/homepage";
+            return "redirect:/";
         }
         model.addAttribute("profileId", profileId);
         model.addAttribute("project", new Project());
@@ -56,13 +56,13 @@ public class ProjectController {
     public String getProjectById(@PathVariable("projectId") int projectId, Model model, HttpSession session) throws ProjectException, SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
         if (!Validator.isValid(session, profile.getId())) {
-            return "redirect:/homepage";
+            return "redirect:/";
         }
 
         Project project = projectService.getProjectById(projectId); //Henter projektet fra databasen
 
         if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())) { //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
-            return "redirect:/homepage";
+            return "redirect:/";
         }
 
         model.addAttribute("projectId", projectId);
@@ -73,7 +73,7 @@ public class ProjectController {
     @GetMapping("/project/subprojects") //shows all subprojects from a project
     public String getSubProjectsFromProject(Model model, @RequestParam int projectId, HttpSession session) throws SQLException {
         if (!Validator.isValid(session, projectId)) {
-            return "redirect:/homepage";
+            return "redirect:/";
         }
         List<SubProject> subProjectsFromProject = projectService.getSubProjectsFromProject(projectId);
         model.addAttribute("projectsFromProfile", subProjectsFromProject);
@@ -85,7 +85,7 @@ public class ProjectController {
     public String editProject(@PathVariable("projectId") int projectId, Model model, HttpSession session) throws ProjectException, SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
         if (!Validator.isValid(session, profile.getId())) {
-            return "redirect:/homepage";
+            return "redirect:/";
         }
 
         Project project = projectService.getProjectById(projectId); //Henter projektet fra databasen
@@ -95,7 +95,7 @@ public class ProjectController {
         }
 
         model.addAttribute("project", project);
-//        model.addAttribute("projectId", project.getId());
+        model.addAttribute("projectId", project.getId());
 //        model.addAttribute("name", project.getName());
 //        model.addAttribute("description", project.getDescription());
 //        model.addAttribute("startDate", project.getStartDate());
@@ -109,7 +109,7 @@ public class ProjectController {
         return "edit_project";
     }
 
-    @PostMapping("/project/update") //TODO lave tjek med isValid og isProjectOwned (men skal det gøres på både edit og update?)
+    @PostMapping("/update/{projectId}")
     public String updateProject(@ModelAttribute Project project) throws ProjectException, SQLException {
         projectService.updateProject(project);
         return "redirect:/dashboard";

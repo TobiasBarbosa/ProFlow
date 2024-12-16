@@ -14,10 +14,10 @@
         <img class="logo" src="/images/logo.png" alt="logo">
     </div>
     <div class="flex-item-2"></div>
-    <a th:href="@{/homepage/dashboard}" class="btn btn-danger">Go back</a>
-        <a th:href="@{/homepage/logout}" class="btn btn-danger">Logout</a>
-    </div>
+    <a th:href="@{/dashboard}" class="btn btn-danger">Go back</a>
+        <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
 </div>
+
 
 <div class="header">
 
@@ -34,7 +34,7 @@
     <h1>Edit your profile, <span th:text="${profile.firstName}"></span>!</h1></div>
 <p>Update your profile information below:</p>
 
-<form th:action="@{/homepage/update/{profileId}(profileId=${profile.getId()})}"
+<form th:action="@{/update/{profileId}(profileId=${profile.getId()})}"
       th:object="${profile}"
       method="post">
 

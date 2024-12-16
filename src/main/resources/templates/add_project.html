@@ -2,15 +2,25 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>addProject</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit profile</title>
     <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
 </head>
 
 <body>
+<div class="flex-container">
+    <div class="flex-item-1">
+        <img class="logo" src="/images/logo.png" alt="logo">
+    </div>
+    <div class="flex-item-2"></div>
+    <a th:href="@{/dashboard}" class="btn btn-danger">Go back</a>
+    <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
+</div>
 
 <h1>Create new project</h1>
 <div class="add">
-    <form th:action="@{dashboard/{profileId}/saveproject}" th:object="${project}" method="post">
+    <form th:action="@{/dashboard/saveproject}" th:object="${project}" method="post">
         <label class="addLabel" for="name">Name</label>
         <input class="placeholder" type="text" id="name" th:field="*{project.getName()}"> <!-- ved ikke om project.getName() er rigtigt-->
 
@@ -30,7 +40,7 @@
         <input class="placeholder" type="text" id="budget" th:field="*{project.getBudget()}">
 
         <br><button class="button" method="submit">Save</button>
-        <button class="button" href="/projects">Back</button>
+        <button class="button" th:href="@{/dashboard}">Back</button>
     </form>
 </div>
 

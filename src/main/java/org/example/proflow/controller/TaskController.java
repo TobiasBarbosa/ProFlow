@@ -36,7 +36,7 @@ public class TaskController {
     public String addTask(@PathVariable("subProjectId") int subProjectId, Model model, HttpSession session, int projectId) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");
         if (!Validator.isValid(session, profile.getId())) {
-            return "redirect:/homepage";
+            return "redirect:/";
         }
 
         Project project = projectService.getProjectById(projectId);
@@ -62,7 +62,7 @@ public class TaskController {
     public String getAllTasks(Model model, HttpSession session, int projectId) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");
         if (!Validator.isValid(session, profile.getId())) {
-            return "redirect:/homepage";
+            return "redirect:/";
         }
 
         Project project = projectService.getProjectById(projectId);
@@ -73,14 +73,14 @@ public class TaskController {
 
         List<Task> tasks = taskService.getAllTasks();
         model.addAttribute("tasks", tasks);
-        return "homepage";
+        return "task";
     }
 
     @GetMapping("/task/{taskId}")
     public String getTaskById(@PathVariable("taskId") int taskId, Model model, HttpSession session, int projectId) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");
         if (!Validator.isValid(session, profile.getId())) {
-            return "redirect:/homepage";
+            return "redirect:/";
         }
 
         Project project = projectService.getProjectById(projectId);
@@ -100,7 +100,7 @@ public class TaskController {
     public String editTask(@PathVariable("taskId") int taskId, Model model, HttpSession session, int projectId) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");
         if (!Validator.isValid(session, profile.getId())) {
-            return "redirect:/homepage";
+            return "redirect:/";
         }
 
         Project project = projectService.getProjectById(projectId);
@@ -138,7 +138,7 @@ public class TaskController {
     public String deleteTask(@PathVariable("taskId") int taskId, HttpSession session, int projectId) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");
         if (!Validator.isValid(session, profile.getId())) {
-            return "redirect:/homepage";
+            return "redirect:/";
         }
 
         Project project = projectService.getProjectById(projectId);
