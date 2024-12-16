@@ -1,10 +1,101 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit project</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
 </head>
+
 <body>
+<div class="flex-container">
+    <div class="flex-item-1">
+        <img class="logo" src="/images/logo.png" alt="logo">
+    </div>
+    <div class="flex-item-2"></div>
+    <a th:href="@{/dashboard}" class="btn btn-danger">Go back</a>
+    <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
+</div>
+
+
+<div class="header">
+
+    <div class="header-right">
+
+    </div>
+</div>
+
+<header>
+
+</header>
+
+<div class="container">
+    <h1>Edit your project <span th:text="${project.name()}"></span>!</h1></div>
+<p>Update your project details below:</p>
+
+<form th:action="@{/update/{projectId}(projectId=${project.id})}" th:object="${project}" method="post">
+
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <th scope="row">Title</th>
+            <td>
+                <label>
+                    <input type="text" class="form-control" name="name" th:field="*{name}">
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">Description</th>
+            <td>
+                <label>
+                    <input type="text" class="form-control" name="description" th:field="*{description}">
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">Start date</th>
+            <td>
+                <label>
+                    <input type="datetime-local" class="form-control" name="start_date" th:field="*{startDate}">
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">End date</th>
+            <td>
+                <label>
+                    <input type="datetime-local" class="form-control" name="end_date" th:field="*{endDate}">
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">Budget</th>
+            <td>
+                <label>
+                    <input type="number" class="form-control" name="budget" th:field="*{budget}">
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">Is project active?</th>
+            <td>
+                <label>
+                    <input type="checkbox" class="form-control" name="status" th:field="*{status}">
+                </label>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </div>
+</form>
+
+<form th:action="@{/project/delete/{projectId}(projectId=${project.id})}" method="post" class="mt-3">
+    <button type="submit" class="btn btn-danger">Delete project</button>
+</form>
 
 </body>
 </html>

@@ -19,12 +19,12 @@ import java.util.List;
 //TODO ProfileController: Rette exceptions til ProfileException
 
 @Controller
-@RequestMapping("homepage")
+@RequestMapping("")
 public class ProfileController {
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final ProfileService profileService;
     private final ProjectService projectService;
-    private HttpSession session; // why not assigned?
+//    private HttpSession session; // why not assigned?
 
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
     public ProfileController(ProfileService profileService, ProjectService projectService) {
@@ -37,7 +37,6 @@ public class ProfileController {
     public String homepage(){
         return "homepage";
     }
-
 
     //***LOGIN METHODS***-----------------------------------------------------------------------------------------------
     @GetMapping("/login")
@@ -54,11 +53,11 @@ public class ProfileController {
             Profile profileToCheck = profileService.getProfileByEmailAndPassword(profileEmail, profilePassword);
             session.setAttribute("profile", profileToCheck);
             session.setMaxInactiveInterval(300);
-            return "redirect:/homepage/dashboard";
+            return "redirect:/dashboard";
         }
         //wrong credentials
         model.addAttribute("wrongCredentials", true);
-        return "login"; //TODO: HTML skal returnere noget ala "Forkerte brugeroplysninger, prøv igen"
+        return "redirect:/"; //TODO: HTML skal returnere noget ala "Forkerte brugeroplysninger, prøv igen"
     }
 
 //    @GetMapping("/dashboard")
@@ -78,22 +77,36 @@ public class ProfileController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/homepage";
+        return "redirect:/";
     }
 
     //***CREATE PROFILE***---------------------------------------------------------------------------------------------C
-    @GetMapping("/add-profile") // GetMapping henter data fra database
+    @GetMapping("/signup") // GetMapping henter data fra database
     public String addProfile(Model model) {
         Profile profile = new Profile();
         model.addAttribute("profile", profile);
-        return "signup"; //TODO har vi denne eller skal den bare hedde signup?
+        return "signup";
     }
 
-    @PostMapping("/save-profile") //PostMapping tilføjer data til database
-    public String saveProfile(@ModelAttribute Profile profile) throws ProfileDataException {
+    @PostMapping("/save-profile")
+    public String saveProfile(@ModelAttribute Profile profile, HttpSession session) throws ProfileDataException {
+        // Tilføjer profilen til databasen
         profileService.addProfile(profile);
+
+        // Log den nyoprettede profil ind ved at bruge det eksisterende profile-objekt
+        session.setAttribute("profile", profile);
+
+        session.setMaxInactiveInterval(300);
+
         return "redirect:/dashboard";
     }
+
+
+//    @PostMapping("/save-profile") //PostMapping tilføjer data til database
+//    public String saveProfile(@ModelAttribute Profile profile) throws ProfileDataException {
+//        profileService.addProfile(profile);
+//        return "redirect:/dashboard";
+//    }
 
     //***READ PROFILE***-----------------------------------------------------------------------------------------------R
 //    ***PROFILE(PM)***
@@ -102,11 +115,12 @@ public class ProfileController {
         Profile profile = (Profile) session.getAttribute("profile");
         int profileId = profile.getId();
         if (!Validator.isValid(session, profileId)) {
-            return "redirect:/homepage";
+            return "redirect:/";
         }
 //        Profile profile = profileService.getProfileById(profileId);
 
-        List<Project> projectsFromProfile = profileService.getProjectsFromProfile(profileId);
+//        List<Project> projectsFromProfile = profileService.getProjectsFromProfile(profileId);
+        List<Project> projectsFromProfile =profile.getProjects();
         model.addAttribute("projectsFromProfile", projectsFromProfile);
         model.addAttribute("profile", profile);
         return "dashboard";
@@ -133,7 +147,7 @@ public class ProfileController {
     public String editProfile(@PathVariable("profileId") int profileId, Model model, HttpSession session)
             throws ProfileException, SQLException {
         if (!Validator.isValid(session, profileId)) {
-            return "redirect:/homepage";
+            return "redirect:/";
         }
         Profile profile = profileService.getProfileById(profileId);
         model.addAttribute("profile", profile);
@@ -145,25 +159,34 @@ public class ProfileController {
     }
 
     @PostMapping("/update/{profileId}")
-    public String updateProfile(@PathVariable("profileId") int profileId, @ModelAttribute Profile profile, Model model)
-            throws ProfileException {
+    public String updateProfile(@PathVariable("profileId") int profileId, @ModelAttribute Profile profile, Model model, HttpSession session)
+            throws ProfileException, SQLException {
         if (!Validator.isValid(session, profileId)) {
-            return "redirect:/homepage";
+            return "redirect:/";
         }
-        model.addAttribute("profile", profile);
+//        model.addAttribute("profile", profile);
+
+        Profile loggedInProfile = profileService.getProfileById(profileId);
+
+        // Behold det gamle password, hvis feltet er tomt
+        if (profile.getPassword() == null || profile.getPassword().isEmpty()) {
+            profile.setPassword(loggedInProfile.getPassword());
+        }
+
+        profile.setId(profileId);
         profileService.updateProfile(profile);
-        return "redirect:/homepage/dashboard";
+        return "redirect:/dashboard";
     }
 
     //***DELETE PROFILE***---------------------------------------------------------------------------------------------D
     @PostMapping("/remove/{profileId}")
-    public String deleteProfile(@PathVariable int profileId) throws ProfileException, SQLException {
+    public String deleteProfile(@PathVariable int profileId, HttpSession session) throws ProfileException, SQLException {
         if (!Validator.isValid(session, profileId)) {
-            return "redirect:/homepage";
+            return "redirect:/";
         }
         Profile profile = profileService.getProfileById(profileId);
         profileService.deleteProfile(profile.getId());
-        return "redirect:/homepage";
+        return "redirect:/";
     }
 
     //***EXCEPTION HANDLING***------------------------------------------------------------------------------------------
