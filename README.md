@@ -28,8 +28,8 @@ The application is built with
 - MySQL
 - H2 Database Engine
 - git
-- Github Projects
-- github actions
+- GitHub Actions
+- GitHub Projects
 
 
 ### Using the application
