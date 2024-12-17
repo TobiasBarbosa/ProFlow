@@ -134,8 +134,12 @@ public class ProfileRepository implements ProfileRepositoryInterface {
     public Profile getProfileByEmailAndPassword(String profileEmail, String profilePassword) throws ProfileException {
         try {
             for (Profile profile : getAllProfiles()) {
-                if (profile.getEmail().equalsIgnoreCase(profileEmail) && profile.getPassword().equals(profilePassword))
+                if (profile.getEmail().equalsIgnoreCase(profileEmail) && profile.getPassword().equals(profilePassword)){
+                    List<Project> projectsForProfile =  getProjectsFromProfile(profile.getId());
+                    profile.setProjects(projectsForProfile);
                     return profile;
+                }
+
             }
         } catch (ProfileException p){
             p.printStackTrace();
@@ -165,9 +169,10 @@ public class ProfileRepository implements ProfileRepositoryInterface {
                     project.setBudget(rs.getDouble("budget"));
                     project.setActualPrice(rs.getDouble("actual_price"));
                     project.setProfileId(rs.getInt("profile_id"));
+                    projectsFromProfile.add(project);
 
                 }
-                projectsFromProfile.add(project);
+
             }
         } catch (SQLException e) {
             e.printStackTrace();

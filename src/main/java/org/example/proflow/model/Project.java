@@ -84,16 +84,7 @@ public class Project extends ProjectTask{
     public void setSubProjects(List<SubProject> subProjects) {
         this.subProjects = subProjects;
     }
-    public void setEndDate(LocalDate endDate) {
 
-        if (endDate == null) {
-            throw new IllegalArgumentException("End date cannot be null");
-        }
-        if (endDate != null && startDate != null && endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("End date cannot be before start date.");
-        }
-        this.endDate = endDate;
-    }
 
     //***UTILITY METHODS***---------------------------------------------------------------------------------------------
     public double calculateActualPriceForProject() { //TODO move to service?

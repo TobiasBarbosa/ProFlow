@@ -117,10 +117,9 @@ public class ProfileController {
         if (!Validator.isValid(session, profileId)) {
             return "redirect:/";
         }
-//        Profile profile = profileService.getProfileById(profileId);
 
-//        List<Project> projectsFromProfile = profileService.getProjectsFromProfile(profileId);
         List<Project> projectsFromProfile =profile.getProjects();
+        System.out.println(projectsFromProfile);
         model.addAttribute("projectsFromProfile", projectsFromProfile);
         model.addAttribute("profile", profile);
         return "dashboard";

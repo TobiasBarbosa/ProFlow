@@ -129,11 +129,22 @@ public abstract class ProjectTask {
         this.startDate = startDate;
     }
 
+//    public void setEndDate(LocalDate endDate) {
+//        if (endDate == null) {
+//            throw new IllegalArgumentException("End date cannot be null.");
+//        }
+//        if (endDate.isBefore(startDate)) {
+//            throw new IllegalArgumentException("End date cannot be before start date.");
+//        }
+//        this.endDate = endDate;
+//    }
+
     public void setEndDate(LocalDate endDate) {
+
         if (endDate == null) {
-            throw new IllegalArgumentException("End date cannot be null.");
+            throw new IllegalArgumentException("End date cannot be null");
         }
-        if (endDate.isBefore(startDate)) {
+        if (endDate != null && startDate != null && endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("End date cannot be before start date.");
         }
         this.endDate = endDate;
