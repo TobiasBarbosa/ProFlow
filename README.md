@@ -34,10 +34,10 @@ The application is built with
 
 ### Using the application
 To run the program locally:
-- mySQL (installeres og køre scripts)
-- Java
-- Environment varibales
-- Andet?
+1. Clone the repository
+2. Edit environment varibales
+3. Install mySQL and copy and run the SQL scripts
+4. Localhost
 
 ### Contributers
 @TobiasBarbosa
