@@ -19,24 +19,23 @@
 </div>
 
 <h1>Create new project</h1>
-<div class="add-project">
+<div class="box">
     <form th:action="@{/dashboard/save-project/{profileId}(profileId=${profileId})}" th:object="${project}"
           method="post">
         <label class="addLabel" for="name">Name</label>
         <input class="placeholder" type="text" id="name" th:field="*{name}">
 
-        <br><label class="addLabel" for="description">Description</label>
+        <label class="addLabel" for="description">Description</label>
         <input class="placeholder" type="text" id="description" th:field="*{description}">
 
-        <br><label class="addLabel" for="startDate">Start date</label>
+        <label class="addLabel" for="startDate">Start date</label>
         <input class="placeholder" type="date" id="startDate" th:field="*{startDate}" required>
 
 
-        <br><label class="addLabel" for="endDate">End date</label>
+        <label class="addLabel" for="endDate">End date</label>
         <input class="placeholder" type="date" id="endDate" th:field="*{endDate}" required>
 
-
-        <br><label class="addLabel" for="status">Status</label>
+        <label class="addLabel" for="status">Status</label>
         <select id="status" th:field="*{status}" required>
             <option th:value="${T(org.example.proflow.model.Status).ACTIVE}"
                     th:text="${T(org.example.proflow.model.Status).ACTIVE.getDisplayStatus()}">Active
@@ -46,13 +45,13 @@
             </option>
         </select>
 
-
-        <br><label class="addLabel" for="budget">Budget</label>
+        <label class="addLabel" for="budget">Budget</label>
         <input class="placeholder" type="text" id="budget" th:field="*{budget}">
 
-        <br>
-        <button class="button" type="submit">Save</button>
-        <button class="button" th:href="@{/dashboard}">Back</button>
+        <div class="button-row">
+            <a class="button btn btn-danger" th:href="@{/dashboard}">Back</a>
+            <button class="button btn btn-primary" type="submit">Save</button>
+        </div>
     </form>
 </div>
 

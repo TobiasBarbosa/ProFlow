@@ -31,6 +31,38 @@
 <header>
 
 </header>
+<!--
+<div class="container">
+    <h1>Welcome to your profile, <span th:text="${profile.firstName}"></span>!</h1>
+
+
+    <p class="no-projects-message" th:if="${#lists.isEmpty(projectsFromProfile)}">You have no projects yet.</p>
+
+    <div class="project-grid" th:if="${!#lists.isEmpty(projectsFromProfile)}">
+        <div class="card" th:each="project : ${projectsFromProfile}">
+            <img class="card-img" src="https://images.pexels.com/photos/3109807/pexels-photo-3109807.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Purple Image">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${project.name}">Project title</h5>
+
+                <a th:href="@{/project/{id}(id=${project.getId()})}" class="btn-primary">See project</a>
+
+
+                <form th:action="@{/project/remove/{id}(id=${project.projectId})}" method="post" class="delete-form">
+                    <button type="submit" class="btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="add-project">
+        <h2 class="inbox">Create new project</h2>
+        <form th:action="@{/add-project}" method="post">
+            <input type="text" name="projectName" placeholder="Enter project name" required>
+            <button type="submit" class="btn-success">Create project</button>
+        </form>
+    </div>
+</div> -->
 
 
 <div class="container">
@@ -63,9 +95,7 @@
 
                     <button type="submit" class="btn-danger">Delete</button>-->
                 <!-- Edit project form-->
-                <form th:action="@{/dashboard/project/edit/{projectId}(projectId=${project.getId()})}" name="projectId"
-                      th:value="${project.getId()}" method="get" style="display:inline;">
-
+                <form th:action="@{/dashboard/project/edit/{projectId}(projectId=${project.id})}" method="get" style="display:inline;">
                     <button type="submit" class="btn-danger">Edit</button>
                 </form>
                 <!-- Slet project form
@@ -80,7 +110,7 @@
 
     <!-- Tilføj et nyt projekt -->
 
-    <div class="add-project">
+    <div class="box">
         <h2 class="inbox">Create new project</h2>
         <form th:action="@{/dashboard/add_project/{profileId}(profileId=${session.profile.id})}" method="get">
             <input type="text" name="projectName" placeholder="Enter project name" required>

@@ -9,13 +9,8 @@
 </head>
 <body>
 
-<div class="flex-container">
-    <div class="flex-item-1">
-        <img class="logo" src="/images/logo.png" alt="logo">
-    </div>
-    <div class="flex-item-2"></div>
-    <!--<div class="flex-item-3"> <a th:object="${session.profile}" th:href="@{/profile/edit/{profileId}(profileId=${session.profile.getProfileId()})}" class="btn btn-outline-secondary mr-2">Edit Profile</a> -->
-        <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
+<div style="display: flex;justify-content: center;">
+    <img class="logo" src="/images/logo.png" alt="logo">
 </div>
 
 <div class="center">
@@ -23,27 +18,29 @@
 <h5>Project Management System</h5><br>
 </div>
 
-<div class="login-box">
-    <h2>Login</h2>
-    <form th:action="@{/login}" method="post">
-        <label class="login-text" for="profileEmail">E-mail</label>
-        <input type="email" id="profileEmail" name="profileEmail" th:value="${email}" required>
+<div class="login-container">
+    <div class="login-box">
+        <h2>Login</h2>
+        <form th:action="@{/login}" method="post">
+            <label class="login-text" for="profileEmail">E-mail</label>
+            <input type="email" id="profileEmail" name="profileEmail" th:value="${email}" required>
 
-        <label class="login-text" for="profilePassword">Password</label>
-        <input type="password" id="profilePassword" name="profilePassword" th:value="${password}" required>
+            <label class="login-text" for="profilePassword">Password</label>
+            <input type="password" id="profilePassword" name="profilePassword" th:value="${password}" required>
 
-        <button type="submit">Login</button>
-    </form>
-    <div class="links">
-        <a th:href="@{/forgot-password}">Forgot email or username?</a>
-        <a th:href="@{/signup}">Sign up</a>
+            <button type="submit">Login</button>
+        </form>
+        <div class="links">
+            <a th:href="@{/forgot-password}">Forgot email or username?</a>
+            <a th:href="@{/signup}">Sign up</a>
+        </div>
     </div>
 </div>
 
-<!--
-<ul>
-    <li th:each="project : ${projects}" th:text="${project.getName()}"></li>
-</ul>
--->
+<footer>
+    <p>ProFlow - Project Management Tool by Alpha Solutions</p>
+    <p></p>
+    <p><a href="mailto:proflowteam@alpha-solutions.com">proflowteam@alpha-solutions.com</a></p>
+</footer>
 </body>
 </html>
