@@ -33,10 +33,11 @@ The application is built with
 
 
 ### Using the application
-Jeres README.md skal som minimum indeholde en kort beskrivelse af de softwaremæssige forudsætninger for at kunne anvende applikationen
-(Beskrivelse af hvad der skal til for atdet kan køre det lokalt)
-
-
+To run the program locally:
+- mySQL (installeres og køre scripts)
+- Java
+- Environment varibales
+- Andet?
 
 ### Contributers
 @TobiasBarbosa
