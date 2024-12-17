@@ -95,9 +95,7 @@
 
                     <button type="submit" class="btn-danger">Delete</button>-->
                 <!-- Edit project form-->
-                <form th:action="@{/project/edit/{projectId}}" name="projectId"
-                      th:value="${project.getId()}" method="get" style="display:inline;">
-
+                <form th:action="@{/dashboard/project/edit/{projectId}(projectId=${project.id})}" method="get" style="display:inline;">
                     <button type="submit" class="btn-danger">Edit</button>
                 </form>
                 <!-- Slet project form
@@ -112,7 +110,7 @@
 
     <!-- Tilføj et nyt projekt -->
 
-    <div class="add-project">
+    <div class="box">
         <h2 class="inbox">Create new project</h2>
         <form th:action="@{/dashboard/add_project/{profileId}(profileId=${session.profile.id})}" method="get">
             <input type="text" name="projectName" placeholder="Enter project name" required>

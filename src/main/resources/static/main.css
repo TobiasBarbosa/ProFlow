@@ -1,7 +1,7 @@
 .flex-container {
     display: flex;
-    /*grid-template-rows: repeat(4, 100px);
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));*/
+    align-items: start;
+    justify-content: space-between;
 }
 
 .flex-item-2 {
@@ -18,27 +18,35 @@ h1 {
     text-align: center;
 }
 
+html {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 10px;
     background-color: #320f46;
     color: lightgrey;
-    width: auto;
-    justify-content: center;
-    align-items: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: start;
+    margin: 30px 30px 7.5rem;
 }
 
 footer {
     background-color: #b8baf6;
     color: #222222;
     padding: 5px;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     height: auto;
     width: 100%;
+    z-index: 1;
 }
 
 footer a {
@@ -98,11 +106,9 @@ footer p {
 
 /* Container styling */
 .container {
-    width: 75%;
     max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
-    display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     font-size: 12px;
 }
@@ -164,7 +170,7 @@ footer p {
 
 
 /* Buttons */
-.btn-primary, .btn-danger, .btn-success {
+.btn, .btn-primary, .btn-danger, .btn-success {
     display: inline-block;
     padding: 10px 15px;
     border: none;
@@ -173,6 +179,11 @@ footer p {
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-row {
+    margin-top: 2rem;
+    align-self: end;
 }
 
 .btn-primary {
@@ -193,6 +204,12 @@ footer p {
     background-color: #594973;
 }
 
+.btn-really-dangerous {
+    margin-top: 0.5rem;
+    background-color: #c82a2a;
+    color: white;
+}
+
 .btn-success {
     background-color: #6c8cf9;
     color: #fff;
@@ -210,8 +227,6 @@ footer p {
 .btn_2:hover {
    color: white;
     text-decoration: underline;
-
-
 }
 
 /* Delete form styling */
@@ -220,7 +235,8 @@ footer p {
 }
 
 /* Add project section */
-.add-project {
+.box {
+    color: black;
     margin-top: 40px;
     text-align: center;
     background-color: #fff;
@@ -229,27 +245,34 @@ footer p {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.add-project h2 {
+.box h2 {
     margin-bottom: 20px;
     font-size: 1.5rem;
 }
 
-.add-project form {
+.box form {
+    width: 500px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: start;
+    color: black;
     gap: 10px;
 }
 
-.add-project input {
+.box label {
+    margin-top: 1rem;
+}
+
+.box input {
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #ddd;
     border-radius: 5px;
-    width: 60%;
-    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.add-project button {
+.box button {
     font-size: 1rem;
 }
 
@@ -259,11 +282,11 @@ footer p {
 .login-box {
     width: 300px;
     padding: 20px;
+    margin-bottom: 25%;
     background: #eeeef5;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    align-content: center;
-    justify-content: center;
+    align-self: center;
 }
 
 .login-box h2 {
@@ -323,4 +346,10 @@ footer p {
 
 .login-box .links a:hover {
     text-decoration: underline;
+}
+
+/** haha **/
+.login-container {
+    display: flex;
+    justify-content: center;
 }
