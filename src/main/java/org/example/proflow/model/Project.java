@@ -1,5 +1,6 @@
 package org.example.proflow.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -16,7 +17,6 @@ public class Project {
     //***TO DO***-------------------------------------------------------------------------------------------------------
     //TODO slet unødvendige constructors
     //TODO lav createdDate final
-    //TODO lav default value 0 - på dem som skal have det?
     //TODO calculateDaysUntilDone() - ryk til service?
     //TODO calculateTotalEstHours() - ryk til service?
     //TODO calculateActualPrice() - ryk til service?
@@ -26,7 +26,9 @@ public class Project {
     private String name;                  // Project name
     private String description;           // Project description
     private LocalDate createdDate;        // Date the project was created
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;          // Start date of the project
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;            // End date of the project
     protected double totalEstHours;       // Total estimated hours for the project (protected so SubProject kan tilgå variable i underklasse)
     private Status status;                // Project status
@@ -176,19 +178,22 @@ public class Project {
         this.startDate = startDate;
     }
 
+
     public void setEndDate(LocalDate endDate) {
+
         if (endDate == null) {
-            throw new IllegalArgumentException("End date cannot be null.");
+            throw new IllegalArgumentException("End date cannot be null");
         }
-        if (endDate.isBefore(startDate)) {
+        if (endDate != null && startDate != null && endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("End date cannot be before start date.");
         }
         this.endDate = endDate;
     }
 
+
     public void setTotalEstHours(double totalEstHours) {
         this.totalEstHours = totalEstHours;
-    } // TODO set default value 0?
+    }
 
     public void setStatus(Status status) {
         this.status = status;
@@ -203,7 +208,7 @@ public class Project {
 
     public void setActualPrice(double actualPrice) {
         this.actualPrice = actualPrice;
-    } //TODO set default value 0?
+    }
 
     public void setProfileId(int profileId) {
         this.profileId = profileId;
@@ -240,11 +245,11 @@ public class Project {
         return totalEstHours;
     }
 
-    public void addSubProjects(SubProject subProject){
+    public void addSubProjects(SubProject subProject) {
         subProjects.add(subProject);
     }
 
-    public void removeSubProjects(SubProject subProject){
+    public void removeSubProjects(SubProject subProject) {
         subProjects.remove(subProject);
     }
 

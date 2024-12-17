@@ -14,9 +14,11 @@
         <img class="logo" src="/images/logo.png" alt="logo">
     </div>
     <div class="flex-item-2"></div>
-    <div class="flex-item-3"> <a th:object="${session.profile}" th:href="@{/edit/{profileId}(profileId=${session.profile.getId()})}" class="btn_2">Edit Profile</a>
+    <div class="flex-item-3"><a th:object="${session.profile}"
+                                th:href="@{/edit/{profileId}(profileId=${session.profile.getId()})}" class="btn_2">Edit
+        Profile</a>
         <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
-        </div>
+    </div>
 </div>
 
 <div class="header">
@@ -66,13 +68,15 @@
 <div class="container">
     <h1>Welcome to your profile, <span th:text="${profile.firstName}"></span>!</h1>
 
-     <!--Hvis listen er tom -->
+    <!--Hvis listen er tom -->
     <p th:if="${#lists.isEmpty(projectsFromProfile)}">You have no projects yet.</p>
 
     <!--Iterér gennem projects-->
     <div class="project-grid">
         <div class="card" th:each="project : ${projectsFromProfile}">
-            <img class="card-img" src="https://images.pexels.com/photos/3109807/pexels-photo-3109807.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Purple Image">
+            <img class="card-img"
+                 src="https://images.pexels.com/photos/3109807/pexels-photo-3109807.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                 alt="Purple Image">
             <div class="card-body">
                 <h5 class="card-title" th:text="${project.name}">Project title</h5>
                 <!--Gør aktiv grøn og inaktiv rød -->
@@ -107,9 +111,10 @@
     </div>
 
     <!-- Tilføj et nyt projekt -->
+
     <div class="add-project">
         <h2 class="inbox">Create new project</h2>
-        <form th:action="@{/add_project}" method="get">
+        <form th:action="@{/dashboard/add_project/{profileId}(profileId=${session.profile.id})}" method="get">
             <input type="text" name="projectName" placeholder="Enter project name" required>
             <button type="submit" class="btn-success">Create project</button>
         </form>
