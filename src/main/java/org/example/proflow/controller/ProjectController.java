@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import org.example.proflow.exception.ProjectException;
 import org.example.proflow.model.Profile;
 import org.example.proflow.model.Project;
+import org.example.proflow.model.Status;
 import org.example.proflow.model.SubProject;
 import org.example.proflow.service.ProjectService;
 import org.example.proflow.util.Validator;
@@ -32,24 +33,35 @@ public class ProjectController {
     }
 
     //***CREATE PROJECT METHODS***-----------------------------------------------------------------------------------
-    @GetMapping("/add-project/")
-    public String addProject(@PathVariable("profileId") int profileId, Model model, HttpSession session) {
+    @GetMapping("/add_project/{profileId}")
+    public String addProject(@PathVariable("profileId") int profileId,
+                             @RequestParam("projectName") String projectName,
+                             Model model,
+                             HttpSession session) {
         if (!Validator.isValid(session, profileId)) {
             return "redirect:/";
         }
+
+        Project project = new Project();
+        project.setName(projectName);
+        project.setProfileId(profileId);
+        model.addAttribute("statuses", Status.values());
         model.addAttribute("profileId", profileId);
-        model.addAttribute("project", new Project());
+        model.addAttribute("project", project);
         return "add_project";
     }
 
-    @PostMapping("/save-project")
+    @PostMapping("/save-project/{profileId}")
     public String saveProject(@PathVariable("profileId") int profileId,
-                              @ModelAttribute("projectId") Project project,
-                              Model model, HttpSession session) throws ProjectException, SQLException {
+
+                              @ModelAttribute("project") Project project) throws ProjectException, SQLException {
+
         project.setProfileId(profileId);
         projectService.addProject(project);
+
         return "redirect:/dashboard";
     }
+
 
     //***READ PROJECT METHODS***-------------------------------------------------------------------------------------
     @GetMapping("/{projectId}/{name}")

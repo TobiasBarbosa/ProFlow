@@ -24,15 +24,15 @@ public class ProjectRepository implements ProjectRepositoryInterface {
     private final DataBaseConnection dataBaseConnection;
 
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
-    public ProjectRepository(DataBaseConnection dataBaseConnection){
+    public ProjectRepository(DataBaseConnection dataBaseConnection) {
         this.dataBaseConnection = dataBaseConnection;
     }
 
     //***CREATE PROJECT***---------------------------------------------------------------------------------------------C
     public void addProject(Project project) throws SQLException {
         String insertProjectQuery = """
-                    INSERT INTO Project (name, description, created_date, start_date, end_date, total_est_hours, status, budget, actual_price, profile_id)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO Project (name, description, start_date, end_date, total_est_hours, status, budget, actual_price, profile_id)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (Connection con = dataBaseConnection.getConnection();
@@ -41,14 +41,13 @@ public class ProjectRepository implements ProjectRepositoryInterface {
             //Database setter Id
             ps.setString(1, project.getName());
             ps.setString(2, project.getDescription());
-            ps.setDate(3, Date.valueOf(project.getCreatedDate()));
-            ps.setDate(4, Date.valueOf(project.getStartDate()));
-            ps.setDate(5, Date.valueOf(project.getEndDate()));
-            ps.setDouble(6, project.getTotalEstHours());
-            ps.setString(7, project.getStatus().getDisplayStatus());
-            ps.setDouble(8, project.getBudget());
-            ps.setObject(9, project.getActualPrice());
-            ps.setInt(10, project.getProfileId());
+            ps.setDate(3, Date.valueOf(project.getStartDate()));
+            ps.setDate(4, Date.valueOf(project.getEndDate()));
+            ps.setDouble(5, project.getTotalEstHours());
+            ps.setString(6, project.getStatus().getDisplayStatus());
+            ps.setDouble(7, project.getBudget());
+            ps.setObject(8, project.getActualPrice());
+            ps.setInt(9, project.getProfileId());
 
             ps.executeUpdate();
 
@@ -88,11 +87,11 @@ public class ProjectRepository implements ProjectRepositoryInterface {
             }
             try {
                 project.setSubProjects(getSubProjectsFromProject(project.getId()));
-            } catch (NullPointerException n){
+            } catch (NullPointerException n) {
                 n.printStackTrace();
             }
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return project;
@@ -167,19 +166,6 @@ public class ProjectRepository implements ProjectRepositoryInterface {
 
         return projects;
     }
-
-//
-//    public List<SubProject> getSubProjectsFromProject(int projectId) throws SQLException{
-//
-//        List<SubProject> subProjects = new ArrayList<>();
-//
-//        for (SubProject sp : subProjectRepository.getAllSubProjects()){
-//            if(projectId == sp.getProjectId()){
-//                subProjects.add(sp);
-//            }
-//        }
-//     return subProjects;
-//    }
 
 
     public List<SubProject> getSubProjectsFromProject(int projectId) throws SQLException {

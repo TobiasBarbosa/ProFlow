@@ -1,5 +1,6 @@
 package org.example.proflow.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -12,7 +13,6 @@ public class Project extends ProjectTask{
     //***TO DO***-------------------------------------------------------------------------------------------------------
     //TODO slet unødvendige constructors
     //TODO lav createdDate final
-    //TODO lav default value 0 - på dem som skal have det?
     //TODO calculateDaysUntilDone() - ryk til service?
     //TODO calculateTotalEstHours() - ryk til service?
     //TODO calculateActualPrice() - ryk til service?
@@ -85,6 +85,7 @@ public class Project extends ProjectTask{
         this.subProjects = subProjects;
     }
 
+
     //***UTILITY METHODS***---------------------------------------------------------------------------------------------
     public double calculateActualPriceForProject() { //TODO move to service?
         double actualPrice = 0;
@@ -102,11 +103,11 @@ public class Project extends ProjectTask{
         return totalEstHours;
     }
 
-    public void addSubProjects(SubProject subProject){
+    public void addSubProjects(SubProject subProject) {
         subProjects.add(subProject);
     }
 
-    public void removeSubProjects(SubProject subProject){
+    public void removeSubProjects(SubProject subProject) {
         subProjects.remove(subProject);
     }
 
