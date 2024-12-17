@@ -7,15 +7,19 @@
 - [Using the application](#Using-the-application)
 - [Contributers](#Contributers)
 
+
 ### About ProFlow
 ProFlow is a project calculation tool made for Alpha Solutions. The program is made for project managers to give them a better overview over the projects they are managing and break down the projects into smaller parts. They can add subprojects to the projects and tasks to the subprojects.
 The program can also calculate the price of a project. 
+
 
 ### Built with
 The application is built with 
 - IntelliJ 2023.3.4
 - Java 22.0.2
 - Maven
+- Qodana
+- Microsoft Azure
 - Spring Boot
 - JDBC
 - Thymeleaf
@@ -23,11 +27,9 @@ The application is built with
 - CSS
 - MySQL
 - H2 Database Engine
-- Microsoft Azure
 - git
 - Github Projects
 - github actions
-- Qodana
 
 
 ### Using the application
