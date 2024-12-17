@@ -160,7 +160,7 @@ public class SubProjectRepository implements SubProjectRepositoryInterface {
                     task.setStatus(Status.valueOf(rs.getString("status")));
                     task.setSubProjectId(rs.getInt("sub_project_id"));
                     task.setAssignedTo(rs.getString("assigned_to"));
-                    task.setTaskPrice(rs.getDouble("price")); // Not null column
+                    task.setActualPrice(rs.getDouble("price")); // Not null column
                     tasksFromSubProject.add(task);
                 }
 
@@ -218,7 +218,7 @@ public class SubProjectRepository implements SubProjectRepositoryInterface {
     }
 
     //FOR TEST PURPOSES!!
-    public void deleteAllSubProjects() {
+    public void clearSubProjectsForTesting() {
         String query = "DELETE FROM SubProject";
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {

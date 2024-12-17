@@ -2,10 +2,6 @@ package org.example.proflow.repositoryTest;
 
 import org.example.proflow.exception.ProfileException;
 import org.example.proflow.model.*;
-import org.example.proflow.repository.ProfileRepository;
-import org.example.proflow.repository.ProjectRepository;
-import org.example.proflow.repository.SubProjectRepository;
-import org.example.proflow.repository.TaskRepository;
 import org.example.proflow.util.interfaces.ProfileRepositoryInterface;
 import org.example.proflow.util.interfaces.ProjectRepositoryInterface;
 import org.example.proflow.util.interfaces.SubProjectRepositoryInterface;
@@ -28,6 +24,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional //forklar lige hvorfor
 //@Rollback(true) // Ruller tilbage efter testen / skal bruges på databasen / ikke h2
 @ActiveProfiles("h2") // skal vi teste flere profiler?
+//TODO @clear-metoder i tearDown skal skiftes ud med @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:h2.sql")
+//@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:h2.sql")
 public class TaskRepositoryTest {
 
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
@@ -49,8 +47,8 @@ public class TaskRepositoryTest {
     //***TEST HELP METHODS***-------------------------------------------------------------------------------------------
     @BeforeEach
     //Kører før hver test og sætter en profil, et project, et subproject og en task op
-    //TODO RAPPORT: Fordele og ulemper ved test rep metode. Spcifikt dummydata i testklassen i stedet for i SQL h2
     void setUp(){
+        //arrange
         profile = new Profile();
         profile.setFirstName("test profile firstname");
         profile.setLastName("test profile lastname");
@@ -90,16 +88,16 @@ public class TaskRepositoryTest {
         task.setTotalEstHours(10);
         task.setStatus(Status.ACTIVE);
         task.setAssignedTo("test employee");
-        task.setTaskPrice(1000);
+        task.setActualPrice(1000);
     }
 
     @AfterEach
     void tearDown() {
         // Kører efter hver test to clear the database
-        taskRepository.deleteAllTasks();
-        subProjectRepository.deleteAllSubProjects();
-        projectRepository.deleteAllProjects();
-        profileRepository.deleteAllProfiles();
+        taskRepository.clearTasksForTesting();
+        subProjectRepository.clearSubProjectsForTesting();
+        projectRepository.clearProjectsForTesting();
+        profileRepository.clearProfilesForTesting();
     }
 
     //***CREATE TASK***------------------------------------------------------------------------------------------------C
@@ -154,7 +152,7 @@ public class TaskRepositoryTest {
         task2.setTotalEstHours(10);
         task2.setStatus(Status.ACTIVE);
         task2.setAssignedTo("Test2 task assigned to");
-        task2.setTaskPrice(500);
+        task2.setActualPrice(500);
         task2.setSubProjectId(subProject.getId());
 
         //Add created tasks
@@ -188,7 +186,7 @@ public class TaskRepositoryTest {
         task.setName("updated task name");
         task.setDescription("updated task description");
         task.setLocation("updated task location");
-        task.setTaskPrice(700.0);
+        task.setActualPrice(700.0);
 
         //ACT
         taskRepository.updateTask(task);
@@ -198,7 +196,7 @@ public class TaskRepositoryTest {
         assertEquals("updated task name", updatedTask.getName());
         assertEquals("updated task description", updatedTask.getDescription());
         assertEquals("updated task location", updatedTask.getLocation());
-        assertEquals(700, updatedTask.getTaskPrice());
+        assertEquals(700, updatedTask.getActualPrice());
 
     }
 

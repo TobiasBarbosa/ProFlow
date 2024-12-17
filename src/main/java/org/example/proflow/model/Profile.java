@@ -18,7 +18,6 @@ public class Profile {
     private String email;
     private String password;
 
-
     private List<Project> projects = new ArrayList<>();
 
     //***CONSTRUCTORS***------------------------------------------------------------------------------------------------
