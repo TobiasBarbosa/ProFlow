@@ -108,21 +108,16 @@ public class ProjectController {
 
         model.addAttribute("project", project);
         model.addAttribute("projectId", project.getId());
-//        model.addAttribute("name", project.getName());
-//        model.addAttribute("description", project.getDescription());
-//        model.addAttribute("startDate", project.getStartDate());
-//        model.addAttribute("endDate", project.getEndDate());
-//        //model.addAttribute("daysUntilDone", project.getDaysUntilDone());
-//        //model.addAttribute("totalSubProjectDurationHourly", project.getTotalSubProjectDurationHourly());
-//        model.addAttribute("status", project.getStatus());
-//        model.addAttribute("budget", project.getBudget());
-//        model.addAttribute("actualPrice", project.getActualPrice());
-//        model.addAttribute("profileId", project.getProfileId());
+
         return "edit_project";
     }
 
     @PostMapping("/update/{projectId}")
-    public String updateProject(@ModelAttribute Project project) throws ProjectException, SQLException {
+    public String updateProject(@PathVariable("projectId") int projectId, @ModelAttribute Project project) throws ProjectException, SQLException {
+
+
+
+        System.out.println(project);
         projectService.updateProject(project);
         return "redirect:/dashboard";
     }
@@ -138,3 +133,28 @@ public class ProjectController {
     //***END***---------------------------------------------------------------------------------------------------------
 
 }
+
+
+//        model.addAttribute("name", project.getName());
+//        model.addAttribute("description", project.getDescription());
+//        model.addAttribute("startDate", project.getStartDate());
+//        model.addAttribute("endDate", project.getEndDate());
+//        //model.addAttribute("daysUntilDone", project.getDaysUntilDone());
+//        //model.addAttribute("totalSubProjectDurationHourly", project.getTotalSubProjectDurationHourly());
+//        model.addAttribute("status", project.getStatus());
+//        model.addAttribute("budget", project.getBudget());
+//        model.addAttribute("actualPrice", project.getActualPrice());
+//        model.addAttribute("profileId", project.getProfileId());
+
+//        // Convert status if it's a string
+//        String status = project.getStatus() != null ? project.getStatus().getDisplayStatus() : null;
+//
+//        if (status == null || status.equalsIgnoreCase("Inactive")) {
+//            project.setStatus(Status.INACTIVE);  // Default to INACTIVE if not checked
+//        } else if (status.equalsIgnoreCase("Active")) {
+//            project.setStatus(Status.ACTIVE);    // Set to ACTIVE if checked
+//        }
+
+//        if (project.getStatus() == null) {
+//            project.setStatus(Status.INACTIVE); // Default to INACTIVE if not checked
+//        }

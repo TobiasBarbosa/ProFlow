@@ -119,7 +119,6 @@ public class ProfileController {
         }
 
         List<Project> projectsFromProfile =profile.getProjects();
-        System.out.println(projectsFromProfile);
         model.addAttribute("projectsFromProfile", projectsFromProfile);
         model.addAttribute("profile", profile);
         return "dashboard";
