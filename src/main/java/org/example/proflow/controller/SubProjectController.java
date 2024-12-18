@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 import java.util.List;
 
-//TODO SubProjectController: Rette endpoints og HTML sider
 //TODO SubProjectController: Rette exceptions til subProjectException ..
 
 @Controller
@@ -33,8 +32,8 @@ public class SubProjectController {
     }
 
     //***CREATE SUBPROJECT METHODS***-----------------------------------------------------------------------------------
-    @GetMapping("/add-subproject")
-    public String addSubProject(@PathVariable("projectId") int projectId, Model model, HttpSession session) throws SQLException {
+    @GetMapping("/add_subproject")
+    public String addSubProject(@PathVariable("projectId") int projectId, @RequestParam("subprojectName") Model model, HttpSession session) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
         if (!Validator.isValid(session, profile.getId())) {
             return "redirect:/";
@@ -102,8 +101,8 @@ public class SubProjectController {
             return "redirect:/";
         }
         List<Task> tasksFromSubProject = subProjectService.getTasksFromSubProject(subProjectId);
-        model.addAttribute("projectsFromProfile", tasksFromSubProject);
-        return "project";
+        model.addAttribute("tasksFromSubProject", tasksFromSubProject);
+        return "task";
     }
 
     //***UPDATE SUBPROJECT METHODS***-----------------------------------------------------------------------------------

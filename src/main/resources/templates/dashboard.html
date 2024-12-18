@@ -21,50 +21,6 @@
     </div>
 </div>
 
-<div class="header">
-
-    <div class="header-right">
-
-    </div>
-</div>
-
-<header>
-
-</header>
-<!--
-<div class="container">
-    <h1>Welcome to your profile, <span th:text="${profile.firstName}"></span>!</h1>
-
-
-    <p class="no-projects-message" th:if="${#lists.isEmpty(projectsFromProfile)}">You have no projects yet.</p>
-
-    <div class="project-grid" th:if="${!#lists.isEmpty(projectsFromProfile)}">
-        <div class="card" th:each="project : ${projectsFromProfile}">
-            <img class="card-img" src="https://images.pexels.com/photos/3109807/pexels-photo-3109807.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Purple Image">
-            <div class="card-body">
-                <h5 class="card-title" th:text="${project.name}">Project title</h5>
-
-                <a th:href="@{/project/{id}(id=${project.getId()})}" class="btn-primary">See project</a>
-
-
-                <form th:action="@{/project/remove/{id}(id=${project.projectId})}" method="post" class="delete-form">
-                    <button type="submit" class="btn-danger">Delete</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="add-project">
-        <h2 class="inbox">Create new project</h2>
-        <form th:action="@{/add-project}" method="post">
-            <input type="text" name="projectName" placeholder="Enter project name" required>
-            <button type="submit" class="btn-success">Create project</button>
-        </form>
-    </div>
-</div> -->
-
-
 <div class="container">
     <h1>Welcome to your profile, <span th:text="${profile.firstName}"></span>!</h1>
 
@@ -74,9 +30,9 @@
     <!--Iterér gennem projects-->
     <div class="project-grid">
         <div class="card" th:each="project : ${projectsFromProfile}">
-            <img class="card-img"
-                 src="https://images.pexels.com/photos/3109807/pexels-photo-3109807.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                 alt="Purple Image">
+        <img class="card-img"
+             src="https://images.pexels.com/photos/3109807/pexels-photo-3109807.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+             alt="Purple Image">
             <div class="card-body">
                 <h5 class="card-title" th:text="${project.name}">Project title</h5>
                 <!--Gør aktiv grøn og inaktiv rød -->
@@ -86,27 +42,20 @@
                     th:text="${project.status.displayStatus}">
                 </h5>
 
-                <!-- throw error because of wrong end point
-                <a th:href="@{/æproject/{id}(id=${project.projectId})}" class="btn-primary">See project</a>
-
-
-                 Form til sletning
-                <form th:action="@{/project/remove/{id}(id=${project.projectId})}" method="post" class="delete-form">
-
-                    <button type="submit" class="btn-danger">Delete</button>-->
+                <!--See project-->
+                <form th:action="@{/dashboard/{projectId}(projectId=${project.id})}" method="get" style="display:inline;">
+                    <button type="submit" class="btn-danger">See project</button>
+                </form>
                 <!-- Edit project form-->
                 <form th:action="@{/dashboard/project/edit/{projectId}(projectId=${project.id})}" method="get" style="display:inline;">
                     <button type="submit" class="btn-danger">Edit</button>
+                  <!--  Form til sletning-->
+                <form th:action="@{/dashboard/project/delete/{projectId}(projectId=${project.id})}" method="post" class="delete-form"> <!-- TODO: virker ikke -->
+                    <button type="submit" class="btn-really-dangerous">Delete</button>
                 </form>
-                <!-- Slet project form
-                <form th:action="@{/homepage/wish/remove/{id}(id=${wish.getWishId()})}" method="post" style="display:inline;">
-                    <input type="hidden" name="wishId" th:value="${wish.getWishId()}" />
-                    <button type="submit" class="btn-danger">Delete</button>
-                </form>-->
-
-            </div>
         </div>
     </div>
+</div>
 
     <!-- Tilføj et nyt projekt -->
 
@@ -126,38 +75,3 @@
 </footer>
 </body>
 </html>
-
-
-
-<!--
-<div class="container">
-    <h1>Welcome to your profile, <span th:text="${profile.firstName}"></span>!</h1>
-
-
-    <p class="no-projects-message" th:if="${#lists.isEmpty(projectsFromProfile)}">You have no projects yet.</p>
-
-    <div class="project-grid" th:if="${!#lists.isEmpty(projectsFromProfile)}">
-        <div class="card" th:each="project : ${projectsFromProfile}">
-            <img class="card-img" src="https://images.pexels.com/photos/3109807/pexels-photo-3109807.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Purple Image">
-            <div class="card-body">
-                <h5 class="card-title" th:text="${project.name}">Project title</h5>
-
-                <a th:href="@{/project/{id}(id=${project.getId()})}" class="btn-primary">See project</a>
-
-
-                <form th:action="@{/project/remove/{id}(id=${project.projectId})}" method="post" class="delete-form">
-                    <button type="submit" class="btn-danger">Delete</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="add-project">
-        <h2 class="inbox">Create new project</h2>
-        <form th:action="@{/add-project}" method="post">
-            <input type="text" name="projectName" placeholder="Enter project name" required>
-            <button type="submit" class="btn-success">Create project</button>
-        </form>
-    </div>
-</div> -->

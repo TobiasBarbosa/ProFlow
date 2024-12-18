@@ -222,6 +222,7 @@ footer p {
 .btn_2 {
     color: #6c8cf9;
     font-style: normal;
+    padding: 9px;
 }
 
 .btn_2:hover {

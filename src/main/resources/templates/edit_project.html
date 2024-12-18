@@ -84,9 +84,8 @@
                     <tr>
                         <th scope="row">Is project active?</th>
                         <td>
-
                             <label class="form-control">
-                                <select id="status"  th:field="*{status}" required>
+                                <select id="status"  th:field="*{status}" required class="btn-danger">
                                     <option th:value="${T(org.example.proflow.model.Status).ACTIVE}"
                                             th:text="${T(org.example.proflow.model.Status).ACTIVE.getDisplayStatus()}">Active
                                     </option>

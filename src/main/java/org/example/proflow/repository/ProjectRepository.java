@@ -167,7 +167,7 @@ public class ProjectRepository implements ProjectRepositoryInterface {
         return projects;
     }
 
-
+    //TODO flyt til Subproject rep?
     public List<SubProject> getSubProjectsFromProject(int projectId) throws SQLException {
         String query = "SELECT * FROM SubProject WHERE project_id = ?";
         List<SubProject> subProjectsFromProject = new ArrayList<>();

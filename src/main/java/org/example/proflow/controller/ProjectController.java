@@ -66,7 +66,7 @@ public class ProjectController {
 
 
     //***READ PROJECT METHODS***-------------------------------------------------------------------------------------
-    @GetMapping("/{projectId}/{name}")
+    @GetMapping("/{projectId}")
     public String getProjectById(@PathVariable("projectId") int projectId, Model model, HttpSession session) throws ProjectException, SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
         if (!Validator.isValid(session, profile.getId())) {
@@ -79,20 +79,22 @@ public class ProjectController {
             return "redirect:/";
         }
 
-        model.addAttribute("projectId", projectId);
-        model.addAttribute("name", project.getName());
-        return "dashboard";
-    }
-
-    @GetMapping("/project/subprojects") //shows all subprojects from a project
-    public String getSubProjectsFromProject(Model model, @RequestParam int projectId, HttpSession session) throws SQLException {
-        if (!Validator.isValid(session, projectId)) {
-            return "redirect:/";
-        }
         List<SubProject> subProjectsFromProject = projectService.getSubProjectsFromProject(projectId);
-        model.addAttribute("projectsFromProfile", subProjectsFromProject);
+        model.addAttribute("subProjectsFromProject", subProjectsFromProject);
+        model.addAttribute("project", project);
+
         return "project";
     }
+
+//    @GetMapping("/project/subprojects") //shows all subprojects from a project TODO: slet?
+//    public String getSubProjectsFromProject(Model model, @RequestParam int projectId, HttpSession session) throws SQLException {
+//        if (!Validator.isValid(session, projectId)) {
+//            return "redirect:/";
+//        }
+//        List<SubProject> subProjectsFromProject = projectService.getSubProjectsFromProject(projectId);
+//        model.addAttribute("subProjectsFromProject", subProjectsFromProject);
+//        return "project";
+//    }
 
     //***UPDATE PROJECT METHODS***-----------------------------------------------------------------------------------
     @GetMapping("/project/edit/{projectId}")
@@ -117,7 +119,6 @@ public class ProjectController {
     @PostMapping("/update/{projectId}")
     public String updateProject(@PathVariable("projectId") int projectId, @ModelAttribute Project project) throws ProjectException, SQLException {
 
-
         Project existingProject = projectService.getProjectById(projectId);
 
         if (existingProject == null) {
@@ -132,7 +133,7 @@ public class ProjectController {
 
     //***DELETE PROJECT METHODS***-----------------------------------------------------------------------------------
     @PostMapping("/project/delete/{projectId}")
-    public String deleteProject(@PathVariable("projectId") int projectId, HttpSession session) throws ProjectException, SQLException {
+    public String deleteProject(@PathVariable("projectId") int projectId, HttpSession session, Project project) throws ProjectException, SQLException {
 
         projectService.deleteProject(projectId);
         return "redirect:/dashboard";
