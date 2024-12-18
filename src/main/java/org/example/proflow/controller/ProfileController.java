@@ -162,7 +162,6 @@ public class ProfileController {
         if (!Validator.isValid(session, profileId)) {
             return "redirect:/";
         }
-//        model.addAttribute("profile", profile);
 
         Profile loggedInProfile = profileService.getProfileById(profileId);
 

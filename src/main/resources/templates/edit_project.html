@@ -37,7 +37,7 @@
 <div class="box">
     <p>Update your project details below:</p>
 
-    <form th:action="@{/update/{projectId}(projectId=${project.id})}" th:object="${project}" method="post">
+    <form th:action="@{/dashboard/update/{projectId}(projectId=${project.id})}" th:object="${project}" method="post">
         <table class="table table-bordered">
             <tbody>
             <tr>
@@ -60,7 +60,7 @@
                 <th scope="row">Start date</th>
                 <td>
                     <label>
-                        <input type="datetime-local" class="form-control" name="start_date" th:field="*{startDate}">
+                        <input type="date" class="form-control" name="start_date" th:field="*{startDate}">
                     </label>
                 </td>
             </tr>
@@ -68,7 +68,7 @@
                 <th scope="row">End date</th>
                 <td>
                     <label>
-                        <input type="datetime-local" class="form-control" name="end_date" th:field="*{endDate}">
+                        <input type="date" class="form-control" name="end_date" th:field="*{endDate}">
                     </label>
                 </td>
             </tr>
@@ -80,14 +80,23 @@
                     </label>
                 </td>
             </tr>
-            <tr>
-                <th scope="row">Is project active?</th>
-                <td>
-                    <label>
-                        <!--<input type="checkbox" class="form-control" name="status" th:field="*{status}" >-->
-                    </label>
-                </td>
-            </tr>
+
+                    <tr>
+                        <th scope="row">Is project active?</th>
+                        <td>
+
+                            <label class="form-control">
+                                <select id="status"  th:field="*{status}" required>
+                                    <option th:value="${T(org.example.proflow.model.Status).ACTIVE}"
+                                            th:text="${T(org.example.proflow.model.Status).ACTIVE.getDisplayStatus()}">Active
+                                    </option>
+                                    <option th:value="${T(org.example.proflow.model.Status).INACTIVE}"
+                                            th:text="${T(org.example.proflow.model.Status).INACTIVE.getDisplayStatus()}">Inactive
+                                    </option>
+                                </select>
+                            </label>
+                        </td>
+                    </tr>
             </tbody>
         </table>
         <div class="mt-4">

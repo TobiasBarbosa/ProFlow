@@ -52,5 +52,27 @@ public class ProjectService {
         projectRepository.deleteProject(id);
     }
 
+
+    public void mergeProject(Project source, Project target) {
+        if (source.getName() != null) {
+            target.setName(source.getName());
+        }
+        if (source.getDescription() != null) {
+            target.setDescription(source.getDescription());
+        }
+        if (source.getStartDate() != null) {
+            target.setStartDate(source.getStartDate());
+        }
+        if (source.getEndDate() != null) {
+            target.setEndDate(source.getEndDate());
+        }
+        if (source.getBudget() != 0) {
+            target.setBudget(source.getBudget());
+        }
+        if (source.getStatus() != null) {
+            target.setStatus(source.getStatus());
+        }
+    }
+
     //**END***----------------------------------------------------------------------------------------------------------
 }

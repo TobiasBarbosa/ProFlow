@@ -181,8 +181,8 @@ public abstract class ProjectTask {
                 "\nDescription: " + description +
                 "\nCreated date: " + createdDate +
                 "\nStart date: " + startDate +
-                "\nEnd date=" + endDate +
-                "\nTotal Est Hours" + totalEstHours +
+                "\nEnd date: " + endDate +
+                "\nTotal Est Hours: " + totalEstHours +
                 "\nStatus: " + status +
                 "\nActual Price: " + actualPrice ;
     }
