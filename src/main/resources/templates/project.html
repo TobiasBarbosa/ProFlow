@@ -86,9 +86,13 @@
                         th:style="${subProject.status.name() == 'ACTIVE' ? 'color:seagreen;' : (subProject.status.name() == 'INACTIVE' ? 'color:darkred;' : '')}"
                         th:text="${subProject.status.displayStatus}"></h5>
 
-                    <form th:action="@{/dashboard/project/edit/{subProjectId}(subProjectId=${subProject.id})}"
+                    <form th:action="@{/dashboard/{projectId}/subproject/edit/{subProjectId}(projectId=${projectId}, subProjectId=${subProject.id})}"
                           method="get" style="display:inline;">
                         <button type="submit" class="btn btn-warning">Edit</button>
+                    </form>
+                    <form th:action="@{/dashboard/{projectId}/subproject/{subProjectId}(projectId=${projectId}, subProjectId=${subProject.id})}"
+                          method="get" style="display:inline;">
+                        <button type="submit" class="btn btn-primary">See Subproject</button>
                     </form>
                 </div>
             </div>

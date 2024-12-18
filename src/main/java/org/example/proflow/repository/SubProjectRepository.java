@@ -126,7 +126,8 @@ public class SubProjectRepository implements SubProjectRepositoryInterface {
             e.printStackTrace();
         }
         if (subProject != null) { //Tjekker at subprojeket ikke er null, kunne også have været en try catch
-            getTasksFromSubProject(subProject.getId());
+         List<Task> tasksForSubproject = getTasksFromSubProject(subProject.getId());
+         subProject.setTasks(tasksForSubproject);
         }
 
         return subProject;
