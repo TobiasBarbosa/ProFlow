@@ -123,9 +123,9 @@ public abstract class ProjectTask {
     }
 
     public void setStartDate(LocalDate startDate) {
-        if (startDate == null) {
-            throw new IllegalArgumentException("Start date cannot be null.");
-        }
+//        if (startDate == null) {
+//            throw new IllegalArgumentException("Start date cannot be null.");
+//        }
         this.startDate = startDate;
     }
 
@@ -141,12 +141,12 @@ public abstract class ProjectTask {
 
     public void setEndDate(LocalDate endDate) {
 
-        if (endDate == null) {
-            throw new IllegalArgumentException("End date cannot be null");
-        }
-        if (endDate != null && startDate != null && endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("End date cannot be before start date.");
-        }
+//        if (endDate == null) {
+//            throw new IllegalArgumentException("End date cannot be null");
+//        }
+//        if (endDate != null && startDate != null && endDate.isBefore(startDate)) {
+//            throw new IllegalArgumentException("End date cannot be before start date.");
+//        }
         this.endDate = endDate;
     }
 
@@ -181,8 +181,8 @@ public abstract class ProjectTask {
                 "\nDescription: " + description +
                 "\nCreated date: " + createdDate +
                 "\nStart date: " + startDate +
-                "\nEnd date=" + endDate +
-                "\nTotal Est Hours" + totalEstHours +
+                "\nEnd date: " + endDate +
+                "\nTotal Est Hours: " + totalEstHours +
                 "\nStatus: " + status +
                 "\nActual Price: " + actualPrice ;
     }

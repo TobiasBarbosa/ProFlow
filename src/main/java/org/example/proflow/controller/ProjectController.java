@@ -24,12 +24,14 @@ public class ProjectController {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final ProjectService projectService;
+    private final Project project;
 //    private final ProfileService profileService;
 
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
-    public ProjectController(ProjectService projectService) {
+    public ProjectController(ProjectService projectService, Project project) {
         this.projectService = projectService;
 //        this.profileService = profileService;
+        this.project = project;
     }
 
     //***CREATE PROJECT METHODS***-----------------------------------------------------------------------------------
@@ -108,22 +110,23 @@ public class ProjectController {
 
         model.addAttribute("project", project);
         model.addAttribute("projectId", project.getId());
-//        model.addAttribute("name", project.getName());
-//        model.addAttribute("description", project.getDescription());
-//        model.addAttribute("startDate", project.getStartDate());
-//        model.addAttribute("endDate", project.getEndDate());
-//        //model.addAttribute("daysUntilDone", project.getDaysUntilDone());
-//        //model.addAttribute("totalSubProjectDurationHourly", project.getTotalSubProjectDurationHourly());
-//        model.addAttribute("status", project.getStatus());
-//        model.addAttribute("budget", project.getBudget());
-//        model.addAttribute("actualPrice", project.getActualPrice());
-//        model.addAttribute("profileId", project.getProfileId());
+
         return "edit_project";
     }
 
     @PostMapping("/update/{projectId}")
-    public String updateProject(@ModelAttribute Project project) throws ProjectException, SQLException {
-        projectService.updateProject(project);
+    public String updateProject(@PathVariable("projectId") int projectId, @ModelAttribute Project project) throws ProjectException, SQLException {
+
+
+        Project existingProject = projectService.getProjectById(projectId);
+
+        if (existingProject == null) {
+            throw new ProjectException("Project not found.");
+        }
+
+        projectService.mergeProject(project, existingProject);
+
+        projectService.updateProject(existingProject);
         return "redirect:/dashboard";
     }
 
@@ -138,3 +141,4 @@ public class ProjectController {
     //***END***---------------------------------------------------------------------------------------------------------
 
 }
+

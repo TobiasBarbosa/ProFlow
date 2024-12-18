@@ -222,7 +222,7 @@ public class ProjectRepository implements ProjectRepositoryInterface {
             ps.setString(2, project.getDescription());
             ps.setDate(3, Date.valueOf(project.getStartDate()));
             ps.setDate(4, Date.valueOf(project.getEndDate()));
-            ps.setString(5, project.getStatus().name());
+            ps.setString(5, project.getStatus().getDisplayStatus());
             ps.setDouble(6, project.getBudget());
 
             ps.setInt(7, project.getId()); // sets the id parameter (WHERE id = ? in sql script)
