@@ -9,10 +9,13 @@
 
 <h1>Create new subproject</h1>
 <div class="box">
-    <form th:action="@{/dashboard/{profileId}/{projectId}/save-subproject/{profileId}(profileId=${profileId})}" th:object="${subProject}"
+    <form th:action="@{/dashboard/{projectId}/save-subproject(projectId=${projectId})}" th:object="${subProject}"
           method="post">
         <label class="addLabel" for="name">Name</label>
         <input class="placeholder" type="text" id="name" th:field="*{name}">
+
+        <label class="addLabel" for="assignedTo">Assigned TO: </label>
+        <input class="placeholder" type="text" id="assignedTo" th:field="*{assignedTo}" required>
 
         <label class="addLabel" for="description">Description</label>
         <input class="placeholder" type="text" id="description" th:field="*{description}">
@@ -38,7 +41,7 @@
         <input class="placeholder" type="text" id="budget" th:field="*{budget}">
 
         <div class="button-row">
-            <a class="button btn btn-danger" th:href="@{/dashboard}">Back</a>
+            <a class="button btn btn-danger" th:href="@{/dashboard/{projectId}(projectId=${projectId})}">Back</a>
             <button class="button btn btn-primary" type="submit">Save</button>
         </div>
     </form>

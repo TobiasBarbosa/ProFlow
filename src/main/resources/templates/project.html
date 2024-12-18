@@ -98,8 +98,8 @@
     <!-- Create New Subproject -->
     <div class="box">
         <h2>Create a New Subproject</h2>
-        <form th:action="@{/dashboard/{projectId}/add_subproject/(projectId=${project.id})}" method="get">
-            <input type="text" name="subprojectName" placeholder="Enter subproject name" required>
+        <form th:action="@{/dashboard/{projectId}/add_subproject(projectId=${projectId})}" method="get">
+            <input type="text" name="subprojectName"  placeholder="Enter subproject name" required>
             <button type="submit" class="btn btn-success">Create Subproject</button>
         </form>
     </div>

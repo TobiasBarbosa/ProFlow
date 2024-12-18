@@ -33,8 +33,9 @@ public class SubProjectController {
 
     //***CREATE SUBPROJECT METHODS***-----------------------------------------------------------------------------------
     @GetMapping("/add_subproject")
-    public String addSubProject(@PathVariable("projectId") int projectId, Model model, HttpSession session)
+    public String addSubProject(@PathVariable("projectId") int projectId,@RequestParam("subprojectName") String subprojectName ,Model model, HttpSession session)
     throws SQLException {
+        System.out.println("PROJECT ID: " + projectId);
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
         if (!Validator.isValid(session, profile.getId())) {
             return "redirect:/";
@@ -46,17 +47,26 @@ public class SubProjectController {
             return "redirect:/dashboard";
         }
 
+        //        model.addAttribute("statuses", Status.values());
+        //        model.addAttribute("profileId", profileId);
+        //        model.addAttribute("project", project);
+        SubProject subProject = new SubProject();
+        subProject.setName(subprojectName);
+        subProject.setProjectId(projectId);
+
         model.addAttribute("projectId", projectId);
-        model.addAttribute("subProject", new SubProject());
+        model.addAttribute("subProjectName", subprojectName);
+        model.addAttribute("subProject", subProject);
         return "add_subproject";
     }
 
     @PostMapping("/save-subproject")
     public String saveSubProject(@PathVariable("projectId") int projectId,
                                  @ModelAttribute("subProject") SubProject subProject, Model model) throws SQLException {
+        System.out.println("this is the sub project to save"+ subProject);
         subProject.setProjectId(projectId);
         subProjectService.addSubProject(subProject);
-        return "redirect:/project";
+        return "redirect:/dashboard/" + projectId;
     }
 
 
@@ -168,3 +178,76 @@ public class SubProjectController {
     //***END***---------------------------------------------------------------------------------------------------------
 
 }
+
+
+
+//    //***CREATE PROJECT METHODS***-----------------------------------------------------------------------------------
+//    @GetMapping("/add_project/{profileId}")
+//    public String addProject(@PathVariable("profileId") int profileId,
+//                             @RequestParam("projectName") String projectName,
+//                             Model model,
+//                             HttpSession session) {
+//        if (!Validator.isValid(session, profileId)) {
+//            return "redirect:/";
+//        }
+//
+//        Project project = new Project();
+//        project.setName(projectName);
+//        project.setProfileId(profileId);
+//        model.addAttribute("statuses", Status.values());
+//        model.addAttribute("profileId", profileId);
+//        model.addAttribute("project", project);
+//        return "add_project";
+//    }
+//
+//    @PostMapping("/save-project/{profileId}")
+//    public String saveProject(@PathVariable("profileId") int profileId,
+//
+//                              @ModelAttribute("project") Project project) throws ProjectException, SQLException {
+//
+//        project.setProfileId(profileId);
+//        projectService.addProject(project);
+//
+//        return "redirect:/dashboard";
+//    }
+
+
+
+//@Controller
+//@RequestMapping("dashboard/{projectId}")
+//public class SubProjectController {
+//
+//    // Show the form to create a new subproject (GET Request)
+//    @GetMapping("/add_subproject")
+//    public String addSubProject(@PathVariable("projectId") int projectId, Model model, HttpSession session)
+//            throws SQLException {
+//        System.out.println("PROJECT ID: " + projectId);
+//        Profile profile = (Profile) session.getAttribute("profile"); // Check if logged in
+//        if (!Validator.isValid(session, profile.getId())) {
+//            return "redirect:/";
+//        }
+//
+//        Project project = projectService.getProjectById(projectId); // Fetch the project from the database
+//
+//        if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())) { // Validate ownership
+//            return "redirect:/dashboard";
+//        }
+//
+//        // Prepare model attributes for the form
+//        model.addAttribute("projectId", projectId);
+//        model.addAttribute("subProject", new SubProject());
+//        return "add_subproject";
+//    }
+//
+//    // Handle form submission for creating a new subproject (POST Request)
+//    @PostMapping("/save-subproject")
+//    public String saveSubProject(@PathVariable("projectId") int projectId,
+//                                 @ModelAttribute("subProject") SubProject subProject, Model model) throws SQLException {
+//        // Associate the subproject with the correct project ID
+//        subProject.setProjectId(projectId);
+//        subProjectService.addSubProject(subProject);
+//
+//        // Redirect back to the project details page (or wherever you want)
+//        return "redirect:/dashboard/" + projectId;
+//    }
+//}

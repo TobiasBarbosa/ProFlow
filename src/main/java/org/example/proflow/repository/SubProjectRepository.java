@@ -29,8 +29,8 @@ public class SubProjectRepository implements SubProjectRepositoryInterface {
     //***CREATE SUBPROJECT***------------------------------------------------------------------------------------------C
     public void addSubProject(SubProject subProject) throws SQLException {
         String insertSubProjectQuery = """
-                    INSERT INTO SubProject (name, description, created_date, start_date, end_date, status, budget, project_id, assigned_to, total_est_hours, actual_price)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO SubProject (name, description, start_date, end_date, status, budget, project_id, assigned_to, total_est_hours, actual_price)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (Connection con = dataBaseConnection.getConnection();
@@ -40,15 +40,14 @@ public class SubProjectRepository implements SubProjectRepositoryInterface {
 
             ps.setString(1, subProject.getName());
             ps.setString(2, subProject.getDescription());
-            ps.setDate(3, Date.valueOf(subProject.getCreatedDate()));
-            ps.setDate(4, Date.valueOf(subProject.getStartDate()));
-            ps.setDate(5, Date.valueOf(subProject.getEndDate()));
-            ps.setString(6, subProject.getStatus().name());
-            ps.setDouble(7, subProject.getBudget());
-            ps.setInt(8, subProject.getProjectId());
-            ps.setString(9, subProject.getAssignedTo());
-            ps.setDouble(10, subProject.getTotalEstHours());
-            ps.setDouble(11, subProject.getActualPrice());
+            ps.setDate(3, Date.valueOf(subProject.getStartDate()));
+            ps.setDate(4, Date.valueOf(subProject.getEndDate()));
+            ps.setString(5, subProject.getStatus().name());
+            ps.setDouble(6, subProject.getBudget());
+            ps.setInt(7, subProject.getProjectId());
+            ps.setString(8, subProject.getAssignedTo());
+            ps.setDouble(9, subProject.getTotalEstHours());
+            ps.setDouble(10, subProject.getActualPrice());
 
             ps.executeUpdate();
 

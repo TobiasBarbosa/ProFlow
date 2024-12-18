@@ -42,7 +42,7 @@ public class SubProject extends ProjectTask {
         this.projectId = projectId;
     }
 
-    //Constructor with no ID, projectID
+    //Constructor with no ID, projectID,
     public SubProject(String name, String description, LocalDate createdDate, LocalDate startDate, LocalDate endDate,
                       double totalEstHours, Status status, double actualPrice, double budget, String assignedTo) {
         super(name, description, createdDate, startDate, endDate, totalEstHours, status, actualPrice);
