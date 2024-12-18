@@ -20,7 +20,6 @@
 
 <div class="container">
    <h1><span th:text="${project.name}"></span></h1>
-</div>
 
 <div class="box">
     <h2>Project details:</h2>
@@ -85,32 +84,19 @@
                 th:text="${subProject.status.displayStatus}">
             </h5>
 
-            <!-- throw error because of wrong end point
-            <a th:href="@{/æproject/{id}(id=${project.projectId})}" class="btn-primary">See project</a>
-
-
-             Form til sletning
-            <form th:action="@{/project/remove/{id}(id=${project.projectId})}" method="post" class="delete-form">
-
-                <button type="submit" class="btn-danger">Delete</button>-->
-            <!-- Edit project form-->
             <form th:action="@{/dashboard/project/edit/{projectId}(projectId=${project.id})}" method="get" style="display:inline;">
                 <button type="submit" class="btn-danger">Edit</button>
             </form>
-            <!-- Slet project form
-            <form th:action="@{/homepage/wish/remove/{id}(id=${wish.getWishId()})}" method="post" style="display:inline;">
-                <input type="hidden" name="wishId" th:value="${wish.getWishId()}" />
-                <button type="submit" class="btn-danger">Delete</button>
-            </form>-->
 
         </div>
     </div>
 </div>
+</div>
 
-<!-- Tilføj et nyt subprojekt -->
+<!-- Tilføj et nyt subprojekt-->
 <div class="box">
     <h2 class="inbox">Create new subproject</h2>
-    <form th:action="@{/dashboard/add_subproject/}" method="get">
+    <form th:action="@{/dashboard/{projectId}/add_subproject/(projectId=${project.id})}" method="get">
         <input type="text" name="subprojectName" placeholder="Enter subproject name" required>
         <button type="submit" class="btn-success">Create subproject</button>
     </form>

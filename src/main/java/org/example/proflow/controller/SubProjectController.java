@@ -18,7 +18,7 @@ import java.util.List;
 //TODO SubProjectController: Rette exceptions til subProjectException ..
 
 @Controller
-@RequestMapping("dashboard/{profileId}/{projectId}")
+@RequestMapping("dashboard/{projectId}")
 public class SubProjectController {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
@@ -33,7 +33,8 @@ public class SubProjectController {
 
     //***CREATE SUBPROJECT METHODS***-----------------------------------------------------------------------------------
     @GetMapping("/add_subproject")
-    public String addSubProject(@PathVariable("projectId") int projectId, @RequestParam("subprojectName") Model model, HttpSession session) throws SQLException {
+    public String addSubProject(@PathVariable("projectId") int projectId, Model model, HttpSession session)
+    throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
         if (!Validator.isValid(session, profile.getId())) {
             return "redirect:/";
@@ -44,6 +45,7 @@ public class SubProjectController {
         if(!Validator.isProjectOwned(profile.getId(), project.getProfileId())){ //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
             return "redirect:/dashboard";
         }
+
         model.addAttribute("projectId", projectId);
         model.addAttribute("subProject", new SubProject());
         return "add_subproject";
@@ -155,7 +157,8 @@ public class SubProjectController {
 
     //***DELETE SUBPROJECT METHODS***-----------------------------------------------------------------------------------
     @PostMapping("/subproject/delete/{subProjectId}")
-    public String deleteSubProject(@PathVariable("subProjectId") int subProjectId, int projectId, HttpSession session) throws SQLException {
+    public String deleteSubProject(@PathVariable("subProjectId") int subProjectId, @PathVariable("projectId") int projectId, HttpSession session)
+    throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
         if (!Validator.isValid(session, profile.getId())) {
             return "redirect:/";
