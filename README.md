@@ -34,10 +34,14 @@ The application is built with
 
 ### Using the application
 To run the program locally:
-1. Clone the repository
-2. Edit environment varibales
-3. Install mySQL and copy and run the SQL scripts
-4. Localhost
+1. Clone this Github repository
+2. Open the project in IntelliJ or similar IDE programming software
+3. Install MySQL Workbench and copy SQL script from docs and run the script locally.
+4. Create environment variables in application configurations. Make sure that the dev and prod credentials have the same name as the keys in the properties files. 
+5. Change Spring Profile: from prod to dev in the application.properties file
+7. Run the program
+8. Open localhost: http://localhost:8080/
+9. Create profile and log in
 
 ### Contributers
 @TobiasBarbosa
