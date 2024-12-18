@@ -34,8 +34,7 @@ public class ProfileRepository implements ProfileRepositoryInterface {
                 """;
 
         try (Connection con = dataBaseConnection.getConnection()) {
-            //TODO:
-            // Check for duplicate email
+            //TODO Check for duplicate email
 //            for (Profile p : getAllProfiles())  {
 //                if (profile.getEmail().equalsIgnoreCase(p.getEmail())) {
 //                    throw new ProfileException("Profile with this email already exists");
@@ -121,7 +120,7 @@ public class ProfileRepository implements ProfileRepositoryInterface {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        }  //TODO måske refaktorere?
+        }  //TODO refaktorer
         try {
             profile.setProjects(getProjectsFromProfile(id));
         } catch (NullPointerException n){
@@ -217,7 +216,7 @@ public class ProfileRepository implements ProfileRepositoryInterface {
     }
 
     //***FOR TEST PURPOSES ONLY!!***------------------------------------------------------------------------------------
-    public void clearProfilesForTesting() {
+    public void clearProfilesForTesting() { //TODO slettes når vi bruger nye testmetoder
         String query = "DELETE FROM Profile";
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {

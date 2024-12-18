@@ -9,17 +9,6 @@ import java.util.List;
 @Component
 public class SubProject extends ProjectTask {
 
-    //^^^EXAM QUESTIONS^^^----------------------------------------------------------------------------------------------
-    //Klasse adgang: Hvorfor har vi valgt at fylde List<Task> fra subProjectRepository?
-
-    //***TO DO***-------------------------------------------------------------------------------------------------------
-    //TODO slet unødvendige constructors
-    //TODO calculateDaysUntilDone() - ryk til service?
-    //TODO calculateTotalEstHours() - ryk til service?
-    //TODO calculateActualPrice() - ryk til service?
-    //        this.totalEstHours = calculateTotalEstHoursForSubProject(); // Use SubProject's method
-//        this.actualPrice = calculateActualPriceForSubProject();     // Use SubProject's method
-
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private double budget;
     private int projectId;        // Parent project ID
@@ -105,7 +94,7 @@ public class SubProject extends ProjectTask {
     }
 
     //***UTILITY METHODS***---------------------------------------------------------------------------------------------
-    public double calculateActualPriceForSubProject() {
+    public double calculateActualPriceForSubProject() { //TODO rykkes til service
         double actualPrice = 0;
         for (Task t : tasks) {
             actualPrice += t.getActualPrice();
@@ -113,7 +102,7 @@ public class SubProject extends ProjectTask {
         return actualPrice;
     }
 
-    public double calculateTotalEstHoursForSubProject() {
+    public double calculateTotalEstHoursForSubProject() { //TODO rykkes til service
         double totalEstHours = 0;
         for (Task t : tasks) {
             totalEstHours += t.getTotalEstHours();

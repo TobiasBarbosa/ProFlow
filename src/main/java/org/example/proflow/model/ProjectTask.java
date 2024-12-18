@@ -5,9 +5,6 @@ import java.time.temporal.ChronoUnit;
 
 public abstract class ProjectTask {
 
-    //TODO automatiser calculate metode for totalEstHours
-    //TODO automatiser calculate metode for actualPrice
-
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private int id;
     private String name;
@@ -129,16 +126,6 @@ public abstract class ProjectTask {
         this.startDate = startDate;
     }
 
-//    public void setEndDate(LocalDate endDate) {
-//        if (endDate == null) {
-//            throw new IllegalArgumentException("End date cannot be null.");
-//        }
-//        if (endDate.isBefore(startDate)) {
-//            throw new IllegalArgumentException("End date cannot be before start date.");
-//        }
-//        this.endDate = endDate;
-//    }
-
     public void setEndDate(LocalDate endDate) {
 
 //        if (endDate == null) {
@@ -163,7 +150,7 @@ public abstract class ProjectTask {
     }
 
     //***UTILITY METHODS***---------------------------------------------------------------------------------------------
-    public int calculateDaysUntilDone(LocalDate startDate, LocalDate endDate) {
+    public int calculateDaysUntilDone(LocalDate startDate, LocalDate endDate) { //TODO rykkes til service
         if (startDate == null || endDate == null) {
             throw new IllegalArgumentException("Start and end dates must not be null.");
         }

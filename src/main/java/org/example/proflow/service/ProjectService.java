@@ -53,6 +53,7 @@ public class ProjectService {
     }
 
 
+    //Bruges i update, sørger for der ikke overskrives med null/0 når man ikke har skrevet noget
     public void mergeProject(Project source, Project target) {
         if (source.getName() != null) {
             target.setName(source.getName());

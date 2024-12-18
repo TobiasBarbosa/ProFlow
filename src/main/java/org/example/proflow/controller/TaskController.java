@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 import java.util.List;
 
-//TODO TaskController: Rette endpoints og html sider
 //TODO TaskController: Rette exceptions til taskException
 
 @Controller
@@ -23,7 +22,6 @@ public class TaskController {
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final TaskService taskService;
     private final ProjectService projectService;
-    private Model model;
 
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
     public TaskController(TaskService taskService, ProjectService projectService) {
@@ -58,7 +56,7 @@ public class TaskController {
     }
 
     //***READ TASK METHODS***-------------------------------------------------------------------------------------------
-    @GetMapping("tasks") //TODO skal vi bruge getAllTasks?
+    @GetMapping("tasks")
     public String getAllTasks(Model model, HttpSession session, int projectId) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");
         if (!Validator.isValid(session, profile.getId())) {
@@ -111,30 +109,18 @@ public class TaskController {
 
         Task task = taskService.getTaskById(taskId);
         model.addAttribute("task", task);
-//        model.addAttribute("taskId", task.getId()); //TODO slet de her? 
-//        model.addAttribute("name", task.getName());
-//        model.addAttribute("description", task.getDescription());
-//        model.addAttribute("location", task.getLocation());
-//        model.addAttribute("startDate", task.getStartDate());
-//        model.addAttribute("endDate", task.getEndDate());
-//        //model.addAttribute("daysUntilDone", task.getDaysUntilDone());
-//        //model.addAttribute("hourlyDuration", task.getHourlyDuration());
-//        model.addAttribute("status", task.getStatus());
-//        model.addAttribute("subProjectId", task.getSubProjectId());
-//        model.addAttribute("assignedTo", task.getAssignedTo());
-//        model.addAttribute("taskPrice", task.getTaskPrice());
         return "edit_task";
     }
 
     @PostMapping("/task/update")
     public String updateTask(@ModelAttribute Task task) throws SQLException {
-        int taskId = task.getId();
+        //int taskId = task.getId();
         taskService.updateTask(task);
         return "redirect:/task";
     }
 
     //***DELETE TASK METHODS***-----------------------------------------------------------------------------------------
-    @PostMapping("/task/delete/{taskId}")  //TODO skal validator være her?
+    @PostMapping("/task/delete/{taskId}")
     public String deleteTask(@PathVariable("taskId") int taskId, HttpSession session, int projectId) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");
         if (!Validator.isValid(session, profile.getId())) {
@@ -146,7 +132,7 @@ public class TaskController {
         if(!Validator.isProjectOwned(profile.getId(), project.getProfileId())) {
             return "redirect:/dashboard";
         }
-        Task task = taskService.getTaskById(taskId);
+        //Task task = taskService.getTaskById(taskId);
         taskService.deleteTask(taskId);
         return "redirect:/subproject";
     }

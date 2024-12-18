@@ -21,5 +21,5 @@ public interface TaskRepositoryInterface {
     // Delete a task by its ID
     void deleteTask(int taskId) throws SQLException;
 
-    void clearTasksForTesting();
+    void clearTasksForTesting(); //TODO skal fjernes, er kun midlertidigt til test
 }

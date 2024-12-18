@@ -18,7 +18,7 @@ public interface ProjectRepositoryInterface {
     List<Project> getAllProjects() throws SQLException;
 
     // Read all projects associated with a specific profile ID
-    List<Project> getProjectsFromProfile(int profileId);
+    List<Project> getProjectsFromProfile(int profileId); //TODO fjern duplikeret kode
 
     // Read all subprojects associated with a specific project ID
     List<SubProject> getSubProjectsFromProject(int projectId) throws SQLException;
@@ -29,6 +29,6 @@ public interface ProjectRepositoryInterface {
     // Delete a project by its ID
     void deleteProject(int projectId) throws SQLException;
 
-    void clearProjectsForTesting();
+    void clearProjectsForTesting(); //TODO skal fjernes, er kun midlertidigt til test
 
 }
