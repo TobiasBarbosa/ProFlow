@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 import java.util.List;
 
-//TODO SubProjectController: Rette exceptions til subProjectException ..
+//TODO SubProjectController: Rette exceptions til subProjectException
 
 @Controller
 @RequestMapping("dashboard/{projectId}")
@@ -61,7 +61,7 @@ public class SubProjectController {
 
 
     //***READ SUBPROJECT METHODS***-------------------------------------------------------------------------------------
-    @GetMapping("/subprojects")  //TODO skal vi bruge en getallSubProjects
+    @GetMapping("/subprojects")
     public String getAllSubProjects(Model model, HttpSession session, int projectId) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
         if (!Validator.isValid(session, profile.getId())) {
@@ -123,16 +123,6 @@ public class SubProjectController {
         SubProject subProject = subProjectService.getSubProjectById(subProjectId);
         model.addAttribute("subProject", subProject);
         model.addAttribute("subProjectId", subProject.getId());
-        model.addAttribute("name", subProject.getName());
-        model.addAttribute("description", subProject.getDescription());
-        model.addAttribute("startDate", subProject.getStartDate());
-        model.addAttribute("endDate", subProject.getEndDate());
-        //model.addAttribute("daysUntilDone", subProject.getDaysUntilDone());
-        //model.addAttribute("totalTaskDurationHourly", subProject.getTotalTaskDurationHourly());
-        model.addAttribute("status", subProject.getStatus());
-        model.addAttribute("projectId", subProject.getProjectId());
-        model.addAttribute("assignedTo", subProject.getAssignedTo());
-        model.addAttribute("budget", subProject.getBudget());
         return "edit_subproject";
     }
 

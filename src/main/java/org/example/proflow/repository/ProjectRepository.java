@@ -14,12 +14,6 @@ import java.util.List;
 @Repository
 public class ProjectRepository implements ProjectRepositoryInterface {
 
-    //***TO DO***-------------------------------------------------------------------------------------------------------
-    //TODO fix duration in database & methods
-    //TODO make method that ensures warning when actualPrice passes budget
-    //TODO what do we do with duration?
-    //TODO createdDate final?
-
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final DataBaseConnection dataBaseConnection;
 
@@ -132,7 +126,7 @@ public class ProjectRepository implements ProjectRepositoryInterface {
         return projects;
     }
 
-    public List<Project> getProjectsFromProfile(int profileId) {
+    public List<Project> getProjectsFromProfile(int profileId) { //TODO fjern duplikeret kode, denne findes også i ProfileRepository
         List<Project> projects = new ArrayList<>();
         String query = "SELECT * FROM Project WHERE profile_id = ?";
 
@@ -245,7 +239,7 @@ public class ProjectRepository implements ProjectRepositoryInterface {
 
     //***TEST METHODS***------------------------------------------------------------------------------------------------
     //FOR TEST PURPOSES!!
-    public void clearProjectsForTesting() {
+    public void clearProjectsForTesting() { //TODO slettes når vi bruger nye testmetoder
         String query = "DELETE FROM Project";
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {

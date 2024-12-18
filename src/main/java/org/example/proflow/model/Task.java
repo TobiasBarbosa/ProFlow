@@ -8,15 +8,6 @@ import java.time.temporal.ChronoUnit;
 @Component
 public class Task extends ProjectTask{
 
-    //^^^EXAM QUESTION^^^-----------------------------------------------------------------------------------------------
-    //@Component - Hvad gør den?
-
-    //***TO DO***-------------------------------------------------------------------------------------------------------
-    //TODO lav createdDate attribute final!
-    //TODO slet unødvendige constructors
-    //TODO lav implementer interface?
-    //TODO calculateDaysUntilDone() - ryk til service?
-
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private String location;        // Location where the task is performed.
     private String assignedTo;      // Person to whom the task is assigned.

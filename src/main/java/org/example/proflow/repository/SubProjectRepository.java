@@ -14,11 +14,6 @@ import java.util.List;
 @Repository
 public class SubProjectRepository implements SubProjectRepositoryInterface {
 
-    //***EXAM QUESTIONS***----------------------------------------------------------------------------------------------
-    // Kunne man have lavet en mere effektiv kode, eller mindre kode. eks.vis jdbc template??
-
-    //***TO DO***-------------------------------------------------------------------------------------------------------
-    //TODO createdDate final?
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final DataBaseConnection dataBaseConnection;
@@ -218,7 +213,7 @@ public class SubProjectRepository implements SubProjectRepositoryInterface {
     }
 
     //FOR TEST PURPOSES!!
-    public void clearSubProjectsForTesting() {
+    public void clearSubProjectsForTesting() { //TODO slettes når vi bruger nye testmetoder
         String query = "DELETE FROM SubProject";
         try (Connection con = dataBaseConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
@@ -227,20 +222,6 @@ public class SubProjectRepository implements SubProjectRepositoryInterface {
             throw new RuntimeException("Failed to clear subprojects", e);
         }
     }
-
-    //***OTHER METHODS***-----------------------------------------------------------------------------------------------
-//    public List<Task> getTaskFromSubProject(int subProjectId) throws SQLException{
-//
-//
-//            List<Task> tasks = new ArrayList<>();
-//
-//            for (Task t : taskRepository.getAllTasks()){
-//                if(subProjectId == t.getSubProjectId()){
-//                    tasks.add(t);
-//                }
-//            }
-//            return tasks;
-//        }
 
 
 

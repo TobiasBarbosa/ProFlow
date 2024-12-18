@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 import java.util.List;
 
-//TODO ProjectController: Rette endpoints og HTML sider
 //TODO ProjectController: Rette exceptions til ProjectException
 
 @Controller
@@ -25,12 +24,10 @@ public class ProjectController {
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final ProjectService projectService;
     private final Project project;
-//    private final ProfileService profileService;
 
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
     public ProjectController(ProjectService projectService, Project project) {
         this.projectService = projectService;
-//        this.profileService = profileService;
         this.project = project;
     }
 
@@ -86,15 +83,6 @@ public class ProjectController {
         return "project";
     }
 
-//    @GetMapping("/project/subprojects") //shows all subprojects from a project TODO: slet?
-//    public String getSubProjectsFromProject(Model model, @RequestParam int projectId, HttpSession session) throws SQLException {
-//        if (!Validator.isValid(session, projectId)) {
-//            return "redirect:/";
-//        }
-//        List<SubProject> subProjectsFromProject = projectService.getSubProjectsFromProject(projectId);
-//        model.addAttribute("subProjectsFromProject", subProjectsFromProject);
-//        return "project";
-//    }
 
     //***UPDATE PROJECT METHODS***-----------------------------------------------------------------------------------
     @GetMapping("/project/edit/{projectId}")

@@ -13,13 +13,6 @@ import java.util.List;
 @Repository
 public class TaskRepository implements TaskRepositoryInterface {
 
-    //***EXAM QUESTIONS***----------------------------------------------------------------------------------------------
-    //what?
-
-    //***TO DO***-------------------------------------------------------------------------------------------------------
-    //TODO createdDate final?
-    //TODO updateTask hvilke værdier skal være med (se noter i metode)
-
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final DataBaseConnection dataBaseConnection;
 
@@ -102,7 +95,7 @@ public class TaskRepository implements TaskRepositoryInterface {
         return tasks;
     }
 
-    //GET TASKS BY ID
+
     public Task getTaskById(int id) throws SQLException {
         String query = "SELECT * FROM Task WHERE id = ?";
         Task task = null;

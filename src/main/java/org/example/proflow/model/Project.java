@@ -10,13 +10,6 @@ import java.util.List;
 @Component
 public class Project extends ProjectTask{
 
-    //***TO DO***-------------------------------------------------------------------------------------------------------
-    //TODO slet unødvendige constructors
-    //TODO lav createdDate final
-    //TODO calculateDaysUntilDone() - ryk til service?
-    //TODO calculateTotalEstHours() - ryk til service?
-    //TODO calculateActualPrice() - ryk til service?
-
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private double budget;                // Budget for the project
     private int profileId;                // Profile ID associated with the project
@@ -87,7 +80,7 @@ public class Project extends ProjectTask{
 
 
     //***UTILITY METHODS***---------------------------------------------------------------------------------------------
-    public double calculateActualPriceForProject() { //TODO move to service?
+    public double calculateActualPriceForProject() { //TODO move to service
         double actualPrice = 0;
         for (SubProject sp : subProjects) {
             actualPrice += sp.getActualPrice();
@@ -95,7 +88,7 @@ public class Project extends ProjectTask{
         return actualPrice;
     }
 
-    public double calculateTotalEstHoursForProject() { //TODO move to service?
+    public double calculateTotalEstHoursForProject() { //TODO move to service
         double totalEstHours = 0;
         for (SubProject sp : subProjects) {
             totalEstHours += sp.getTotalEstHours();

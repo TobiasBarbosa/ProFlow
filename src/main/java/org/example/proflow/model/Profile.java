@@ -8,9 +8,6 @@ import java.util.List;
 @Component
 public class Profile {
 
-    //***TO DO***-------------------------------------------------------------------------------------------------------
-    //TODO slet unødvendige constructors
-
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private int id;
     private String firstName;

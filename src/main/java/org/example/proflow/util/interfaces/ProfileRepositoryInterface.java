@@ -29,5 +29,5 @@ public interface ProfileRepositoryInterface {
     // Delete a profile by its ID
     void deleteProfile(int id);
 
-    void clearProfilesForTesting();
+    void clearProfilesForTesting(); //TODO skal fjernes, er kun midlertidigt til test
 }

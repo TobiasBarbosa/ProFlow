@@ -15,7 +15,6 @@ import java.awt.color.ProfileDataException;
 import java.sql.SQLException;
 import java.util.List;
 
-//TODO ProfileController: Rette endpoints og HTML sider
 //TODO ProfileController: Rette exceptions til ProfileException
 
 @Controller
@@ -60,19 +59,6 @@ public class ProfileController {
         return "redirect:/"; //TODO: HTML skal returnere noget ala "Forkerte brugeroplysninger, prøv igen"
     }
 
-//    @GetMapping("/dashboard")
-//    public String showProfileDashboard(HttpSession session, Model model) throws ProfileException {
-//        Profile profile = (Profile) session.getAttribute("profile");
-//
-//        if (profile == null) {
-//            return "redirect:/login";
-//        }
-//
-//        model.addAttribute("profile", profile);
-//        List<Project> projects = profileService.getProjectsFromProfile(profile.getId());
-//        model.addAttribute("projects", projects);
-//        return "dashboard";
-//    }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
@@ -102,14 +88,9 @@ public class ProfileController {
     }
 
 
-//    @PostMapping("/save-profile") //PostMapping tilføjer data til database
-//    public String saveProfile(@ModelAttribute Profile profile) throws ProfileDataException {
-//        profileService.addProfile(profile);
-//        return "redirect:/dashboard";
-//    }
 
     //***READ PROFILE***-----------------------------------------------------------------------------------------------R
-//    ***PROFILE(PM)***
+    //***PROFILE(PM)***
     @GetMapping("/dashboard") //dashboard til projektleder (viser alle projekter for en projektleder)
     public String dashboard(HttpSession session, Model model) throws ProfileException, SQLException {
         Profile profile = (Profile) session.getAttribute("profile");
@@ -133,7 +114,6 @@ public class ProfileController {
     }
 
     @GetMapping("/admin-dashboard/profiles")
-    //TODO argumentere for hvorfor den her ligger her i profileController, mens getAllSubProjects ligger i taskSubProjects og getAllTasks ligger i taskController
     public String getAllProjects(Model model) throws SQLException { //til admin til at se liste over alle projekter
         List<Project> projects = projectService.getAllProjects();
         model.addAttribute("Projects", projects);
@@ -149,10 +129,6 @@ public class ProfileController {
         }
         Profile profile = profileService.getProfileById(profileId);
         model.addAttribute("profile", profile);
-//        model.addAttribute("profileName", profile.getFirstName());
-//        model.addAttribute("profileLastName", profile.getLastName());
-//        model.addAttribute("profileEmail", profile.getEmail());
-//        model.addAttribute("profilePassword",profile.getPassword());
         return "edit_profile";
     }
 
