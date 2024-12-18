@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit profile</title>
+    <title>Add project</title>
     <link rel="stylesheet" th:href="@{/main.css}">
     <link rel="icon" type="image/x-icon" href="/images/favicon.png">
 </head>
@@ -36,7 +36,7 @@
         <input class="placeholder" type="date" id="endDate" th:field="*{endDate}" required>
 
         <label class="addLabel" for="status">Status</label>
-        <select id="status" th:field="*{status}" required>
+        <select id="status" th:field="*{status}" required class="btn-danger">
             <option th:value="${T(org.example.proflow.model.Status).ACTIVE}"
                     th:text="${T(org.example.proflow.model.Status).ACTIVE.getDisplayStatus()}">Active
             </option>

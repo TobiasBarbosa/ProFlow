@@ -2,17 +2,53 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>addSubproject</title>
+    <title>Add subproject</title>
     <link rel="stylesheet" th:href="@{/main.css}">
 </head>
-
 <body>
 
 <h1>Create new subproject</h1>
-<div class="add">
-    <form th:action="@{dashboard/{profileId}/{projectId}/savesubproject}" th:object="${subproject}" method="post">
+<div class="box">
+    <form th:action="@{/dashboard/{profileId}/{projectId}/save-subproject/{profileId}(profileId=${profileId})}" th:object="${subProject}"
+          method="post">
         <label class="addLabel" for="name">Name</label>
-        <input class="placeholder" type="text" id="name" th:field="*{subProject.getName()}"> <!-- ved ikke om subProject.getName() er rigtigt-->
+        <input class="placeholder" type="text" id="name" th:field="*{name}">
+
+        <label class="addLabel" for="description">Description</label>
+        <input class="placeholder" type="text" id="description" th:field="*{description}">
+
+        <label class="addLabel" for="startDate">Start date</label>
+        <input class="placeholder" type="date" id="startDate" th:field="*{startDate}" required>
+
+
+        <label class="addLabel" for="endDate">End date</label>
+        <input class="placeholder" type="date" id="endDate" th:field="*{endDate}" required>
+
+        <label class="addLabel" for="status">Status</label>
+        <select id="status" th:field="*{status}" required class="btn-danger">
+            <option th:value="${T(org.example.proflow.model.Status).ACTIVE}"
+                    th:text="${T(org.example.proflow.model.Status).ACTIVE.getDisplayStatus()}">Active
+            </option>
+            <option th:value="${T(org.example.proflow.model.Status).INACTIVE}"
+                    th:text="${T(org.example.proflow.model.Status).INACTIVE.getDisplayStatus()}">Inactive
+            </option>
+        </select>
+
+        <label class="addLabel" for="budget">Budget</label>
+        <input class="placeholder" type="text" id="budget" th:field="*{budget}">
+
+        <div class="button-row">
+            <a class="button btn btn-danger" th:href="@{/dashboard}">Back</a>
+            <button class="button btn btn-primary" type="submit">Save</button>
+        </div>
+    </form>
+</div>
+<!--
+<h1>Create new subproject</h1>
+<div class="add">
+    <form th:action="@{dashboard/{profileId}/{projectId}/save-subproject}" th:object="${subProject}" method="post">
+        <label class="addLabel" for="name">Name</label>
+        <input class="placeholder" type="text" id="name" th:field="*{subProject.getName()}">  ved ikke om subProject.getName() er rigtigt
 
         <br><label class="addLabel" for="description">Description</label>
         <input class="placeholder" type="text" id="description" th:field="*{subProject.getDescription()}">
@@ -32,11 +68,13 @@
         <br><label class="addLabel" for="assignedTo">Assign</label>
         <input class="placeholder" type="text" id="assignedTo" th:field="*{subProject.getAssignedTo()}">
 
-
-        <br><button class="button" method="submit">Save</button>
-        <button class="button" href="/projects">Back</button>
+        <div class="button-row">
+            <a class="button btn btn-danger" th:href="@{/dashboard/{projectId}/{name}(projectId=${subProject.id},name=${subProject.name})}">Back</a>
+            <button class="button btn btn-primary" type="submit">Save</button>
+        </div>
     </form>
 </div>
+-->
 
 </body>
 
