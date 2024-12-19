@@ -16,9 +16,9 @@
     </div>
     <div class="flex-item-2"></div>
     <div class="flex-item-3">
-        <a th:href="@{/dashboard}" class="btn btn-primary">Back to Project</a>
-        <a th:href="@{/dashboard/{projectId}/subproject/edit/{subProjectId}(projectId=${projectId}, subProjectId=${subProject.id})}"
-           class="btn btn-warning">Edit Subproject</a>
+        <a th:href="@{/dashboard/{projectId}(projectId=${project.id})}" class="btn btn-primary">Back</a>
+       <!-- <a th:href="@{/dashboard/{projectId}/subproject/edit/{subProjectId}(projectId=${projectId}, subProjectId=${subProject.id})}"
+           class="btn btn-warning">Edit Subproject</a>-->
         <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
     </div>
 </div>
@@ -67,21 +67,21 @@
             <div class="card" th:each="task : ${tasks}">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${task.name}">Task Title</h5>
-                    <p th:text="${task.description}">Task Description</p>
-                    <p>Status:
-                        <span th:style="${task.status.name() == 'ACTIVE' ? 'color:seagreen;' : (task.status.name() == 'INACTIVE' ? 'color:darkred;' : '')}"
-                              th:text="${task.status.displayStatus}"></span>
-                    </p>
+                    <h3 th:text="${task.description}">Task Description</h3>
+                    <h5 class="card-status"
+                         th:style="${task.status.name() == 'ACTIVE' ? 'color:seagreen;' : (task.status.name() == 'INACTIVE' ? 'color:darkred;' : '')}"
+                              th:text="${task.status.displayStatus}">
+                    </h5>
 
                     <!-- Edit, See, Delete Buttons -->
-                    <form th:action="@{/task/edit/{taskId}(taskId=${task.id})}" method="get" style="display:inline;">
-                        <button type="submit" class="btn btn-warning">Edit</button>
-                    </form>
                     <form th:action="@{/task/{taskId}(taskId=${task.id})}" method="get" style="display:inline;">
-                        <button type="submit" class="btn btn-primary">See</button>
+                        <button type="submit" class="btn btn-danger">See task</button>
+                    </form>
+                    <form th:action="@{/task/edit/{taskId}(taskId=${task.id})}" method="get" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Edit</button>
                     </form>
                     <form th:action="@{/task/delete/{taskId}(taskId=${task.id})}" method="post" style="display:inline;">
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-really-dangerous">Delete</button>
                     </form>
                 </div>
             </div>
