@@ -2,47 +2,55 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>addTask</title>
+    <title>Add Task</title>
     <link rel="stylesheet" th:href="@{/main.css}">
 </head>
 
 <body>
-<h1>Create new task</h1>
-<div class="add">
-    <form th:action="@{dashboard/{profileId}/{projectId}/savesubproject}" th:object="${subproject}" method="post">
+<h1>Create New Task</h1>
+<div class="box">
+    <!-- Task Form -->
+    <form th:action="@{/dashboard/{projectId}/{subProjectId}/save-task(subProjectId=${subProjectId}, projectId=${projectId})}"
+          th:object="${task}" method="post">
         <label class="addLabel" for="name">Name</label>
-        <input class="placeholder" type="text" id="name" th:field="*{task.getName()}"> <!-- ved ikke om subProject.getName() er rigtigt-->
+        <input class="placeholder" type="text" id="name" th:field="*{name}" placeholder="Task Name" required>
 
-        <br><label class="addLabel" for="description">Description</label>
-        <input class="placeholder" type="text" id="description" th:field="*{task.getDescription()}">
+        <label class="addLabel" for="description">Description</label>
+        <textarea class="placeholder" id="description" th:field="*{description}" placeholder="Task Description" rows="4"></textarea>
 
-        <br><label class="addLabel" for="location">Location</label>
-        <input class="placeholder" type="text" id="location" th:field="*{task.getLocation()}">
+        <label class="addLabel" for="location">Location</label>
+        <input class="placeholder" type="text" id="location" th:field="*{location}" placeholder="Location">
 
-        <br><label class="addLabel" for="startDate">Start date</label>
-        <input class="placeholder" type="text" id="startDate" th:field="*{task.getStartDate()}">
+        <label class="addLabel" for="startDate">Start Date</label>
+        <input class="placeholder" type="date" id="startDate" th:field="*{startDate}" required>
 
-        <br><label class="addLabel" for="endDate">End date</label>
-        <input class="placeholder" type="text" id="endDate" th:field="*{task.getEndDate()}">
+        <label class="addLabel" for="endDate">End Date</label>
+        <input class="placeholder" type="date" id="endDate" th:field="*{endDate}" required>
 
-        <br><label class="addLabel" for="totalEstHours">Estimated hours</label>
-        <input class="placeholder" type="text" id="totalEstHours" th:field="*{task.getTotalEstHours()}">
+        <label class="addLabel" for="totalEstHours">Estimated Hours</label>
+        <input class="placeholder" type="number" step="0.1" id="totalEstHours" th:field="*{totalEstHours}" placeholder="Total Estimated Hours">
 
-        <br><label class="addLabel" for="status">Status</label>
-        <input class="placeholder" type="text" id="status" th:field="*{task.getStatus()}">
+        <label class="addLabel" for="status">Status</label>
+        <select id="status" th:field="*{status}" required class="btn-danger">
+            <option th:value="${T(org.example.proflow.model.Status).ACTIVE}"
+                    th:text="${T(org.example.proflow.model.Status).ACTIVE.getDisplayStatus()}">Active
+            </option>
+            <option th:value="${T(org.example.proflow.model.Status).INACTIVE}"
+                    th:text="${T(org.example.proflow.model.Status).INACTIVE.getDisplayStatus()}">Inactive
+            </option>
+        </select>
 
+        <label class="addLabel" for="assignedTo">Assigned To</label>
+        <input class="placeholder" type="text" id="assignedTo" th:field="*{assignedTo}" placeholder="Assigned Person">
 
-        <br><label class="addLabel" for="assignedTo">Assign</label>
-        <input class="placeholder" type="text" id="assignedTo" th:field="*{task.getAssignedTo()}">
+        <label class="addLabel" for="price">Price</label>
+        <input class="placeholder" type="number" step="0.01" id="price" th:field="*{actualPrice}" placeholder="Task Price">
 
-        <br><label class="addLabel" for="taskPrice">Price</label>
-        <input class="placeholder" type="text" id="taskPrice" th:field="*{task.getTaskPrice()}">
-
-        <br><button class="button" method="submit">Save</button>
-        <button class="button" href="/projects">Back</button>
+        <div style="margin-top: 20px;">
+            <button class="button" type="submit">Save Task</button>
+            <a th:href="@{/dashboard/{projectId}(projectId=${projectId})}" class="button button-secondary">Cancel</a>
+        </div>
     </form>
 </div>
-
 </body>
-
 </html>

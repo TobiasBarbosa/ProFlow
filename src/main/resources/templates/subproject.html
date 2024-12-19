@@ -74,14 +74,18 @@
                     </h5>
 
                     <!-- Edit, See, Delete Buttons -->
-                    <form th:action="@{/task/{taskId}(taskId=${task.id})}" method="get" style="display:inline;">
-                        <button type="submit" class="btn btn-danger">See task</button>
+                    <form th:action="@{/dashboard/{projectId}/{subprojectId}/task/edit/{taskId}(projectId=${projectId}, subprojectId=${subprojectId}, taskId=${task.id})}" method="get" style="display:inline;">
+                        <button type="submit" class="btn btn-warning">Edit</button>
                     </form>
-                    <form th:action="@{/task/edit/{taskId}(taskId=${task.id})}" method="get" style="display:inline;">
-                        <button type="submit" class="btn btn-danger">Edit</button>
+
+                    <form th:action="@{/dashboard/{projectId}/{subprojectId}/{taskId}(taskId=${task.id}, projectId=${projectId}, subprojectId=${subprojectId})}" method="get" style="display:inline;">
+                        <button type="submit" class="btn btn-primary">See</button>
                     </form>
-                    <form th:action="@{/task/delete/{taskId}(taskId=${task.id})}" method="post" style="display:inline;">
-                        <button type="submit" class="btn btn-really-dangerous">Delete</button>
+
+                    <form th:action="@{/dashboard/{projectId}/{subprojectId}/task/delete/{taskId}(projectId=${projectId}, subprojectId=${subprojectId}, taskId=${task.id})}"
+                          method="post"
+                          style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </div>
             </div>
@@ -91,8 +95,8 @@
     <!-- Add New Task Section -->
     <div class="box">
         <h2>Add New Task</h2>
-        <form th:action="@{/dashboard/{projectId}/subproject/{subProjectId}/add-task(projectId=${projectId}, subProjectId=${subProject.id})}"
-              method="post">
+        <form th:action="@{/dashboard/{projectId}/{subProjectId}/add-task(projectId=${projectId}, subProjectId=${subProject.id})}"
+              method="get">
             <input type="text" name="taskName" placeholder="Enter task name" required>
             <textarea name="taskDescription" placeholder="Enter task description" required></textarea>
             <button type="submit" class="btn btn-success">Add Task</button>
@@ -107,3 +111,9 @@
 </footer>
 </body>
 </html>
+
+
+
+
+
+

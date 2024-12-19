@@ -48,5 +48,37 @@ public class TaskService {
         taskRepository.deleteTasksBySubProjectId(subProjectId);
     }
 
+
+    public void mergeTask(Task source, Task target) {
+        if (source.getName() != null) {
+            target.setName(source.getName());
+        }
+        if (source.getDescription() != null) {
+            target.setDescription(source.getDescription());
+        }
+        if (source.getStartDate() != null) {
+            target.setStartDate(source.getStartDate());
+        }
+        if (source.getEndDate() != null) {
+            target.setEndDate(source.getEndDate());
+        }
+        if (source.getStatus() != null) {
+            target.setStatus(source.getStatus());
+        }
+        if (source.getAssignedTo() != null) {
+            target.setAssignedTo(source.getAssignedTo());
+        }
+        if (source.getLocation() != null) {
+            target.setLocation(source.getLocation());
+        }
+        if (source.getTotalEstHours() > 0) {
+            target.setTotalEstHours(source.getTotalEstHours());
+        }
+        if (source.getActualPrice() > 0) {
+            target.setActualPrice(source.getActualPrice());
+        }
+    }
+
+
     //**END***----------------------------------------------------------------------------------------------------------
 }

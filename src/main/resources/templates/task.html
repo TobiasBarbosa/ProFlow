@@ -1,10 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Details</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
 </head>
-<body>
 
+<body>
+<!-- Header Section -->
+<div class="flex-container">
+    <div class="flex-item-1">
+        <img class="logo" src="/images/logo.png" alt="logo">
+    </div>
+    <div class="flex-item-2"></div>
+    <div class="flex-item-3">
+        <a th:href="@{/dashboard}" class="btn btn-primary">Go Back</a>
+        <a th:href="@{/dashboard/{projectId}/{subprojectId}/task/edit/{taskId}(projectId=${projectId}, subprojectId=${subprojectId}, taskId=${task.id})}" class="btn btn-warning">Edit</a>
+        <a th:href="@{/dashboard/{projectId}/{subprojectId}/task/delete/{taskId}{taskId}(projectId=${projectId}, subprojectId=${subprojectId}, taskId=${task.id})}" class="btn btn-danger">Delete</a>
+        <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
+    </div>
+
+
+
+</div>
+
+<!-- Main Container -->
+<div class="container">
+    <h1>Task: <span th:text="${task.name}"></span></h1>
+
+    <!-- Task Details Section -->
+    <div class="box">
+        <h2>Task Details</h2>
+
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <th scope="row">Name</th>
+                <td th:text="${task.name}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Description</th>
+                <td th:text="${task.description}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Created Date</th>
+                <td th:text="${task.createdDate}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Start Date</th>
+                <td th:text="${task.startDate}"></td>
+            </tr>
+            <tr>
+                <th scope="row">End Date</th>
+                <td th:text="${task.endDate}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Status</th>
+                <td th:style="${task.status.name() == 'ACTIVE' ? 'color:seagreen;' : (task.status.name() == 'INACTIVE' ? 'color:darkred;' : '')}"
+                    th:text="${task.status.displayStatus}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Estimated Hours</th>
+                <td th:text="${task.totalEstHours}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Actual Price</th>
+                <td th:text="${task.actualPrice}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Location</th>
+                <td th:text="${task.location}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Assigned To</th>
+                <td th:text="${task.assignedTo}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Footer Section -->
+<footer>
+    <p>ProFlow - Project Management Tool by Alpha Solutions</p>
+    <p><a href="mailto:proflowteam@alpha-solutions.com">proflowteam@alpha-solutions.com</a></p>
+</footer>
 </body>
 </html>

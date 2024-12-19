@@ -1,10 +1,127 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
 </head>
-<body>
 
+<body>
+<div class="flex-container">
+    <div class="flex-item-1">
+        <img class="logo" src="/images/logo.png" alt="logo">
+    </div>
+    <div class="flex-item-2"></div>
+    <a th:href="@{/dashboard}" class="btn btn-danger">Go back</a>
+    <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
+</div>
+
+<div class="container">
+    <h1>Edit Task: <span th:text="${task.name}"></span></h1>
+</div>
+
+<div class="box">
+    <p>Update the details of your task below:</p>
+
+    <form th:action="@{/dashboard/{projectId}/{subprojectId}/task/update(projectId=${projectId}, subprojectId=${subprojectId})}"
+          th:object="${task}" method="post">
+        <!-- Hidden input fields for projectId and subprojectId -->
+        <input type="hidden" name="projectId" th:value="${projectId}" />
+        <input type="hidden" name="subprojectId" th:value="${subprojectId}" />
+
+        <!-- Hidden input for task ID -->
+        <input type="hidden" name="id" th:field="*{id}" />
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <th scope="row">Name</th>
+                <td>
+                    <label>
+                        <input type="text" class="form-control" name="name" th:field="*{name}" required>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Description</th>
+                <td>
+                    <label>
+                        <textarea class="form-control" name="description" th:field="*{description}" required></textarea>
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <th scope="row">Start Date</th>
+                <td>
+                    <label>
+                        <input type="date" class="form-control" name="start_date" th:field="*{startDate}" required>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">End Date</th>
+                <td>
+                    <label>
+                        <input type="date" class="form-control" name="end_date" th:field="*{endDate}" required>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Total Estimated Hours</th>
+                <td>
+                    <label>
+                        <input type="number" class="form-control" name="totalEstHours" th:field="*{totalEstHours}" step="0.1" required>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Actual Price</th>
+                <td>
+                    <label>
+                        <input type="number" class="form-control" name="actualPrice" th:field="*{actualPrice}" step="0.01" required>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Location</th>
+                <td>
+                    <label>
+                        <input type="text" class="form-control" name="location" th:field="*{location}" required>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Assigned To</th>
+                <td>
+                    <label>
+                        <input type="text" class="form-control" name="assignedTo" th:field="*{assignedTo}" required>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Status</th>
+                <td>
+                    <label class="form-control">
+                        <select id="status" th:field="*{status}" required>
+                            <option th:value="${T(org.example.proflow.model.Status).ACTIVE}"
+                                    th:text="${T(org.example.proflow.model.Status).ACTIVE.getDisplayStatus()}">Active
+                            </option>
+                            <option th:value="${T(org.example.proflow.model.Status).INACTIVE}"
+                                    th:text="${T(org.example.proflow.model.Status).INACTIVE.getDisplayStatus()}">
+                                Inactive
+                            </option>
+                        </select>
+                    </label>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+    </form>
+</div>
 </body>
 </html>
