@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 import java.util.List;
 
-//TODO SubProjectController: Rette exceptions til subProjectException
+
 
 @Controller
 @RequestMapping("dashboard/{projectId}")
@@ -60,7 +60,6 @@ public class SubProjectController {
     @PostMapping("/save-subproject")
     public String saveSubProject(@PathVariable("projectId") int projectId,
                                  @ModelAttribute("subProject") SubProject subProject, Model model) throws SQLException {
-        System.out.println("this is the sub project to save"+ subProject);
         subProject.setProjectId(projectId);
         subProjectService.addSubProject(subProject);
         return "redirect:/dashboard/" + projectId;
@@ -100,25 +99,14 @@ public class SubProjectController {
         }
         SubProject subProject = subProjectService.getSubProjectById(subprojectId);
         List<Task> tasks = subProject.getTasks();
-        System.out.println("These are tasks for sub project "+ tasks);
         model.addAttribute("tasks", tasks);
         model.addAttribute("subprojectId", subprojectId);
         model.addAttribute("name", subProject.getName());
-            model.addAttribute("project", project);
-            model.addAttribute("subProject", subProject);
-        //    return "view_subproject";
+        model.addAttribute("project", project);
+        model.addAttribute("subProject", subProject);
         return "subproject";
     }
 
-    @GetMapping("/subproject/tasks") //shows all tasks from one subproject
-    public String getTasksFromSubProject(Model model, @RequestParam int subProjectId, HttpSession session) throws SQLException {
-        if (!Validator.isValid(session, subProjectId)) {
-            return "redirect:/";
-        }
-        List<Task> tasksFromSubProject = subProjectService.getTasksFromSubProject(subProjectId);
-        model.addAttribute("tasksFromSubProject", tasksFromSubProject);
-        return "task";
-    }
 
     //***UPDATE SUBPROJECT METHODS***-----------------------------------------------------------------------------------
     @GetMapping("/subproject/edit/{subProjectId}")
@@ -139,30 +127,10 @@ public class SubProjectController {
         return "edit_subproject";
     }
 
-    //@GetMapping("/subproject/edit/{subProjectId}")
-    //public String editSubProject(@PathVariable("subProjectId") int subProjectId,
-    //                             @PathVariable("projectId") int projectId,  // Retrieve projectId from the path
-    //                             Model model, HttpSession session) throws SQLException {
-    //    Profile profile = (Profile) session.getAttribute("profile");  // Check if the user is logged in
-    //    if (!Validator.isValid(session, profile.getId())) {
-    //        return "redirect:/";
-    //    }
-    //
-    //    Project project = projectService.getProjectById(projectId); // Fetch the project from the database
-    //
-    //    if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())) { // Validate ownership
-    //        return "redirect:/dashboard";
-    //    }
-    //
-    //    SubProject subProject = subProjectService.getSubProjectById(subProjectId); // Fetch the subproject
-    //    model.addAttribute("subProject", subProject);
-    //    model.addAttribute("subProjectId", subProject.getId());
-    //    return "edit_subproject";
-    //}
 
 
-    @PostMapping("/subproject/update") //TODO skal der laves tjek både på edit og update?
-    public String updateSubProject(@ModelAttribute SubProject subProject, HttpSession session, int projectId) throws SQLException {
+    @PostMapping("/subproject/update")
+    public String updateSubProject(@PathVariable("projectId") int projectId,@ModelAttribute SubProject subProject, HttpSession session) throws SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
         if (!Validator.isValid(session, profile.getId())) {
             return "redirect:/";
@@ -173,9 +141,18 @@ public class SubProjectController {
         if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())){ //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
             return "redirect:/dashboard";
         }
-        int subProjectId = subProject.getId();
-        subProjectService.updateSubProject(subProject);
-        return "redirect:/subproject";
+        SubProject existingSubProject = subProjectService.getSubProjectById(subProject.getId());
+
+            if (existingSubProject == null) {
+                throw new SQLException("SubProject with ID " + subProject.getId() + " not found.");
+            }
+
+                subProjectService.mergeSubProject(subProject, existingSubProject);
+
+               subProjectService.updateSubProject(existingSubProject);
+
+
+        return "redirect:/dashboard/" + projectId;
     }
 
 

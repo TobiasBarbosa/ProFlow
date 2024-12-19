@@ -1,12 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Subproject</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
 </head>
-<body>
 
-<h1>WE want to edit subprojects here</h1>
+<body>
+<div class="flex-container">
+    <div class="flex-item-1">
+        <img class="logo" src="/images/logo.png" alt="logo">
+    </div>
+    <div class="flex-item-2"></div>
+    <a th:href="@{/dashboard}" class="btn btn-danger">Go back</a>
+    <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
+</div>
+
+<div class="container">
+    <h1>Edit Subproject: <span th:text="${subProject.name}"></span></h1>
+</div>
+
+<div class="box">
+    <p>Update the details of your subproject below:</p>
+
+    <form th:action="@{/dashboard/{projectId}/subproject/update(projectId=${projectId})}" th:object="${subProject}"
+          method="post">
+        <input type="hidden" name="id" th:field="*{id}"/>
+
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <th scope="row">Name</th>
+                <td>
+                    <label>
+                        <input type="text" class="form-control" name="name" th:field="*{name}" required>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Description</th>
+                <td>
+                    <label>
+                        <textarea class="form-control" name="description" th:field="*{description}" required></textarea>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Start Date</th>
+                <td>
+                    <label>
+                        <input type="date" class="form-control" name="start_date" th:field="*{startDate}" required>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">End Date</th>
+                <td>
+                    <label>
+                        <input type="date" class="form-control" name="end_date" th:field="*{endDate}" required>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Budget</th>
+                <td>
+                    <label>
+                        <input type="number" class="form-control" name="budget" th:field="*{budget}" required>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Assigned To</th>
+                <td>
+                    <label>
+                        <input type="text" class="form-control" name="assigned_to" th:field="*{assignedTo}">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Status</th>
+                <td>
+                    <label class="form-control">
+                        <select id="status" th:field="*{status}" required>
+                            <option th:value="${T(org.example.proflow.model.Status).ACTIVE}"
+                                    th:text="${T(org.example.proflow.model.Status).ACTIVE.getDisplayStatus()}">Active
+                            </option>
+                            <option th:value="${T(org.example.proflow.model.Status).INACTIVE}"
+                                    th:text="${T(org.example.proflow.model.Status).INACTIVE.getDisplayStatus()}">
+                                Inactive
+                            </option>
+                        </select>
+                    </label>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+    </form>
+
+    <!-- Delete Subproject -->
+    <form th:action="@{/subproject/delete/{subProjectId}(subProjectId=${subProject.id})}" method="post">
+        <button type="submit" class="btn btn-really-dangerous">Delete Subproject</button>
+    </form>
+</div>
 
 </body>
 </html>

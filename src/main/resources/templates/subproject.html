@@ -17,7 +17,8 @@
     <div class="flex-item-2"></div>
     <div class="flex-item-3">
         <a th:href="@{/dashboard}" class="btn btn-primary">Back to Project</a>
-        <a th:href="@{/dashboard/{projectId}/subproject/edit/{subProjectId}(projectId=${projectId}, subProjectId=${subProject.id})}" class="btn btn-warning">Edit Subproject</a>
+        <a th:href="@{/dashboard/{projectId}/subproject/edit/{subProjectId}(projectId=${projectId}, subProjectId=${subProject.id})}"
+           class="btn btn-warning">Edit Subproject</a>
         <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
     </div>
 </div>
@@ -90,7 +91,8 @@
     <!-- Add New Task Section -->
     <div class="box">
         <h2>Add New Task</h2>
-        <form th:action="@{/dashboard/{projectId}/subproject/{subProjectId}/add-task(projectId=${projectId}, subProjectId=${subProject.id})}" method="post">
+        <form th:action="@{/dashboard/{projectId}/subproject/{subProjectId}/add-task(projectId=${projectId}, subProjectId=${subProject.id})}"
+              method="post">
             <input type="text" name="taskName" placeholder="Enter task name" required>
             <textarea name="taskDescription" placeholder="Enter task description" required></textarea>
             <button type="submit" class="btn btn-success">Add Task</button>

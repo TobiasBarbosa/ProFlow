@@ -190,7 +190,7 @@ public class SubProjectRepository implements SubProjectRepositoryInterface {
             ps.setString(2, subProject.getDescription());
             ps.setDate(3, Date.valueOf(subProject.getStartDate()));
             ps.setDate(4, Date.valueOf(subProject.getEndDate()));
-            ps.setString(5, subProject.getStatus().name());
+            ps.setString(5, subProject.getStatus().getDisplayStatus());
             ps.setDouble(6, subProject.getBudget());
             ps.setString(7, subProject.getAssignedTo());
 
