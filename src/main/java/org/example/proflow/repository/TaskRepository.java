@@ -173,6 +173,15 @@ public class TaskRepository implements TaskRepositoryInterface {
         }
     }
 
+    public void deleteTasksBySubProjectId(int subProjectId) throws SQLException {
+        String deleteQuery = "DELETE FROM Task WHERE sub_project_id = ?";
+        try (Connection con = dataBaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(deleteQuery)) {
+            ps.setInt(1, subProjectId);
+            ps.executeUpdate();
+        }
+    }
+
     //FOR TEST PURPOSES!!
     public void clearTasksForTesting() {
         String query = "DELETE FROM Task";

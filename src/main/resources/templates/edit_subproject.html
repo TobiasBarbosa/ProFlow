@@ -102,10 +102,31 @@
         </div>
     </form>
 
-    <!-- Delete Subproject -->
-    <form th:action="@{/subproject/delete/{subProjectId}(subProjectId=${subProject.id})}" method="post">
-        <button type="submit" class="btn btn-really-dangerous">Delete Subproject</button>
+    <!-- Delete Subproject Form -->
+    <form th:action="@{/dashboard/{projectId}/subproject/delete/{subProjectId}(projectId=${projectId}, subProjectId=${subProject.id})}" method="post">
+        <button type="submit" class="btn btn-danger">Delete Subproject</button>
     </form>
+
+    <!-- Confirmation Dialog -->
+    <div th:if="${showDeleteConfirmation}" class="confirmation-dialog">
+        <div class="confirmation-dialog-content">
+            <h2>Confirm Subproject Deletion</h2>
+            <p th:if="${warning}" th:text="${warning}"></p>
+
+            <!-- Show associated tasks -->
+            <h3>Associated Tasks</h3>
+            <ul>
+                <li th:each="task : ${tasks}" th:text="${task.name}"></li>
+            </ul>
+
+            <form th:action="@{/dashboard/{projectId}/subproject/confirm-delete/{subProjectId}(projectId=${projectId}, subProjectId=${subProjectId})}" method="post">
+                <button type="submit" class="btn btn-danger">Delete Subproject and All Tasks</button>
+            </form>
+            <form th:action="@{/dashboard/{projectId}(projectId=${projectId})}" method="get">
+                <button type="submit" class="btn btn-secondary">Cancel</button>
+            </form>
+        </div>
+    </div>
 </div>
 
 </body>

@@ -7,6 +7,7 @@ import org.example.proflow.model.SubProject;
 import org.example.proflow.model.Task;
 import org.example.proflow.service.ProjectService;
 import org.example.proflow.service.SubProjectService;
+import org.example.proflow.service.TaskService;
 import org.example.proflow.util.Validator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,11 +25,13 @@ public class SubProjectController {
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private final ProjectService projectService;
     private final SubProjectService subProjectService;
+    private final TaskService taskService;
 
     //***CONSTRUCTOR***-------------------------------------------------------------------------------------------------
-    public SubProjectController(SubProjectService subProjectService, ProjectService projectService) {
+    public SubProjectController(SubProjectService subProjectService, ProjectService projectService, TaskService taskService) {
         this.subProjectService = subProjectService;
         this.projectService = projectService;
+        this.taskService = taskService;
     }
 
     //***CREATE SUBPROJECT METHODS***-----------------------------------------------------------------------------------
@@ -157,22 +160,51 @@ public class SubProjectController {
 
 
     //***DELETE SUBPROJECT METHODS***-----------------------------------------------------------------------------------
+
     @PostMapping("/subproject/delete/{subProjectId}")
-    public String deleteSubProject(@PathVariable("subProjectId") int subProjectId, @PathVariable("projectId") int projectId, HttpSession session)
-    throws SQLException {
-        Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
+    public String deleteSubProject(@PathVariable("projectId") int projectId, @PathVariable("subProjectId") int subProjectId, Model model, HttpSession session) throws SQLException {
+        Profile profile = (Profile) session.getAttribute("profile");  // Check if logged in
+        SubProject subProject = subProjectService.getSubProjectById(subProjectId);
         if (!Validator.isValid(session, profile.getId())) {
             return "redirect:/";
         }
 
-        Project project = projectService.getProjectById(projectId); //Henter projektet fra databasen
-
-        if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())){ //Tjekker om profilens ID matcher ID'et tilhørende projeketets ID
-            return "redirect:/dashboard_stub";
+        Project project = projectService.getProjectById(projectId); // Fetch project from database
+        if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())) { // Check project ownership
+            return "redirect:/dashboard";
         }
-        SubProject subProject = subProjectService.getSubProjectById(subProjectId);
+
+        // Check for associated tasks
+        List<Task> tasks = subProject.getTasks();
+        model.addAttribute("subProject", subProject);
+        model.addAttribute("showDeleteConfirmation", true); // Show the confirmation dialog
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("warning", "This subproject has associated tasks. Deleting it will also delete all tasks.");
+        model.addAttribute("subProjectId", subProjectId);
+        model.addAttribute("projectId", projectId);
+        return "edit_subproject";
+    }
+
+    // Confirm deletion and delete all tasks and subproject
+    @PostMapping("/subproject/confirm-delete/{subProjectId}")
+    public String confirmDeleteSubProject(@PathVariable("projectId") int projectId, @PathVariable("subProjectId") int subProjectId, HttpSession session) throws SQLException {
+        Profile profile = (Profile) session.getAttribute("profile");  // Check if logged in
+        if (!Validator.isValid(session, profile.getId())) {
+            return "redirect:/";
+        }
+
+        Project project = projectService.getProjectById(projectId); // Fetch project from database
+        if (!Validator.isProjectOwned(profile.getId(), project.getProfileId())) { // Check project ownership
+            return "redirect:/dashboard";
+        }
+
+        // Delete associated tasks
+        taskService.deleteTasksBySubProjectId(subProjectId);
+
+        // Delete the subproject
         subProjectService.deleteSubProject(subProjectId);
-        return "redirect:/dashboard_stub";
+
+        return "redirect:/dashboard/" + projectId;
     }
 
 
