@@ -76,7 +76,7 @@ public class ProjectController {
             return "redirect:/";
         }
 
-        List<SubProject> subProjectsFromProject = projectService.getSubProjectsFromProject(projectId);
+        List<SubProject> subProjectsFromProject = project.getSubProjects();
         model.addAttribute("subProjectsFromProject", subProjectsFromProject);
         model.addAttribute("project", project);
 

@@ -37,11 +37,6 @@ public class ProjectService {
         return projectRepository.getProjectById(id);
     }
 
-    public List<SubProject> getSubProjectsFromProject(int projectId) throws SQLException {
-        return projectRepository.getSubProjectsFromProject(projectId);
-
-    }
-
     //***UPDATE PROFILE***---------------------------------------------------------------------------------------------U
     public void updateProject(Project project) throws SQLException {
         projectRepository.updateProject(project);

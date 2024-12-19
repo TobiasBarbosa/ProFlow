@@ -2,7 +2,6 @@ package org.example.proflow.service;
 
 import org.example.proflow.model.SubProject;
 import org.example.proflow.model.Task;
-import org.example.proflow.repository.SubProjectRepository;
 import org.example.proflow.util.interfaces.SubProjectRepositoryInterface;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +47,39 @@ public class SubProjectService {
     public void deleteSubProject(int id) throws SQLException {
         subProjectRepository.deleteSubProject(id);
     }
+
+
+    //Bruges i update, sørger for der ikke overskrives med null/0 når man ikke har skrevet noget
+    public void mergeSubProject(SubProject source, SubProject target) {
+        if (source.getName() != null) {
+            target.setName(source.getName());
+        }
+        if (source.getDescription() != null) {
+            target.setDescription(source.getDescription());
+        }
+        if (source.getStartDate() != null) {
+            target.setStartDate(source.getStartDate());
+        }
+        if (source.getEndDate() != null) {
+            target.setEndDate(source.getEndDate());
+        }
+        if (source.getStatus() != null) {
+            target.setStatus(source.getStatus());
+        }
+        if (source.getBudget() != 0) {
+            target.setBudget(source.getBudget());
+        }
+        if (source.getAssignedTo() != null) {
+            target.setAssignedTo(source.getAssignedTo());
+        }
+        if (source.getTotalEstHours() != 0) {
+            target.setTotalEstHours(source.getTotalEstHours());
+        }
+        if (source.getActualPrice() != 0) {
+            target.setActualPrice(source.getActualPrice());
+        }
+    }
+
 
     //**END***----------------------------------------------------------------------------------------------------------
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View project</title>
+    <title>Project Details</title>
     <link rel="stylesheet" th:href="@{/main.css}">
     <link rel="icon" type="image/x-icon" href="/images/favicon.png">
 </head>
@@ -14,100 +14,104 @@
         <img class="logo" src="/images/logo.png" alt="logo">
     </div>
     <div class="flex-item-2"></div>
-    <a th:href="@{/dashboard}" class="btn btn-danger">Go back</a>
-    <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
+    <div class="flex-item-3">
+        <a th:href="@{/dashboard}" class="btn btn-primary">Back to Dashboard</a>
+        <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
+    </div>
 </div>
 
 <div class="container">
-   <h1><span th:text="${project.name}"></span></h1>
+    <h1>Project: <span th:text="${project.name}"></span></h1>
 
-<div class="box">
-    <h2>Project details:</h2>
+    <!-- Editable Project Details Section -->
+    <div class="box">
+        <h2>Project Details</h2>
+
         <table class="table table-bordered">
             <tbody>
             <tr>
                 <th scope="row">Title</th>
-                <td>
-                    <p th:text="*{project.name}">
+                <td class="form-control" th:text="*{project.name}">
                 </td>
             </tr>
             <tr>
                 <th scope="row">Description</th>
-                <td>
-                    <p th:text="*{project.description}">
+                <td class="form-control" th:text="*{project.description}">
+
                 </td>
             </tr>
             <tr>
-                <th scope="row">Start date</th>
-                <td>
-                    <p th:text="*{project.startDate}">
+                <th scope="row">Start Date</th>
+                <td th:text="*{project.startDate}">
+
                 </td>
             </tr>
             <tr>
-                <th scope="row">End date</th>
-                <td>
-                    <p th:text="*{project.endDate}">
+                <th scope="row">End Date</th>
+                <td th:text="*{project.endDate}">
+
                 </td>
             </tr>
             <tr>
                 <th scope="row">Budget</th>
-                <td>
-                    <p th:text="*{project.budget}">
+                <td th:text="*{project.budget}">
+
                 </td>
             </tr>
-
             <tr>
-                <th scope="row">Project status</th>
-                <td>
-                    <p   th:style="${project.status.name() == 'ACTIVE' ? 'color:seagreen;' : (project.status.name() == 'INACTIVE' ? 'color:darkred;' : '')}"
-                         th:text="${project.status.displayStatus}">
-                </td>
+                <th scope="row">Status</th>
+                <td th:style="${project.status.name() == 'ACTIVE' ? 'color:seagreen;' : (project.status.name() == 'INACTIVE' ? 'color:darkred;' : '')}"
+                    th:text="${project.status.displayStatus}"></td>
             </tr>
             </tbody>
         </table>
 
-<!--Hvis listen er tom -->
-<p th:if="${#lists.isEmpty(subProjectsFromProject)}">You have no subprojects yet.</p>
 
-<!--Iterér gennem subprojects-->
-<div class="project-grid">
-    <div class="card" th:each="subProject : ${subProjectsFromProject}">
-        <img class="card-img"
-             src="https://images.pexels.com/photos/1292998/pexels-photo-1292998.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-             alt="Blue Image">
-        <div class="card-body">
-            <h5 class="card-title" th:text="${subProject.name}">Subproject title</h5>
-            <!--Gør aktiv grøn og inaktiv rød -->
-            <h5>Status: </h5>
-            <h5 class="card-status"
-                th:style="${subProject.status.name() == 'ACTIVE' ? 'color:seagreen;' : (subProject.status.name() == 'INACTIVE' ? 'color:darkred;' : '')}"
-                th:text="${subProject.status.displayStatus}">
-            </h5>
+    </div>
 
-            <form th:action="@{/dashboard/project/edit/{projectId}(projectId=${project.id})}" method="get" style="display:inline;">
-                <button type="submit" class="btn-danger">Edit</button>
-            </form>
+    <!-- Subprojects Section -->
+    <div class="box">
+        <h2>Subprojects</h2>
+        <p th:if="${#lists.isEmpty(subProjectsFromProject)}">You have no subprojects yet.</p>
 
+        <div class="project-grid">
+            <div class="card" th:each="subProject : ${subProjectsFromProject}">
+                <img class="card-img"
+                     src="https://images.pexels.com/photos/1292998/pexels-photo-1292998.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                     alt="Subproject Image">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${subProject.name}">Subproject Title</h5>
+                    <h5>Status:</h5>
+                    <h5 class="card-status"
+                        th:style="${subProject.status.name() == 'ACTIVE' ? 'color:seagreen;' : (subProject.status.name() == 'INACTIVE' ? 'color:darkred;' : '')}"
+                        th:text="${subProject.status.displayStatus}"></h5>
+
+                    <form th:action="@{/dashboard/{projectId}/subproject/edit/{subProjectId}(projectId=${projectId}, subProjectId=${subProject.id})}"
+                          method="get" style="display:inline;">
+                        <button type="submit" class="btn btn-warning">Edit</button>
+                    </form>
+                    <form th:action="@{/dashboard/{projectId}/subproject/{subProjectId}(projectId=${projectId}, subProjectId=${subProject.id})}"
+                          method="get" style="display:inline;">
+                        <button type="submit" class="btn btn-primary">See Subproject</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-</div>
 
-<!-- Tilføj et nyt subprojekt-->
-<div class="box">
-    <h2 class="inbox">Create new subproject</h2>
-    <form th:action="@{/dashboard/{projectId}/add_subproject/(projectId=${project.id})}" method="get">
-        <input type="text" name="subprojectName" placeholder="Enter subproject name" required>
-        <button type="submit" class="btn-success">Create subproject</button>
-    </form>
+    <!-- Create New Subproject -->
+    <div class="box">
+        <h2>Create a New Subproject</h2>
+        <form th:action="@{/dashboard/{projectId}/add_subproject(projectId=${projectId})}" method="get">
+            <input type="text" name="subprojectName" placeholder="Enter subproject name" required>
+            <button type="submit" class="btn btn-success">Create Subproject</button>
+        </form>
+    </div>
 </div>
-</div>
-</body>
 
 <footer>
     <p>ProFlow - Project Management Tool by Alpha Solutions</p>
-    <p></p>
     <p><a href="mailto:proflowteam@alpha-solutions.com">proflowteam@alpha-solutions.com</a></p>
 </footer>
-
+</body>
 </html>

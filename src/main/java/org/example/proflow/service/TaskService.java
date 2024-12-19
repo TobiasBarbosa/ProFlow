@@ -44,5 +44,9 @@ public class TaskService {
         taskRepository.deleteTask(id);
     }
 
+    public void deleteTasksBySubProjectId(int subProjectId) throws SQLException {
+        taskRepository.deleteTasksBySubProjectId(subProjectId);
+    }
+
     //**END***----------------------------------------------------------------------------------------------------------
 }

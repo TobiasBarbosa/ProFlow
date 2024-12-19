@@ -3,94 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subproject</title>
-    <link rel="stylesheet" href="/static/main.css">
+    <title>Subproject Details</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
     <link rel="icon" type="image/x-icon" href="/images/favicon.png">
 </head>
 
 <body>
+<!-- Header Section -->
 <div class="flex-container">
     <div class="flex-item-1">
         <img class="logo" src="/images/logo.png" alt="logo">
     </div>
     <div class="flex-item-2"></div>
-    <div class="flex-item-3"> <a th:object="${session.profile}" th:href="@{/profile/edit/{profileId}(profileId=${session.profile.getProfileId()})}" class="btn btn-outline-secondary mr-2">Edit Profile</a>
-        <a th:href="@{/homepage/logout}" class="btn btn-danger">Logout</a>
+    <div class="flex-item-3">
+        <a th:href="@{/dashboard}" class="btn btn-primary">Back to Project</a>
+        <a th:href="@{/dashboard/{projectId}/subproject/edit/{subProjectId}(projectId=${projectId}, subProjectId=${subProject.id})}"
+           class="btn btn-warning">Edit Subproject</a>
+        <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
     </div>
 </div>
 
-<div class="header">
-
-    <div class="header-right">
-
-    </div>
-</div>
-
+<!-- Main Container -->
 <div class="container">
-    <!-- Hvis listen er tom -->
-    <p th:if="${#lists.isEmpty(projectsFromProfile)}">Your subproject has no tasks yet.</p>
+    <h1>Subproject: <span th:text="${subProject.name}"></span></h1>
 
-    <!-- Tabel af tasks-->
-    <h1>Overview of all tasks</h1>
-    <table class="table" border="1">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Assigned To</th>
-            <th></th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="task : ${tasks}">
-            <td>
-                <a th:href="@{/task/{taskId}(taskId=${task.id})}" th:text="${task.name}">Name</a>
-            </td>
-            <td th:text="${task.description}">Description</td>
-            <td th:text="${task.status.displayStatus}">Status</td>
-            <td th:text="${task.assignedTo}">Assigned To</td>
-            <td><a th:href="@{/task/edit/{taskId}(taskId=${task.id})}" class="btn-danger">Edit</a></td>
-            <td>
-            <form th:action="@{/task/delete/{taskId}(taskId=${task.id})}" method="post" class="delete-form">
-                <button type="submit" class="btn-danger">Delete task</button>
-            </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <!-- Subproject Details Section -->
+    <div class="box">
+        <h2>Subproject Details</h2>
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <th scope="row">Name</th>
+                <td th:text="${subProject.name}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Description</th>
+                <td th:text="${subProject.description}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Start Date</th>
+                <td th:text="${subProject.startDate}"></td>
+            </tr>
+            <tr>
+                <th scope="row">End Date</th>
+                <td th:text="${subProject.endDate}"></td>
+            </tr>
+            <tr>
+                <th scope="row">Status</th>
+                <td th:style="${subProject.status.name() == 'ACTIVE' ? 'color:seagreen;' : (subProject.status.name() == 'INACTIVE' ? 'color:darkred;' : '')}"
+                    th:text="${subProject.status.displayStatus}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
+    <!-- Tasks Section -->
+    <div class="box">
+        <h2>Tasks</h2>
+        <p th:if="${#lists.isEmpty(tasks)}">You have no tasks yet.</p>
 
-    <div class="project-grid">
-        <div class="card" th:each="project : ${projectsFromProfile}">
-            <img class="card-img" src="https://images.pexels.com/photos/3109807/pexels-photo-3109807.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Purple Image">
-            <div class="card-body">
-                <h5 class="card-title" th:text="${project.name}">Project title</h5>
-                <a th:href="@{/homepage/project/{id}(id=${project.projectId})}" class="btn-primary">See project</a>
+        <!-- Tasks as Cards -->
+        <div class="task-grid">
+            <div class="card" th:each="task : ${tasks}">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${task.name}">Task Title</h5>
+                    <p th:text="${task.description}">Task Description</p>
+                    <p>Status:
+                        <span th:style="${task.status.name() == 'ACTIVE' ? 'color:seagreen;' : (task.status.name() == 'INACTIVE' ? 'color:darkred;' : '')}"
+                              th:text="${task.status.displayStatus}"></span>
+                    </p>
 
-                <!-- Form til sletning -->
-                <form th:action="@{/homepage/project/remove/{id}(id=${project.projectId})}" method="post" class="delete-form">
-                    <button type="submit" class="btn-danger">Delete</button>
-                </form>
+                    <!-- Edit, See, Delete Buttons -->
+                    <form th:action="@{/task/edit/{taskId}(taskId=${task.id})}" method="get" style="display:inline;">
+                        <button type="submit" class="btn btn-warning">Edit</button>
+                    </form>
+                    <form th:action="@{/task/{taskId}(taskId=${task.id})}" method="get" style="display:inline;">
+                        <button type="submit" class="btn btn-primary">See</button>
+                    </form>
+                    <form th:action="@{/task/delete/{taskId}(taskId=${task.id})}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Tilføj ny task
-    <div class="add-task">
-        <h2 class="inbox">Create new task</h2>
-        <form th:action="@{/{subProjectId}/add-task}" method="post">
+    <!-- Add New Task Section -->
+    <div class="box">
+        <h2>Add New Task</h2>
+        <form th:action="@{/dashboard/{projectId}/subproject/{subProjectId}/add-task(projectId=${projectId}, subProjectId=${subProject.id})}"
+              method="post">
             <input type="text" name="taskName" placeholder="Enter task name" required>
-            <button type="submit" class="btn-success">Create task</button>
+            <textarea name="taskDescription" placeholder="Enter task description" required></textarea>
+            <button type="submit" class="btn btn-success">Add Task</button>
         </form>
     </div>
-    -->
 </div>
 
+<!-- Footer Section -->
 <footer>
     <p>ProFlow - Project Management Tool by Alpha Solutions</p>
-    <p></p>
     <p><a href="mailto:proflowteam@alpha-solutions.com">proflowteam@alpha-solutions.com</a></p>
 </footer>
 </body>
