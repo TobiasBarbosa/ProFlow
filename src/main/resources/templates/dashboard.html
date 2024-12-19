@@ -36,7 +36,7 @@
             <div class="card-body">
                 <h5 class="card-title" th:text="${project.name}">Project title</h5>
                 <!--Gør aktiv grøn og inaktiv rød -->
-                <h5>Status: </h5>
+                <h2 class="status-title">Status: </h2>
                 <h5 class="card-status"
                     th:style="${project.status.name() == 'ACTIVE' ? 'color:seagreen;' : (project.status.name() == 'INACTIVE' ? 'color:darkred;' : '')}"
                     th:text="${project.status.displayStatus}">
