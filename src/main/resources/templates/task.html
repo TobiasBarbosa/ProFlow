@@ -16,14 +16,9 @@
     </div>
     <div class="flex-item-2"></div>
     <div class="flex-item-3">
-        <a th:href="@{/dashboard}" class="btn btn-primary">Go Back</a>
-        <a th:href="@{/dashboard/{projectId}/{subprojectId}/task/edit/{taskId}(projectId=${projectId}, subprojectId=${subprojectId}, taskId=${task.id})}" class="btn btn-warning">Edit</a>
-        <a th:href="@{/dashboard/{projectId}/{subprojectId}/task/delete/{taskId}{taskId}(projectId=${projectId}, subprojectId=${subprojectId}, taskId=${task.id})}" class="btn btn-danger">Delete</a>
+        <a th:href="@{/dashboard}" class="btn btn-primary">Back</a>
         <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
     </div>
-
-
-
 </div>
 
 <!-- Main Container -->
@@ -79,6 +74,8 @@
             </tr>
             </tbody>
         </table>
+        <a th:href="@{/dashboard/{projectId}/{subprojectId}/task/edit/{taskId}(projectId=${projectId}, subprojectId=${subprojectId}, taskId=${task.id})}" class="btn btn-danger">Edit</a>
+        <a th:href="@{/dashboard/{projectId}/{subprojectId}/task/delete/{taskId}{taskId}(projectId=${projectId}, subprojectId=${subprojectId}, taskId=${task.id})}" class="btn btn-really-dangerous">Delete</a>
     </div>
 </div>
 
