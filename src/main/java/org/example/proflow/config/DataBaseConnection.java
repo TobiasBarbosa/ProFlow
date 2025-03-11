@@ -12,11 +12,16 @@ import java.sql.SQLException;
 @Component
 public class DataBaseConnection {
 
+    //***EXAM***--------------------------------------------------------------------------------------------------------
+    //GRASP: Pure Fabrication: The Pure Fabrication principle suggests the creation of artificial classes to improve system design.
+    // These classes are not directly tied to the domain or problem being solved but serve as helpers or connectors between other classes.
+    // Pure Fabrication aids in achieving low coupling and high cohesion by encapsulating complex operations or providing an interface to external systems.
+
     //***TO DO***-------------------------------------------------------------------------------------------------------
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     @Value("${spring.datasource.url}")      //henter fra environment variables som er lagret i vores application configuration
     private String db_url;
-    @Value("${spring.datasource.username}") //henter fra environment variables som er lagret i vores application configuration
+    @Value("${spring.datasource.username}")     //henter fra environment variables som er lagret i vores application configuration
     private String db_user;
     @Value("${spring.datasource.password}") //henter fra environment variables som er lagret i vores application configuration
     private String db_password;

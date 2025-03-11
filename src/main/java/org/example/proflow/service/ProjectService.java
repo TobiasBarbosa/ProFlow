@@ -5,10 +5,12 @@ import org.example.proflow.exception.ProjectException;
 import org.example.proflow.model.Project;
 import org.example.proflow.model.SubProject;
 import org.example.proflow.repository.ProjectRepository;
+import org.example.proflow.repository.SubProjectRepository;
 import org.example.proflow.util.interfaces.ProjectRepositoryInterface;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,7 +49,24 @@ public class ProjectService {
         projectRepository.deleteProject(id);
     }
 
+    //***CALCULATION METHODS***-----------------------------------------------------------------------------------------
+//    public double calculateActualPriceForProject(int projectId) throws SQLException {
+//        SubProjectRepository subProjectRepository = new SubProjectRepository(d);
+//        List<SubProject> subProjects = new ArrayList<>();
+//        double actualPrice = 0.0;
+//
+//        for (SubProject subProject : subProjectRepository.getAllSubProjects()) {
+//            if(projectId == subProject.getProjectId()){
+//                subProjects.add(subProject);
+//                for(SubProject s : subProjects){
+//                    actualPrice += s.getActualPrice();
+//                }
+//            }
+//        }
+//        return actualPrice;
+//    }
 
+    //***OTHER LOGIC METHODS***-----------------------------------------------------------------------------------------
     //Bruges i update, sørger for der ikke overskrives med null/0 når man ikke har skrevet noget
     public void mergeProject(Project source, Project target) {
         if (source.getName() != null) {

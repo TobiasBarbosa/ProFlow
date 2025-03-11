@@ -85,7 +85,7 @@ public class ProjectController {
 
 
     //***UPDATE PROJECT METHODS***-----------------------------------------------------------------------------------
-    @GetMapping("/project/edit/{projectId}")
+    @GetMapping("/project/edit/{projectId}") //putmapping?
     public String editProject(@PathVariable("projectId") int projectId, Model model, HttpSession session) throws ProjectException, SQLException {
         Profile profile = (Profile) session.getAttribute("profile");  //Tjekker om den er logget ind
         if (!Validator.isValid(session, profile.getId())) {
@@ -120,7 +120,7 @@ public class ProjectController {
     }
 
     //***DELETE PROJECT METHODS***-----------------------------------------------------------------------------------
-    @PostMapping("/project/delete/{projectId}")
+    @PostMapping("/project/delete/{projectId}") // deletemapping?
     public String deleteProject(@PathVariable("projectId") int projectId, HttpSession session, Project project) throws ProjectException, SQLException {
 
         projectService.deleteProject(projectId);

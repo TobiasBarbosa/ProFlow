@@ -63,7 +63,7 @@ public class ProjectRepositoryTest {
     }
 
     @AfterEach
-    // Kører efter hver test to clear the database
+//    // Kører efter hver test to clear the database
     void tearDown(){
         projectRepository.clearProjectsForTesting();
         profileRepository.clearProfilesForTesting();

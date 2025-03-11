@@ -87,8 +87,6 @@ public class ProfileController {
         return "redirect:/dashboard";
     }
 
-
-
     //***READ PROFILE***-----------------------------------------------------------------------------------------------R
     //***PROFILE(PM)***
     @GetMapping("/dashboard") //dashboard til projektleder (viser alle projekter for en projektleder)

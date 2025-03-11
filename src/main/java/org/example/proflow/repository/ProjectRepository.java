@@ -2,6 +2,7 @@ package org.example.proflow.repository;
 
 import org.example.proflow.config.DataBaseConnection;
 import org.example.proflow.model.Project;
+import org.example.proflow.model.ProjectTask;
 import org.example.proflow.model.Status;
 import org.example.proflow.model.SubProject;
 import org.example.proflow.util.interfaces.ProjectRepositoryInterface;
@@ -33,6 +34,7 @@ public class ProjectRepository implements ProjectRepositoryInterface {
              PreparedStatement ps = con.prepareStatement(insertProjectQuery, Statement.RETURN_GENERATED_KEYS)) {
 
             //Database setter Id
+            ps.setString(1, project.getName());
             ps.setString(1, project.getName());
             ps.setString(2, project.getDescription());
             ps.setDate(3, Date.valueOf(project.getStartDate()));

@@ -8,29 +8,43 @@
 
 name: Java CI with Maven
 
-on:
+on: #trigger!
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  workflow_dispatch:
+  workflow_dispatch: # tillader at man manuelt kan trigge en build process på github actions
 
-jobs:
-  build:
+jobs: # repræsenterer kollektion af steps
+  build: # navn på job
+    runs-on: ubuntu-latest # operativ system
 
-    runs-on: ubuntu-latest
+    steps: # steps for de forskellige jobs
+    - uses: actions/checkout@v4 #uses/downloader/checkouts repository kode fra Github
 
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 22
-      uses: actions/setup-java@v4.3.0
-      with:
-        java-version: '22'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      env:
+    - name: Set up JDK 22 # navngiver step
+      uses: actions/setup-java@v4.3.0 # This tells GitHub Actions to use a prebuilt action from the GitHub Marketplace. The action is actions/setup-java, which installs and configures Java. Instead of manually installing Java, this action automates the process.
+      with: # section where you specify parameters (inputs) for the action you are using. The parameters allow you to customize how the action runs.
+            # You can think of the with: section as a specification or configuration for the action, telling it how to download and set up Java according to your needs.
+        java-version: '22' #  # Specifies which version of Java to install
+        distribution: 'temurin' # Specifies the Java distribution (Temurin)
+        cache: maven # # Enables Maven dependency caching for faster builds
+
+    - name: Build with Maven #navngiver step -> This step is used to build and test a Maven-based Java project.
+      env: # The env: section is used to define environment variables for this step. These environment variables will be available to the command or script that runs during this step.
+           # Using secrets ensures that sensitive information is not exposed in plain text in your workflow, keeping it secure and private.
         PROD_DB_URL: ${{secrets.PROD_DB_URL}}
         PROD_DB_USER: ${{secrets.PROD_DB_USER}}
         PROD_DB_PASSWORD: ${{secrets.PROD_DB_PASSWORD}}
-      run: mvn -B test
+      run: mvn -B test # Runs the Maven test command (mvn -B test) to execute tests on the Java project in a non-interactive manner.
+      # mvn: This is the Maven command-line tool. It’s used to build and manage Java projects. In this case, it's being used to run tests.
+      # -B: This stands for Batch mode. In Maven, this suppresses any interactive prompts or progress bars, making it suitable for automated environments like GitHub Actions.
+      # It ensures the command runs silently without asking for user input, which is important for CI/CD pipelines where automation is key.
+      # test: This is the Maven goal to run tests. It will run all the unit tests defined in the project (e.g., with JUnit or TestNG) and provide results on whether the tests pass or fail.
+      #If the tests pass, the build will continue to the next step.
+      #If the tests fail, the workflow will halt, and the failure will be shown in the logs.
+
+      # mvn: This is the Maven command-line tool that manages the build lifecycle, dependencies, and tasks in a Java project. It is a central part of Maven-based projects.
+      # -B: This is the "batch mode" flag, which makes the command non-interactive. In a CI environment like GitHub Actions, you don’t want the build process to pause for user input, so -B ensures the command runs without waiting for user interaction.
+      # test: This is the Maven goal that specifically runs tests. It instructs Maven to look for any test files (usually JUnit tests) in the project and execute them.
+      # kører ikke hele lifecycle, men tester 'kun' . det er mere effektivt

@@ -5,6 +5,9 @@ import java.time.temporal.ChronoUnit;
 
 public abstract class ProjectTask {
 
+    //SOLID - L: Liskov Substitution Principle
+    //Concept: Objects of a superclass should be replaceable with objects of subclasses without affecting the correctness of the program.
+
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
     private int id;
     private String name;
